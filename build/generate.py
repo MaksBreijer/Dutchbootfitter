@@ -288,7 +288,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=5">'''
+<link rel="stylesheet" href="style.css?v=6">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -296,7 +296,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 {cta_html() if cta else ''}
 {post_cta_html(current_file)}
 {footer_html()}
-<script src="app.js?v=4"></script>'''
+<script src="app.js?v=5"></script>'''
     if not full_doc:
         return head + '\n' + inner + '\n'
     return f'''<!doctype html>
@@ -509,7 +509,7 @@ def render_home(meta, body):
     # hotspots on the boot photo (side view: heel left, toe right), positions in % of the image
     spots = ''.join(f'<button type="button" class="hs" data-zone="{zslug(n)}" style="--x:{HOTSPOTS[n][0]}%;--y:{HOTSPOTS[n][1]}%" aria-label="{html.escape(n)}" aria-describedby="zone-{zslug(n)}"><span></span></button>' for n, d in zones if n in HOTSPOTS)
     li = ''.join(f'<li>{inline(i)}</li>' for i in items)
-    out.append(f'''<section class="section alt"><div class="wrap">
+    out.append(f'''<section class="section alt complaints-sec"><div class="wrap">
 <div class="section-head"><h2>{esc(hd('Wat kan een bootfitter'))}</h2><h3 class="sub">{esc(hd('Herkent u'))}</h3></div>
 <div class="zones"><div class="zones-copy"><ul class="complaints">{li}</ul>
 <p class="solve">{esc(solve)}</p></div>
@@ -517,7 +517,7 @@ def render_home(meta, body):
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
     strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('etalage', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'slijpen'))
-    out.append(f'<div class="shop-strip" role="group" aria-label="DutchBootFitter IJburglaan"><div class="strip-track">{strip}</div></div>')
+    out.append(f'<div class="shop-strip" role="group" aria-label="DutchBootFitter IJburglaan"><div class="strip-track" tabindex="0">{strip}</div><div class="strip-nav wrap"><button type="button" class="strip-btn prev" aria-label="Vorige foto"></button><button type="button" class="strip-btn next" aria-label="Volgende foto"></button></div></div>')
     # choices
     cards = []
     choice_heads = [(h, t) for h, t in secs if h and h.startswith('### [')]
@@ -533,11 +533,11 @@ def render_home(meta, body):
         more_t, more_u = re.match(r'\[([^\]]+)\]\(([^)]+)\)', paras[1].strip()).groups()
         cards.append(f'''<article class="choice"><a class="media" href="{local_href(href)}" tabindex="-1">{img_tag(im.group(1), im.group(2))}</a>
 <div class="body"><h3><a href="{local_href(href)}">{esc(title)}</a></h3><p>{esc(desc)}</p><a class="more" href="{local_href(more_u)}">{esc(more_t)}</a></div></article>''')
-    out.append(f'''<section class="section"><div class="wrap"><div class="section-head"><h2>{esc(hd('Wat wilt u doen?'))}</h2></div><div class="choices">{''.join(cards)}</div></div></section>''')
+    out.append(f'''<section class="section choices-sec"><div class="wrap"><div class="section-head"><h2>{esc(hd('Wat wilt u doen?'))}</h2></div><div class="choices">{''.join(cards)}</div></div></section>''')
     # is / is not
     def ul(key):
         return ''.join(f'<li>{inline(i)}</li>' for i in re.findall(r'^- (.+)$', get(key), re.M))
-    out.append(f'''<section class="section alt"><div class="wrap isnot">
+    out.append(f'''<section class="section alt isnot-sec"><div class="wrap isnot">
 <div class="is"><h3>{esc(hd('Wat is DutchBootFitter ?'))}</h3><ul>{ul('Wat is DutchBootFitter ?')}</ul></div>
 <div class="not"><h3>{esc(hd('Wat is DutchBootFitter niet'))}</h3><ul>{ul('Wat is DutchBootFitter niet')}</ul></div>
 </div></section>''')
@@ -547,7 +547,7 @@ def render_home(meta, body):
     dets = []
     for i in range(1, len(qa), 2):
         dets.append(f'<details{" open" if i == 1 else ""}><summary>{esc(qa[i].strip())}</summary><div class="answer">{md_to_html(qa[i + 1])}</div></details>')
-    out.append(f'''<section class="section"><div class="wrap"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2><div class="faq">{''.join(dets)}</div></div></section>''')
+    out.append(f'''<section class="section faq-sec"><div class="wrap faq-wrap"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2><div class="faq">{''.join(dets)}</div></div></section>''')
     return '\n'.join(out)
 
 

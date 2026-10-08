@@ -141,3 +141,24 @@
 
 // Respect reduced motion: keep the hero clip on its poster frame.
 if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.hero-video video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });
+
+// Home shop strip: arrow buttons page through the photos (Canary-style card rail).
+(function () {
+  var track = document.querySelector('.strip-track');
+  if (!track) return;
+  function step(dir) {
+    var card = track.querySelector('figure');
+    var w = card ? card.getBoundingClientRect().width + 16 : track.clientWidth * .8;
+    track.scrollBy({ left: dir * w, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  var prev = document.querySelector('.strip-btn.prev'), next = document.querySelector('.strip-btn.next');
+  function sync() {
+    if (prev) prev.disabled = track.scrollLeft < 4;
+    if (next) next.disabled = track.scrollLeft + track.clientWidth > track.scrollWidth - 4;
+  }
+  if (prev) prev.addEventListener('click', function () { step(-1); });
+  if (next) next.addEventListener('click', function () { step(1); });
+  track.addEventListener('scroll', sync, { passive: true });
+  window.addEventListener('resize', sync);
+  sync();
+})();
