@@ -288,7 +288,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=6">'''
+<link rel="stylesheet" href="style.css?v=7">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -469,6 +469,21 @@ for _p in ['wp-content/uploads/hero-sneeuw.jpg']:
 HERO_VIDEO = W + 'strolz-aanmeten.mp4'
 
 
+# Hand-drawn marker strokes (an underline, a cross) that draw themselves in; decorative only.
+MARK_SVG = {
+    'under': ('<svg class="mark-svg" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+              '<path pathLength="1" d="M4 13C70 9 160 8 296 11"/><path pathLength="1" d="M30 21C110 15 200 14 240 17"/>'
+              '<path pathLength="1" d="M120 26C160 22 200 21 236 22"/></svg>'),
+    'cross': ('<svg class="mark-svg" viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
+              '<path pathLength="1" d="M4 6C30 18 62 34 90 58"/><path pathLength="1" d="M2 56C26 34 56 10 98 4"/></svg>'),
+}
+
+
+def mark(h, word, kind):
+    i = h.rfind(word)
+    return h[:i] + f'<span class="mark mark-{kind}">{word}{MARK_SVG[kind]}</span>' + h[i + len(word):]
+
+
 def render_home(meta, body):
     body = strip_cta(body)
     secs = split_sections(body)
@@ -538,8 +553,8 @@ def render_home(meta, body):
     def ul(key):
         return ''.join(f'<li>{inline(i)}</li>' for i in re.findall(r'^- (.+)$', get(key), re.M))
     out.append(f'''<section class="section alt isnot-sec"><div class="wrap isnot">
-<div class="is"><h3>{esc(hd('Wat is DutchBootFitter ?'))}</h3><ul>{ul('Wat is DutchBootFitter ?')}</ul></div>
-<div class="not"><h3>{esc(hd('Wat is DutchBootFitter niet'))}</h3><ul>{ul('Wat is DutchBootFitter niet')}</ul></div>
+<div class="is"><h3>{mark(esc(hd('Wat is DutchBootFitter ?')), 'DutchBootFitter', 'under')}</h3><ul>{ul('Wat is DutchBootFitter ?')}</ul></div>
+<div class="not"><h3>{mark(esc(hd('Wat is DutchBootFitter niet')), 'niet', 'cross')}</h3><ul>{ul('Wat is DutchBootFitter niet')}</ul></div>
 </div></section>''')
     # FAQ
     faq = get('DutchBootFitter meest gestelde')
