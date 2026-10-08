@@ -1,0 +1,453 @@
+{
+ "pages": [
+  {
+   "page": "afspraak.html",
+   "words": 223,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting.html",
+   "words": 354,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-mijn-skischoenen-aanpassen.html",
+   "words": 760,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-op-maat-gemaakte-skischoenen.html",
+   "words": 851,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-ski-mojo-home.html",
+   "words": 551,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-ski-mojo-home-afspraak-ski-mojo.html",
+   "words": 2302,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-ski-mojo-home-ondersteuning.html",
+   "words": 101,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-ski-mojo-home-skimojo-aanmeten.html",
+   "words": 48,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "bootfitting-ski-mojo-home-werking-ski-mojo.html",
+   "words": 1901,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-10-skischoen-geheimen-die-je-vrienden-je-nooit-verteld-hebben.html",
+   "words": 1574,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-3d-voetscanner-voor-skischoenen-heeft-dat-zin.html",
+   "words": 556,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-als-bootfitten-niet-meer-helpt-en-u-heeft-nog-steeds-pijn.html",
+   "words": 1212,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-boa-sluiting-als-vervanging-van-de-schnallen.html",
+   "words": 854,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-bootfitting-de-skihemel-begint-bij-je-voeten.html",
+   "words": 1347,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-bootfitting-iedereen-kan-het-of-niet.html",
+   "words": 660,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-branderig-gevoel-onder-de-bal-van-de-voet.html",
+   "words": 826,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-canting-het-best-bewaarde-geheim-van-je-skischoenen.html",
+   "words": 998,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-date-your-skis-but-marry-your-boots.html",
+   "words": 605,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-de-beste-bootfitter-geheimtipps-voor-de-zomer-in-het-salzburger-land.html",
+   "words": 1581,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-de-moord-op-een-skischoen.html",
+   "words": 694,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-de-skischoen-tsunami.html",
+   "words": 565,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-de-steunzool-als-oplossing-voor-alle-skischoen-problemen.html",
+   "words": 631,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-een-bult-op-je-wreef-die-pijn-doet-in-je-skischoen.html",
+   "words": 922,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-het-geheim-van-de-bootfitter-bestaat-niet.html",
+   "words": 627,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-hoe-hip-zijn-je-skischoenen.html",
+   "words": 954,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-hoe-toerskien-soms-in-een-nachtmerrie-verandert.html",
+   "words": 694,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-huh-een-echo-apparaat-in-een-skiwinkel.html",
+   "words": 400,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-is-dutchbootfitter-een-skiwinkel.html",
+   "words": 615,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-kan-je-met-een-vastgezette-enkel-skien.html",
+   "words": 1014,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-kan-je-skien-met-een-beenlengteverschil.html",
+   "words": 1032,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-kunnen-mijn-steunzolen-ook-in-mijn-skischoenen.html",
+   "words": 925,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-met-knieartrose-is-skien-vaak-geen-pretje.html",
+   "words": 1034,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-mortons-neuroom-pijn-in-skischoen.html",
+   "words": 632,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-op-maat-gemaakte-skischoenen-skischoenen-op-maat-of-een-maatskischoen.html",
+   "words": 660,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-plakkers-op-je-binnenschoenen-gepruts-of-een-doordachte-bootfit-techniek.html",
+   "words": 634,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-scheenbeenpijn-tijdens-het-skien-oorzaak-en-oplossing.html",
+   "words": 897,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-skien-met-achondroplasie.html",
+   "words": 655,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-skischoenen-voor-brede-voeten-en-waarom-breder-maken-niet-altijd-breed-genoeg-is.html",
+   "words": 661,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-slippers-zijn-slecht-voor-je-voeten-maar-is-dat-wel-zo.html",
+   "words": 613,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-stad-salzburg-geheimtipps-van-een-bootfitter.html",
+   "words": 1105,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-verwarming-in-een-skischoen-onzin.html",
+   "words": 905,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-wat-heeft-een-cabrio-met-een-skischoen-te-maken.html",
+   "words": 966,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog.html",
+   "words": 563,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-2.html",
+   "words": 596,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-3.html",
+   "words": 611,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "blog-4.html",
+   "words": 199,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "de-skischoen.html",
+   "words": 383,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "de-skischoen-diverse-merken-skischoenen.html",
+   "words": 738,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "de-skischoen-diverse-typen-skischoenen.html",
+   "words": 277,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "de-skischoen-historie_van_de_skischoen.html",
+   "words": 802,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "de-skischoen-kinderskischoenen.html",
+   "words": 253,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "index.html",
+   "words": 744,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "links.html",
+   "words": 138,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "over-ons.html",
+   "words": 602,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten.html",
+   "words": 605,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-branderig-gevoel-bal-van-de-voet.html",
+   "words": 237,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-brede-voeten-in-een-smalle-skischoen.html",
+   "words": 490,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-fabrieks-zooltjes.html",
+   "words": 358,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-grote-of-dikke-kuiten.html",
+   "words": 431,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-hallux-valgus-in-een-skischoen.html",
+   "words": 569,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-hoge-wreef-skischoenen.html",
+   "words": 680,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-pijnlijke-hiel.html",
+   "words": 70,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-scheenbeenpijn-tijdens-skien.html",
+   "words": 431,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-uitgelubberde-of-te-grote-binnenschoenen.html",
+   "words": 430,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-uitstekend-enkelbot.html",
+   "words": 410,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "pijn-in-voeten-zesde-teen.html",
+   "words": 380,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "reacties-van-klanten-referenties.html",
+   "words": 383,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "rentmaxx-z-value.html",
+   "words": 117,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "strolz-op-maat-gemaakte-skischoenen-aanmeten.html",
+   "words": 55,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "tarieven-bootfitting.html",
+   "words": 278,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "werkwijze-dutchbootfitter.html",
+   "words": 544,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "(blog sidebar)",
+   "words": 379,
+   "status": "IDENTICAL",
+   "diffs": []
+  }
+ ],
+ "whitespace_only": [
+  {
+   "page": "pijn-in-voeten.html",
+   "original": "voet.Oplossing:",
+   "new": "voet. Oplossing:"
+  },
+  {
+   "page": "pijn-in-voeten.html",
+   "original": "teen.Oplossing:",
+   "new": "teen. Oplossing:"
+  },
+  {
+   "page": "pijn-in-voeten.html",
+   "original": "teen.Oplossing:",
+   "new": "teen. Oplossing:"
+  }
+ ]
+}
