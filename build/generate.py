@@ -109,11 +109,11 @@ def header_html(current_file):
     return f'''<a class="skip" href="#main">{esc(SKIP)}</a>
 <div class="topbar"><nav class="wrap" aria-label="Topbar">{top}</nav></div>
 <header class="site-header">
-  <div class="wrap">
+  <div class="wrap"><div class="bar">
     <a class="brand" href="index.html"><img src="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje-1.png" alt="Logo DutchBootFitter" width="132" height="54"><span class="brand-mark" aria-hidden="true">Dutch<b>Boot</b>Fitter</span></a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary"><span class="bars" aria-hidden="true"></span><span class="lbl-open">{esc(MENU_OPEN)}</span><span class="lbl-close">{esc(MENU_CLOSE)}</span></button>
     <nav class="primary" id="primary" aria-label="Hoofdmenu"><ul class="nav">{''.join(items)}</ul></nav>
-  </div>
+  </div></div>
 </header>'''
 
 
@@ -152,11 +152,16 @@ def footer_html():
 </footer>'''
 
 
+def cta_heading_html():
+    q, _, rest = CTA_HEADING.partition('? ')
+    return f'<span class="q">{esc(q)}?</span> {esc(rest).replace("pijnloos®", "<em>pijnloos®</em>")}'
+
+
 def cta_html():
-    return f'''<section class="cta-band"><canvas class="contours" data-seed="5" aria-hidden="true"></canvas><div class="wrap"><h2>{esc(CTA_HEADING)}</h2><a class="btn" href="afspraak.html">{esc(CTA_BUTTON)}</a></div></section>'''
+    return f'''<section class="cta-band"><canvas class="contours" data-seed="5" aria-hidden="true"></canvas><div class="wrap"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div></section>'''
 
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">'
 
 
 def post_cta_html(current_file):
@@ -205,7 +210,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 {head}
 </head>
-<body>
+<body class="{'home' if current_file == 'index.html' else 'inner'}">
 {inner}
 </body>
 </html>
@@ -377,14 +382,15 @@ def render_home(meta, body):
     actions = ''.join(f'<a class="btn{" ghost" if i else ""}" href="{local_href(u)}">{esc(t)}</a>' for i, (t, u) in enumerate(btns))
     actions = actions.replace('</a><a', '</a> <a')
     h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos skiën®</em>')
+    lede_html = esc(lede).replace('? ', '? <br>', 1)
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
     out = [f'''<section class="hero photo">{bg}<div class="wrap">
-<div class="hero-copy"><h1>{h1_html}</h1><p class="lede">{esc(lede)}</p><div class="actions">{actions}</div></div>
-</div></section>''']
+<div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div></div>
+</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
     intro = md_to_html(get('Pijnloos skiën®'))
     deft = get('Definitie bootfitting:')
-    out.append(f'''<section class="section"><div class="wrap split">
+    out.append(f'''<section class="section" id="intro"><div class="wrap split">
 <div class="intro-copy"><h2>{esc(hd('Pijnloos skiën®'))}</h2>{intro}</div>
 <div class="definition"><canvas class="contours" data-seed="9" aria-hidden="true"></canvas><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div>
 </div></section>''')

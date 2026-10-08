@@ -115,3 +115,26 @@
     z.addEventListener('mouseleave', function () { if (!pinned) show(null); });
   });
 })();
+
+(function () {
+  // Home: the floating bar tightens once the page scrolls.
+  var body = document.body;
+  if (body.classList.contains('home')) {
+    var tb = document.querySelector('.topbar');
+    var setTb = function () { if (tb) document.documentElement.style.setProperty('--tb', tb.offsetHeight + 'px'); };
+    setTb();
+    window.addEventListener('resize', setTb);
+    var onScroll = function () { body.classList.toggle('scrolled', window.scrollY > 40); };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+  // Gentle reveal of sections and cards as they enter the viewport.
+  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var els = document.querySelectorAll('.section .wrap > *, .choice, .card, .price, .quote, .isnot > div');
+  if (!els.length) return;
+  document.documentElement.classList.add('js-reveal');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+})();

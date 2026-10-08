@@ -7,6 +7,16 @@ De nieuwe statische website voor bootfitter.nl (DutchBootFitter).
 - `build/` — de generator en de controle.
 - `seo/` — SEO-documenten.
 
+## Ontwerp (v2)
+
+Het ontwerp combineert drie referenties, met behoud van alle tekst, SEO-titels/-beschrijvingen en afbeeldingen:
+
+- **Fischer Sports** — paginabrede bergfoto in de hero, zwevende afgeronde navigatiebalk, grote smalle hoofdletterkoppen.
+- **Canary Care** — warme, rustige vlakken, ronde pill-knoppen, fotokaarten met de tekst op de foto.
+- **Solstice Design** — redactionele serif-cursief als accent, veel witruimte, kleine genummerde sectielabels.
+
+Het oranje is exact het oranje uit het logo; hoogtelijnen blijven het enige ornament.
+
 ## Opnieuw bouwen
 
 ```sh
