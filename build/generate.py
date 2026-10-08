@@ -288,7 +288,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=4">'''
+<link rel="stylesheet" href="style.css?v=5">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -465,7 +465,7 @@ HERO_BG = None
 for _p in ['wp-content/uploads/hero-sneeuw.jpg']:
     if os.path.isfile(os.path.join(OUT, _p)):
         HERO_BG = _p
-# Short clip of a Strolz boot being foamed to the foot in the shop; plays muted beside the headline (behind it on phones).
+# Short clip of a Strolz boot being foamed to the foot in the shop; plays muted as the hero background.
 HERO_VIDEO = W + 'strolz-aanmeten.mp4'
 
 
@@ -485,7 +485,7 @@ def render_home(meta, body):
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
     video = (f'<figure class="hero-video"><video src="{HERO_VIDEO}" poster="{HERO_VIDEO[:-4]}-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"></video></figure>'
              if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
-    out = [f'''<section class="hero photo{' has-video' if video else ''}">{bg}<div class="wrap">
+    out = [f'''<section class="hero photo{' has-video' if video else ''}">{'' if video else bg}<div class="wrap">
 <div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div></div>
 {video}</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
