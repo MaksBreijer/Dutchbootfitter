@@ -17,6 +17,10 @@ Het ontwerp combineert drie referenties, met behoud van alle tekst, SEO-titels/-
 
 Het oranje is exact het oranje uit het logo; hoogtelijnen blijven het enige ornament.
 
+- **Lettertype:** Open Sans, net als op de huidige bootfitter.nl (via de breedte-as ook in smalle koppen).
+- **Foto's van de winkel:** de interieurfoto's (DBF-01…13), de etalage en de werkplaats komen uit de mediabibliotheek van bootfitter.nl en staan in `site/wp-content/uploads/winkel/`. Ze staan op de home, in de kop van elke pagina, bij de afsluitende afspraak-oproep en als galerij op Over Ons.
+- **Links:** de fixes uit `seo/Kapotte-links-bootfitter.pdf` zijn doorgevoerd in `LINK_FIXES` / `LINK_REMOVE` in `build/generate.py` (alleen linkadressen, de tekst blijft gelijk).
+
 ## Opnieuw bouwen
 
 ```sh

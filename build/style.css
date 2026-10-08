@@ -1,8 +1,8 @@
-/* DutchBootFitter — redesign, v2.
+/* DutchBootFitter — redesign, v2 (typeface: Open Sans, as on the live site; photos of the shop throughout).
    Three references, one voice:
    - Fischer Sports: full-bleed mountain photography, a floating pill navigation, big condensed uppercase display type.
    - Canary Care: warm, calm surfaces, rounded pill buttons, photo cards with the text set on the image.
-   - Solstice Design: editorial serif italics for emphasis, generous whitespace, quiet small-caps labels.
+   - Solstice Design: italics for emphasis, generous whitespace, quiet numbered labels.
    The signal orange is the exact orange of the DutchBootFitter logo; contour lines stay as the only ornament. */
 :root {
   --snow: #f6f4f0;        /* warm paper white, the page ground */
@@ -20,10 +20,11 @@
   --night-muted: #a6b0b9;
   --shadow: 0 1px 2px rgba(20, 32, 44, .05), 0 12px 32px rgba(20, 32, 44, .08);
 
-  --f-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-  --f-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --f-body: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
-  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  /* One family, as on the live bootfitter.nl: Open Sans. Its width axis gives the condensed display cuts. */
+  --f-display: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-serif: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-body: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono: "Open Sans", "Helvetica Neue", Arial, sans-serif;
 
   --step--1: .875rem;
   --step-0: 1.0625rem;
@@ -70,7 +71,7 @@ a { color: var(--orange-ink); text-decoration-thickness: 1px; text-underline-off
 a:hover { color: var(--orange); }
 :focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; border-radius: 4px; }
 h1, h2, h3, h4 { font-family: var(--f-display); font-stretch: 100%; line-height: 1.08; letter-spacing: -.015em; text-wrap: balance; margin: 0; }
-h1 em, h2 em, h3 em { font-family: var(--f-serif); font-style: italic; font-weight: 400; letter-spacing: 0; text-transform: none; }
+h1 em, h2 em, h3 em { font-style: italic; font-weight: 400; font-stretch: 100%; letter-spacing: -.01em; text-transform: none; }
 p { margin: 0; }
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
 
@@ -575,3 +576,64 @@ h1, h2 { overflow-wrap: break-word; hyphens: auto; }
   .topbar .wrap { gap: .25rem 1rem; font-size: .8rem; padding-block: .4rem; }
   .page-hero h1.long { font-size: 1.8rem; }
 }
+
+/* =====================================================================
+   v2.1 — Open Sans everywhere, and the shop back in the pictures.
+   ===================================================================== */
+body { line-height: 1.7; }
+.home main > .section > .wrap::before { font-size: .75rem; font-weight: 700; letter-spacing: .16em; }
+.definition h3, .foot-grid h4 { font-weight: 700; font-size: .75rem; letter-spacing: .16em; }
+.definition p { font-style: italic; font-weight: 400; font-size: clamp(1.35rem, 1.1rem + .8vw, 1.8rem); line-height: 1.35; letter-spacing: -.01em; }
+.definition strong { font-weight: 700; }
+.section-head .sub { font-style: italic; font-weight: 400; font-size: var(--step-2); letter-spacing: -.01em; }
+.cta-band h2 .q { font-style: italic; font-weight: 400; letter-spacing: -.01em; font-size: .5em; }
+.cta-band h2 em { font-size: 1em; font-weight: 400; }
+.foot-contact address { font-family: var(--f-body); font-size: 1.15rem; font-weight: 600; line-height: 1.5; }
+.foot-contact .contact-lines { font-family: var(--f-body); }
+.price .amount { font-weight: 700; font-size: 1.6rem; font-stretch: 85%; }
+.quotes .quote p:first-of-type { font-size: 1.1rem; font-style: italic; }
+.prose blockquote { font-size: 1.15rem; font-style: italic; }
+.hero.photo h1 em { font-size: .7em; font-weight: 300; padding-top: .12em; }
+
+/* Inner page heroes: title left, a photo of the shop right */
+.page-hero .wrap { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: end; }
+.page-hero .wrap::after { grid-column: 1 / -1; margin-top: 0; }
+.ph-copy { display: flex; flex-direction: column; min-width: 0; padding-bottom: .5rem; }
+.ph-copy .crumbs { order: -1; }
+.ph-photo { margin: 0; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; background: var(--ice); box-shadow: var(--shadow); }
+.ph-photo img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 760px) {
+  .page-hero .wrap { grid-template-columns: 1fr; }
+  .ph-photo { aspect-ratio: 16 / 9; order: 2; }
+}
+
+/* Homepage intro: the waiting room with the definition card laid over it */
+.intro-visual { position: relative; display: flex; flex-direction: column; }
+.intro-photo { margin: 0; aspect-ratio: 4 / 3.4; border-radius: var(--radius); overflow: hidden; background: var(--ice); }
+.intro-photo img { width: 100%; height: 100%; object-fit: cover; }
+.intro-visual .definition { margin: -6rem 1.2rem 0 -2.5rem; box-shadow: var(--shadow); }
+@media (max-width: 860px) { .intro-visual .definition { margin: -3rem .8rem 0; } }
+
+/* Shop strip: a horizontally scrolling row of photos */
+.shop-strip { padding-block: clamp(2.5rem, 6vw, 4.5rem) 0; overflow: hidden; }
+.strip-track { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--gutter) 1rem; scrollbar-width: none; }
+.strip-track::-webkit-scrollbar { display: none; }
+.strip-track figure { margin: 0; flex: 0 0 auto; height: clamp(16rem, 34vw, 26rem); aspect-ratio: 3 / 2; border-radius: var(--radius); overflow: hidden; background: var(--ice); scroll-snap-align: start; }
+.strip-track figure.s-etalage { aspect-ratio: 3 / 2; }
+.strip-track figure.s-werkbank, .strip-track figure.s-opmaat { aspect-ratio: 4 / 5; }
+.strip-track img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Closing CTA with the storefront */
+.cta-band .wrap { flex-direction: row; align-items: center; justify-content: space-between; gap: clamp(2rem, 5vw, 4rem); }
+.cta-copy { display: flex; flex-direction: column; align-items: flex-start; gap: 2.2rem; flex: 1 1 26rem; min-width: 0; }
+.cta-photos { margin: 0; flex: 0 1 30rem; position: relative; aspect-ratio: 1 / 1; min-width: 0; }
+.cta-photos .media { position: absolute; border-radius: var(--radius); overflow: hidden; background: var(--ice); box-shadow: var(--shadow); }
+.cta-photos .a { inset: 0 18% 22% 0; }
+.cta-photos .b { inset: 48% 0 0 34%; border: 6px solid var(--snow); }
+.cta-photos img { width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) { .cta-band .wrap { flex-direction: column; align-items: stretch; } .cta-photos { flex-basis: auto; width: 100%; max-width: 30rem; } }
+
+/* Over Ons: the shop photos as a gallery */
+.prose .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-block: .6rem; }
+.prose .gallery img { width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-s); margin: 0; }
+.prose .gallery img:first-child { grid-column: 1 / -1; }

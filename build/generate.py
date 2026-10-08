@@ -46,6 +46,7 @@ KNOWN = None
 
 def local_href(url):
     """Map an original bootfitter.nl page URL to its file in the new site."""
+    url = fix_url(url)
     if not url.startswith(ORIGIN) and not url.startswith('http://www.bootfitter.nl') and not url.startswith('https://bootfitter.nl'):
         return url
     u = re.sub(r'^https?://(www\.)?bootfitter\.nl', ORIGIN, url)
@@ -61,9 +62,56 @@ def local_href(url):
     return url  # page we do not have: keep pointing at the original
 
 
+# Link fixes from seo/Kapotte-links-bootfitter.pdf (check of 5 October 2026). Only link targets change, never the text.
+LINK_FIXES = {
+    # 1. spam / gambling domains
+    'josefsdas.restaurant': 'https://www.falstaff.com/en/restaurants/josefs-das-restaurant-radstadt',
+    'villa-trapp.com': 'https://www.tripadvisor.com/Attraction_Review-g190441-d14136309-Reviews-Villa_Trapp-Salzburg_Austrian_Alps.html',
+    'ski-mojo.info/wp-content/uploads/2023/06/Ski-Mojo-user-guide-eng.pdf': 'https://www.ski-mojo.com/wp-content/uploads/Documents/User-Guide-Ski-Mojo.pdf',
+    # 2. internal links to pages that no longer exist
+    'bootfitter.nl/bootfitting/afspraak-met-de-podoloog': ORIGIN + '/afspraak/',
+    'bootfitter.nl/?page_id=5718': ORIGIN + '/afspraak/',
+    'bootfitter.nl/afspraak_maken': ORIGIN + '/afspraak/',
+    'bootfitter.nl/afspraak_met_de_podoloog': ORIGIN + '/afspraak/',
+    'bootfitter.nl/op_maat_gemaakte_skischoenen': ORIGIN + '/bootfitting/op-maat-gemaakte-skischoenen/',
+    'bootfitter.nl/informatie': ORIGIN + '/bootfitting/',
+    # 3. links that only worked through a WordPress redirect
+    'bootfitter.nl/contact': ORIGIN + '/afspraak/',
+    'bootfitter.nl/bootfitting/skimojo-aanmeten': ORIGIN + '/bootfitting/ski-mojo-home/skimojo-aanmeten/',
+    'bootfitter.nl/bootfitting/strolz-op-maat-gemaakte-skischoenen-aanmeten': ORIGIN + '/strolz-op-maat-gemaakte-skischoenen-aanmeten/',
+    'bootfitter.nl/pijn-in-voeten/brede-voeten': ORIGIN + '/pijn-in-voeten/brede-voeten-in-een-smalle-skischoen/',
+    'bootfitter.nl/bootfitting_blog/scheenbeenpijn-tij': ORIGIN + '/bootfitting_blog/scheenbeenpijn-tijdens-het-skien-oorzaak-en-oplossing/',
+    'bootfitter.nl/category/bootfitting_blog/page/1': ORIGIN + '/category/bootfitting_blog/',
+    # 4. dead external links
+    'almkanal.at/surfen_almkanal_welle.html': 'https://www.almkanal.at/',
+    'salzkammergut.at/sehenswertes/bahnen-bergbahnen/oesterreich-poi/detail/400929/schafbergbahn.html': 'https://www.5schaetze.at/de/schafbergbahn.html',
+    'zipfit.com/en-eu': 'https://www.zipfit.com/',
+    'fuerst.cc/en/history': 'https://www.original-mozartkugel.com/',
+    'cafe-freiraum.at': 'https://www.altenmarkt-zauchensee.at/en/infrastructure/altenmarkt-zauchensee-cafe-freiraum.html',
+}
+# Keep the words, drop the link: Mayer's Restaurant closed for good; auszeit-radstadt.at and the deskline page the
+# report suggested both no longer resolve; tula-bistro.at, its en. subdomain and its salzburg.info listing are all gone
+# (checked October 2026).
+LINK_REMOVE = {'schloss-prielau.at/mayers-restaurant', 'auszeit-radstadt.at', 'tula-bistro.at'}
+
+
+def link_key(url):
+    k = re.sub(r'^(https?:)?//', '', url.strip()).split('#')[0]
+    k = re.sub(r'^www\.', '', k).rstrip('/')
+    return k.lower() if '?' not in k else k.lower()
+
+
+def fix_url(url):
+    return LINK_FIXES.get(link_key(url), url)
+
+
 def rewrite_links(h):
+    def drop(m):
+        return m.group(2) if link_key(html.unescape(m.group(1))) in LINK_REMOVE else m.group(0)
+    h = re.sub(r'<a\b[^>]*?\bhref="([^"]*)"[^>]*>(.*?)</a>', drop, h, flags=re.S)
+
     def rep(m):
-        return m.group(1) + html.escape(local_href(html.unescape(m.group(2))), quote=True) + m.group(3)
+        return m.group(1) + html.escape(local_href(fix_url(html.unescape(m.group(2)))), quote=True) + m.group(3)
     return re.sub(r'(<a\b[^>]*?\bhref=")([^"]*)(")', rep, h)
 
 
@@ -80,10 +128,15 @@ def parse_copy(slug):
 
 def md_to_html(text):
     h = markdown.markdown(text, extensions=['tables', 'sane_lists'], output_format='html')
+    h = re.sub(r'(<a [^>]*>)?<img [^>]*tinymce[^>]*loader\.gif[^>]*>(</a>)?', '', h)  # leftover of the WordPress editor
     h = re.sub(r'<table>', '<div class="table-wrap"><table>', h)
     h = re.sub(r'</table>', '</table></div>', h)
     h = re.sub(r'<p>VIDEO: (\S+)</p>', lambda m: f'<div class="embed video"><iframe src="{m.group(1)}" title="" loading="lazy" allowfullscreen></iframe></div>', h)
     h = re.sub(r'<p>EMBED: (\S+)</p>', lambda m: f'<div class="embed"><iframe src="{m.group(1)}" title="" loading="lazy"></iframe></div>', h)
+    h = re.sub(r'src="https?://(?:www\.)?bootfitter\.nl/wp-content/uploads/elementor/thumbs/(DBF-\d+)-[^"]+"',
+               lambda m: f'src="{THUMB_TO_SHOP[m.group(1)]}"' if m.group(1) in THUMB_TO_SHOP else m.group(0), h)
+    # three or more photos in a row become a gallery grid
+    h = re.sub(r'(?:<p><img [^>]*></p>\s*){3,}', lambda m: '<div class="gallery">' + re.sub(r'</?p>', '', m.group(0)) + '</div>', h)
     return rewrite_links(h)
 
 
@@ -152,16 +205,47 @@ def footer_html():
 </footer>'''
 
 
+# Photos of the shop on the IJburglaan, from the live site's media library (alt texts as used there).
+W = 'wp-content/uploads/winkel/'
+SHOP = {
+    'wachtruimte': (W + 'DBF-03.jpg', 'DutchBootFitter wachtruimte'),
+    'wall': (W + 'DBF-01.jpg', 'DutchBootFitter wall'),
+    'steunzolen': (W + 'DBF-02.jpg', 'DutchBootFitter steunzolen'),
+    'klachten': (W + 'DBF-07.jpg', 'DutchBootFitter meest voorkomende klachten'),
+    'assessment': (W + 'DBF-04.jpg', 'DutchBootFitter assessment'),
+    'interieur': (W + 'DBF-12.jpg', 'DutchBootFitter interieur'),
+    'keuken': (W + 'DBF-09.jpg', 'DutchBootFitter keuken'),
+    'werkbank': (W + 'DBF-08.jpg', 'DutchBootFitter werkbank'),
+    'bureau': (W + 'DBF-10.jpg', 'DutchBootFitter bureau'),
+    'opmaat': (W + 'DBF-13.jpg', 'DutchBootFitter skischoenen op maat'),
+    'skateboard': (W + 'DBF-11.jpg', 'DutchBootFitter'),
+    'etalage': (W + 'etalage.jpg', 'DutchBootFitter etalage skiwinkel'),
+    'team': (W + 'bart-marco-paul.jpg', 'Bart en Marco-Paul'),
+    'slijpen': (W + 'slijpen.jpg', 'DutchBootFitter bootfitting'),
+    'praktijk': (W + 'vloer-praktijk.jpg', 'DutchBootFitter bootfitting'),
+    'oprekken': (W + 'oprekken.jpg', 'DutchBootFitter bootfitting'),
+}
+# The live site shows small Elementor thumbnails of these photos; serve the sharp versions instead.
+THUMB_TO_SHOP = {'DBF-%s' % k: W + 'DBF-%s.jpg' % k for k in ('01', '03', '04', '07', '08', '09', '10', '11', '12', '13')}
+HERO_OVERRIDE = {'over-ons': 'etalage', 'afspraak': 'etalage', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
+HERO_ROTATION = ['wachtruimte', 'werkbank', 'keuken', 'assessment', 'bureau', 'wall', 'steunzolen', 'opmaat', 'slijpen', 'klachten', 'praktijk']
+
+
+def shop_img(key, cls='', loading='lazy'):
+    src, alt = SHOP[key]
+    return img_tag(alt, src, cls, loading)
+
+
 def cta_heading_html():
     q, _, rest = CTA_HEADING.partition('? ')
     return f'<span class="q">{esc(q)}?</span> {esc(rest).replace("pijnloos®", "<em>pijnloos®</em>")}'
 
 
 def cta_html():
-    return f'''<section class="cta-band"><canvas class="contours" data-seed="5" aria-hidden="true"></canvas><div class="wrap"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div></section>'''
+    return f'''<section class="cta-band"><canvas class="contours" data-seed="5" aria-hidden="true"></canvas><div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('etalage')}</div><div class="media b">{shop_img('keuken')}</div></figure></div></section>'''
 
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap">'
 
 
 def post_cta_html(current_file):
@@ -277,7 +361,8 @@ def blog_aside():
 
 
 def hero(h1_html, crumbs_html='', extra=''):
-    return f'''<section class="page-hero"><canvas class="contours" data-seed="{random_seed()}" aria-hidden="true"></canvas><div class="wrap"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div></section>'''
+    key = HERO_OVERRIDE.get(CURRENT[0]) or HERO_ROTATION[sum(map(ord, CURRENT[0] or '')) % len(HERO_ROTATION)]
+    return f'''<section class="page-hero"><canvas class="contours" data-seed="{random_seed()}" aria-hidden="true"></canvas><div class="wrap"><div class="ph-copy"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div><figure class="ph-photo media">{shop_img(key, loading='eager')}</figure></div></section>'''
 
 
 _seed = [1]
@@ -392,7 +477,8 @@ def render_home(meta, body):
     deft = get('Definitie bootfitting:')
     out.append(f'''<section class="section" id="intro"><div class="wrap split">
 <div class="intro-copy"><h2>{esc(hd('Pijnloos skiën®'))}</h2>{intro}</div>
-<div class="definition"><canvas class="contours" data-seed="9" aria-hidden="true"></canvas><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div>
+<div class="intro-visual"><figure class="media intro-photo">{shop_img('wachtruimte')}</figure>
+<div class="definition"><canvas class="contours" data-seed="9" aria-hidden="true"></canvas><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div></div>
 </div></section>''')
     # complaints + zones
     comp = get('Herkent u')
@@ -414,6 +500,8 @@ def render_home(meta, body):
 <figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
+    strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('etalage', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'slijpen'))
+    out.append(f'<div class="shop-strip" role="group" aria-label="DutchBootFitter IJburglaan"><div class="strip-track">{strip}</div></div>')
     # choices
     cards = []
     choice_heads = [(h, t) for h, t in secs if h and h.startswith('### [')]
