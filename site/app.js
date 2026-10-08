@@ -138,3 +138,6 @@
   }, { rootMargin: '0px 0px -8% 0px' });
   els.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
 })();
+
+// Respect reduced motion: keep the hero clip on its poster frame.
+if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelectorAll('.hero-video video').forEach(v => { v.removeAttribute('autoplay'); v.pause(); });

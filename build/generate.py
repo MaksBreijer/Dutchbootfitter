@@ -224,10 +224,11 @@ SHOP = {
     'slijpen': (W + 'slijpen.jpg', 'DutchBootFitter bootfitting'),
     'praktijk': (W + 'vloer-praktijk.jpg', 'DutchBootFitter bootfitting'),
     'oprekken': (W + 'oprekken.jpg', 'DutchBootFitter bootfitting'),
+    'handwerk': (W + 'handwerk-steunzool.jpg', 'DutchBootFitter bootfitter met steunzool'),
 }
 # The live site shows small Elementor thumbnails of these photos; serve the sharp versions instead.
 THUMB_TO_SHOP = {'DBF-%s' % k: W + 'DBF-%s.jpg' % k for k in ('01', '03', '04', '07', '08', '09', '10', '11', '12', '13')}
-HERO_OVERRIDE = {'over-ons': 'etalage', 'afspraak': 'etalage', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
+HERO_OVERRIDE = {'bootfitting': 'handwerk', 'bootfitting-mijn-skischoenen-aanpassen': 'handwerk', 'over-ons': 'etalage', 'afspraak': 'etalage', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
 HERO_ROTATION = ['wachtruimte', 'werkbank', 'keuken', 'assessment', 'bureau', 'wall', 'steunzolen', 'opmaat', 'slijpen', 'klachten', 'praktijk']
 
 
@@ -241,11 +242,22 @@ def cta_heading_html():
     return f'<span class="q">{esc(q)}?</span> {esc(rest).replace("pijnloos®", "<em>pijnloos®</em>")}'
 
 
+def windmill_svg():
+    # Four latticed windmill sails, drawn like the latticed skis in the DutchBootFitter logo.
+    rungs = ''.join(f'M6 {y}H50' for y in range(-206, -50, 16))
+    sail = (f'<g id="sail"><path d="M-4 -230H4V-14H-4Z" fill="currentColor" stroke="none"/>'
+            f'<path d="M6 -222H50V-46H6Z{rungs}M20.7 -222V-46M35.3 -222V-46"/></g>')
+    sails = ''.join(f'<use href="#sail" transform="rotate({a})"/>' for a in (90, 180, 270))
+    return (f'<svg class="windmill" viewBox="-240 -240 480 480" aria-hidden="true" focusable="false">'
+            f'<g class="sails" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">{sail}{sails}'
+            f'<circle r="18" fill="currentColor" stroke="none"/></g></svg>')
+
+
 def cta_html():
-    return f'''<section class="cta-band"><canvas class="contours" data-seed="5" aria-hidden="true"></canvas><div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('etalage')}</div><div class="media b">{shop_img('keuken')}</div></figure></div></section>'''
+    return f'''<section class="cta-band">{windmill_svg()}<div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('etalage')}</div><div class="media b">{shop_img('keuken')}</div></figure></div></section>'''
 
 
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wdth,wght@0,75..100,300..800;1,75..100,300..800&display=swap">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">'
 
 
 def post_cta_html(current_file):
@@ -276,7 +288,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css">'''
+<link rel="stylesheet" href="style.css?v=4">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -284,7 +296,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 {cta_html() if cta else ''}
 {post_cta_html(current_file)}
 {footer_html()}
-<script src="app.js"></script>'''
+<script src="app.js?v=4"></script>'''
     if not full_doc:
         return head + '\n' + inner + '\n'
     return f'''<!doctype html>
@@ -453,6 +465,8 @@ HERO_BG = None
 for _p in ['wp-content/uploads/hero-sneeuw.jpg']:
     if os.path.isfile(os.path.join(OUT, _p)):
         HERO_BG = _p
+# Short clip of a Strolz boot being foamed to the foot in the shop; plays muted beside the headline (behind it on phones).
+HERO_VIDEO = W + 'strolz-aanmeten.mp4'
 
 
 def render_home(meta, body):
@@ -469,9 +483,11 @@ def render_home(meta, body):
     h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos skiën®</em>')
     lede_html = esc(lede).replace('? ', '? <br>', 1)
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
-    out = [f'''<section class="hero photo">{bg}<div class="wrap">
+    video = (f'<figure class="hero-video"><video src="{HERO_VIDEO}" poster="{HERO_VIDEO[:-4]}-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"></video></figure>'
+             if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
+    out = [f'''<section class="hero photo{' has-video' if video else ''}">{bg}<div class="wrap">
 <div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div></div>
-</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
+{video}</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
     intro = md_to_html(get('Pijnloos skiën®'))
     deft = get('Definitie bootfitting:')

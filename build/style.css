@@ -637,3 +637,68 @@ body { line-height: 1.7; }
 .prose .gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; margin-block: .6rem; }
 .prose .gallery img { width: 100%; height: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius-s); margin: 0; }
 .prose .gallery img:first-child { grid-column: 1 / -1; }
+
+/* ---------- v3: plain Open Sans as on bootfitter.nl, a FeetLab-style header, windmill sails ---------- */
+/* Type: Open Sans at its normal width, bold, sentence case — like the headline on the live site. */
+.page-hero h1, .section-head h2, .intro-copy h2, .faq-title, .choice h3, .isnot h3, .cta-band h2 { text-transform: none; line-height: 1.1; letter-spacing: -.015em; }
+.section-head h2, .intro-copy h2, .faq-title, .cta-band h2 { font-size: var(--step-3); }
+.page-hero h1 { font-size: clamp(2.2rem, 1.3rem + 3.4vw, 4rem); }
+.choice h3 { font-size: var(--step-1); }
+.isnot h3 { font-size: var(--step-2); }
+.hero.photo h1 { font-size: var(--step-4); font-weight: 800; line-height: 1.08; letter-spacing: -.015em; text-transform: none; color: var(--orange); max-width: 16ch; text-shadow: 0 2px 28px rgba(0,0,0,.22); }
+.hero.photo h1 em { display: inline; font-size: inherit; font-style: normal; font-weight: 800; color: inherit; padding: 0; }
+.hero.photo .lede { font-weight: 700; color: #fff; }
+
+/* Header: a full-width bar, logo left, plain links and a slanted orange button on the right. */
+.site-header { position: sticky; top: env(safe-area-inset-top, 0px); margin: 0; padding: 0; pointer-events: auto; background: var(--paper); border-bottom: 1px solid var(--line); transition: background .25s ease, border-color .25s ease, box-shadow .25s ease, top .25s ease; }
+.site-header > .wrap { max-width: none; padding-inline: clamp(16px, 2.5vw, 40px); }
+.site-header .bar { min-height: 80px; padding: 0; gap: 2rem; background: none; border: 0; border-radius: 0; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.brand img { height: 50px; transition: filter .25s ease; }
+.nav { gap: clamp(.9rem, 1.7vw, 1.8rem); }
+.nav a, .nav button.sub-toggle { padding: .5rem 0; border-radius: 0; font-size: 1.06rem; font-weight: 500; color: var(--ink); background: none; transition: color .2s ease; }
+.nav a:hover, .nav button.sub-toggle:hover, .nav a[aria-current="page"] { background: none; color: var(--orange-ink); }
+.sub-toggle::after { width: .38em; height: .38em; border-width: 1.5px; margin-left: .4em; transition: transform .25s ease; }
+.has-sub:hover > .sub-toggle::after, .has-sub.open > .sub-toggle::after { transform: translateY(0) rotate(225deg); }
+.nav .submenu a { padding: .55rem .8rem; border-radius: 8px; font-size: .98rem; font-weight: 400; color: var(--ink); }
+.nav .submenu a:hover { background: var(--ice); color: var(--ink); }
+.nav .nav-cta > a { margin-left: .5rem; padding: .8rem 1.6rem; border-radius: 0; background: var(--orange-btn); color: var(--on-orange); clip-path: polygon(1.5% 8%, 100% 0, 98.5% 92%, 0 100%); }
+.nav .nav-cta > a:hover, .nav .nav-cta > a[aria-current="page"] { background: var(--orange-ink); color: var(--on-orange); }
+.page-hero { margin-top: 0; padding-top: 0; }
+
+/* Home: the bar lies transparent on the photo with white links and a white logo, and turns solid on scroll. */
+.home .site-header { position: fixed; left: 0; right: 0; top: calc(env(safe-area-inset-top, 0px) + var(--tb, 2.45rem)); background: transparent; border-color: transparent; }
+.home.scrolled .site-header { top: env(safe-area-inset-top, 0px); background: var(--paper); border-color: var(--line); box-shadow: var(--shadow); }
+.home:not(.scrolled) .site-header:not(.nav-open) .brand img { filter: brightness(0) invert(1); }
+.home:not(.scrolled) .site-header:not(.nav-open) .menu-toggle { background: rgba(255,255,255,.14); color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.6); }
+@media (min-width: 1061px) {
+  .home:not(.scrolled) .nav > li > a, .home:not(.scrolled) .nav > li > .sub-toggle { color: #fff; text-shadow: 0 1px 12px rgba(0,0,0,.25); }
+  .home:not(.scrolled) .nav > li > a:hover, .home:not(.scrolled) .nav > li > .sub-toggle:hover { color: #ffd2bd; }
+  .home:not(.scrolled) .nav .nav-cta > a { color: var(--on-orange); text-shadow: none; }
+}
+@media (max-width: 1060px) {
+  .site-header .bar { position: static; min-height: 68px; }
+  .brand img { height: 42px; }
+  .menu-toggle { border-radius: 0; clip-path: polygon(3% 8%, 100% 0, 97% 92%, 0 100%); }
+  .home .site-header.nav-open { background: var(--paper); }
+  .primary, .nav-open .primary { left: 0; right: 0; top: 100%; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding-inline: clamp(16px, 2.5vw, 40px); }
+  .nav a, .nav button.sub-toggle { padding: .85rem 0; color: var(--ink); }
+  .nav .nav-cta > a { margin: 1rem 0 0; padding: .9rem 1rem; text-align: center; clip-path: polygon(1% 6%, 100% 0, 99% 94%, 0 100%); }
+}
+
+/* Closing CTA: four latticed windmill sails turn slowly behind the copy. */
+.cta-band .windmill { position: absolute; left: clamp(-12rem, -9vw, -5rem); bottom: clamp(-17rem, -15vw, -9rem); width: clamp(24rem, 40vw, 36rem); height: auto; color: var(--line); opacity: .9; pointer-events: none; }
+.cta-band .windmill .sails { transform-box: view-box; transform-origin: 50% 50%; animation: windmill-turn 60s linear infinite; }
+@keyframes windmill-turn { to { transform: rotate(360deg); } }
+.nav .nav-cta { order: 1; }
+
+/* Home hero video: portrait clip beside the headline; full-bleed behind it on phones */
+.hero.has-video .wrap { grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: clamp(2rem, 5vw, 5rem); }
+.hero-video { margin: 0; width: clamp(13rem, 21vw, 19rem); aspect-ratio: 9 / 16; border-radius: 1.4rem; overflow: hidden; background: #0b1622; box-shadow: 0 30px 60px -20px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.18); animation: hero-in 1.6s .2s cubic-bezier(.2,.7,.2,1) both; }
+.hero-video video { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 860px) { .hero.has-video .wrap { grid-template-columns: minmax(0, 1fr) 11rem; } .hero-video { width: 11rem; } }
+@media (max-width: 700px) {
+  .hero.has-video .wrap { grid-template-columns: 1fr; position: static; }
+  .hero.has-video .hero-bg { display: none; }
+  .hero.has-video .hero-video { position: absolute; inset: 0; width: auto; aspect-ratio: auto; border-radius: 0; box-shadow: none; z-index: -2; animation: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hero-video { animation: none; } }
