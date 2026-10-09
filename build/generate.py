@@ -14,7 +14,7 @@ OUT = os.path.join(BASE, 'site')
 ORIGIN = 'https://www.bootfitter.nl'
 
 sys.path.insert(0, ROOT)
-from chrome import TOPBAR, NAV, FOOTER_PAIN, FOOTER_NAV, CONTACT, BADGES, RATING, COPYRIGHT, SOCIALS, SKIP, MENU_OPEN, MENU_CLOSE, CTA_HEADING, CTA_BUTTON
+from chrome import O, TOPBAR, NAV, FOOTER_PAIN, FOOTER_NAV, CONTACT, BADGES, RATING, COPYRIGHT, SOCIALS, SKIP, MENU_OPEN, MENU_CLOSE, CTA_HEADING, CTA_BUTTON
 
 CTA_RE = re.compile(r'^#{1,3} Pijn in voeten of scheenbenen\? Maak een afspraak om pijnloos® te skiën!\s*\n+\[Maak direct een afspraak\]\([^)]*\)\s*$', re.M)
 
@@ -137,6 +137,7 @@ def md_to_html(text):
                lambda m: f'src="{THUMB_TO_SHOP[m.group(1)]}"' if m.group(1) in THUMB_TO_SHOP else m.group(0), h)
     # three or more photos in a row become a gallery grid
     h = re.sub(r'(?:<p><img [^>]*></p>\s*){3,}', lambda m: '<div class="gallery">' + re.sub(r'</?p>', '', m.group(0)) + '</div>', h)
+    h = re.sub(r'<img (?![^>]*loading=)', '<img loading="lazy" ', h)
     return rewrite_links(h)
 
 
@@ -149,7 +150,6 @@ def header_html(current_file):
         href = local_href(url)
         cur = ' aria-current="page"' if href == current_file else ''
         return f'<a href="{href}"{cur}{cls}>{esc(label)}</a>'
-    top = ''.join(link(l, u) for l, u in TOPBAR)
     items = []
     for entry in NAV:
         label, url, children = entry
@@ -159,13 +159,19 @@ def header_html(current_file):
         else:
             cls = ' class="nav-cta"' if label == 'Afspraak' else ''
             items.append(f'<li{cls}>{link(label, url)}</li>')
+    # v7: Snuuzu's thin announcement line over the familiar bar (logo left, menu right, orange Afspraak).
+    afspraak = local_href(O + '/afspraak/')
+    cur = ' aria-current="page"' if afspraak == current_file else ''
     return f'''<a class="skip" href="#main">{esc(SKIP)}</a>
-<div class="topbar"><nav class="wrap" aria-label="Topbar">{top}</nav></div>
 <header class="site-header">
+  <div class="announce"><a href="{afspraak}">{esc(CTA_HEADING)}</a></div>
   <div class="wrap"><div class="bar">
-    <a class="brand" href="index.html"><img src="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje-1.png" alt="Logo DutchBootFitter" width="132" height="54"><span class="brand-mark" aria-hidden="true">Dutch<b>Boot</b>Fitter</span></a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary"><span class="bars" aria-hidden="true"></span><span class="lbl-open">{esc(MENU_OPEN)}</span><span class="lbl-close">{esc(MENU_CLOSE)}</span></button>
     <nav class="primary" id="primary" aria-label="Hoofdmenu"><ul class="nav">{''.join(items)}</ul></nav>
+    <a class="brand" href="index.html"><img src="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje-1.png" alt="Logo DutchBootFitter" width="132" height="54"><span class="brand-mark" aria-hidden="true">Dutch<b>Boot</b>Fitter</span></a>
+    <div class="bar-actions">
+      <a class="act-cta" href="{afspraak}"{cur}>Afspraak</a>
+    </div>
   </div></div>
 </header>'''
 
@@ -181,10 +187,11 @@ def footer_html():
     pain = ''.join(f'<li><a href="{local_href(u)}">{esc(l)}</a></li>' for l, u in FOOTER_PAIN[1])
     nav = ''.join(f'<li><a href="{local_href(u)}">{esc(l)}</a></li>' for l, u in FOOTER_NAV[1])
     badges = ''.join(f'<img src="{src}" alt="{html.escape(alt)}">' for alt, src in BADGES)
+    utility = ''.join(f'<a href="{local_href(u)}">{esc(l)}</a>' for l, u in TOPBAR)
     socials = ''.join(f'<a href="{u}" aria-label="{html.escape(l)}">{SOCIAL_ICONS[l]}</a>' for l, u in SOCIALS)
     c = CONTACT
     return f'''<footer class="site-footer">
-  <div class="wrap foot-grid">
+  <div class="wrap foot-grid">{windmill_svg()}
     <div class="foot-contact">
       <h4>{esc(c["heading"])}</h4>
       <address>{esc(c["street"])}<br>{esc(c["city"])}</address>
@@ -201,7 +208,7 @@ def footer_html():
       </div>
     </div>
   </div>
-  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><div class="socials">{socials}</div></div></div>
+  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><nav class="foot-utility" aria-label="Topbar">{utility}</nav><div class="socials">{socials}</div></div></div>
 </footer>'''
 
 
@@ -225,11 +232,15 @@ SHOP = {
     'praktijk': (W + 'vloer-praktijk.jpg', 'DutchBootFitter bootfitting'),
     'oprekken': (W + 'oprekken.jpg', 'DutchBootFitter bootfitting'),
     'handwerk': (W + 'handwerk-steunzool.jpg', 'DutchBootFitter bootfitter met steunzool'),
+    # full-size originals from the bootfitter.nl media library (alt texts as used there)
+    'slijpmachine': (W + 'slijpmachine.jpg', 'Slijpmachine'),
+    'handwerk-zw': (W + 'handwerk-zw.jpg', 'DutchBootFitter aan het werk'),
+    'pers-zw': (W + 'pers-zw.jpg', 'Bootfitting'),
 }
 # The live site shows small Elementor thumbnails of these photos; serve the sharp versions instead.
 THUMB_TO_SHOP = {'DBF-%s' % k: W + 'DBF-%s.jpg' % k for k in ('01', '03', '04', '07', '08', '09', '10', '11', '12', '13')}
-HERO_OVERRIDE = {'bootfitting': 'handwerk', 'bootfitting-mijn-skischoenen-aanpassen': 'handwerk', 'over-ons': 'etalage', 'afspraak': 'etalage', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
-HERO_ROTATION = ['wachtruimte', 'werkbank', 'keuken', 'assessment', 'bureau', 'wall', 'steunzolen', 'opmaat', 'slijpen', 'klachten', 'praktijk']
+HERO_OVERRIDE = {'bootfitting': 'slijpmachine', 'bootfitting-mijn-skischoenen-aanpassen': 'oprekken', 'over-ons': 'wall', 'afspraak': 'wachtruimte', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
+HERO_ROTATION = ['wachtruimte', 'werkbank', 'keuken', 'assessment', 'bureau', 'wall', 'steunzolen', 'opmaat', 'slijpen', 'klachten', 'praktijk', 'slijpmachine', 'oprekken']
 
 
 def shop_img(key, cls='', loading='lazy'):
@@ -254,7 +265,7 @@ def windmill_svg():
 
 
 def cta_html():
-    return f'''<section class="cta-band">{windmill_svg()}<div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('etalage')}</div><div class="media b">{shop_img('keuken')}</div></figure></div></section>'''
+    return f'''<section class="cta-band"><div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('interieur')}</div></figure></div></section>'''
 
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">'
@@ -273,8 +284,12 @@ def localize(doc):
         url = m.group(2)
         rel = re.sub(r'^https?://(www\.)?bootfitter\.nl/', '', html.unescape(url))
         rel = rel.replace('\u00ad', '')  # local copies are stored without soft hyphens in their names
-        if (rel.startswith('wp-content/') or rel.startswith('wp-includes/')) and os.path.isfile(os.path.join(OUT, rel)):
-            return m.group(1) + html.escape(rel, quote=True) + m.group(3)
+        if not (rel.startswith('wp-content/') or rel.startswith('wp-includes/')):
+            return m.group(0)
+        full = re.sub(r'-\d+x\d+(\.\w+)$', r'\1', rel)  # the original upload behind a WordPress thumbnail
+        for cand in (full, rel):
+            if os.path.isfile(os.path.join(OUT, cand)):
+                return m.group(1) + html.escape(cand, quote=True) + m.group(3)
         return m.group(0)
     return re.sub(r'((?:src|href)=")(https?://(?:www\.)?bootfitter\.nl/wp-[^"]+)(")', rep, doc)
 
@@ -288,7 +303,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=7">'''
+<link rel="stylesheet" href="style.css?v=10">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -296,7 +311,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 {cta_html() if cta else ''}
 {post_cta_html(current_file)}
 {footer_html()}
-<script src="app.js?v=5"></script>'''
+<script src="app.js?v=7"></script>'''
     if not full_doc:
         return head + '\n' + inner + '\n'
     return f'''<!doctype html>
@@ -374,15 +389,7 @@ def blog_aside():
 
 def hero(h1_html, crumbs_html='', extra=''):
     key = HERO_OVERRIDE.get(CURRENT[0]) or HERO_ROTATION[sum(map(ord, CURRENT[0] or '')) % len(HERO_ROTATION)]
-    return f'''<section class="page-hero"><canvas class="contours" data-seed="{random_seed()}" aria-hidden="true"></canvas><div class="wrap"><div class="ph-copy"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div><figure class="ph-photo media">{shop_img(key, loading='eager')}</figure></div></section>'''
-
-
-_seed = [1]
-
-
-def random_seed():
-    _seed[0] += 1
-    return _seed[0] * 1.37
+    return f'''<section class="page-hero"><div class="wrap"><div class="ph-copy"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div><figure class="ph-photo media">{shop_img(key, loading='eager')}</figure></div></section>'''
 
 
 # ---------------------------------------------------------------- generic page
@@ -501,7 +508,7 @@ def render_home(meta, body):
     video = (f'<figure class="hero-video"><video src="{HERO_VIDEO}" poster="{HERO_VIDEO[:-4]}-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"></video></figure>'
              if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
     out = [f'''<section class="hero photo{' has-video' if video else ''}">{'' if video else bg}<div class="wrap">
-<div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div></div>
+<div class="hero-copy"><p class="hero-eyebrow" data-reuse>{rq(HERO_EYEBROW[0], 'new')} <i aria-hidden="true">·</i> {rq(HERO_EYEBROW[1], 'new')}</p><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div><p class="hero-rating" data-reuse><i class="stars" aria-hidden="true"></i>{rq(RATING["text"], "chrome")}</p></div>
 {video}</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
     intro = md_to_html(get('Pijnloos skiën®'))
@@ -509,7 +516,7 @@ def render_home(meta, body):
     out.append(f'''<section class="section" id="intro"><div class="wrap split">
 <div class="intro-copy"><h2>{esc(hd('Pijnloos skiën®'))}</h2>{intro}</div>
 <div class="intro-visual"><figure class="media intro-photo">{shop_img('wachtruimte')}</figure>
-<div class="definition"><canvas class="contours" data-seed="9" aria-hidden="true"></canvas><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div></div>
+<div class="definition"><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div></div>
 </div></section>''')
     # complaints + zones
     comp = get('Herkent u')
@@ -531,7 +538,7 @@ def render_home(meta, body):
 <figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
-    strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('etalage', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'slijpen'))
+    strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('slijpmachine', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'oprekken', 'slijpen'))
     out.append(f'<div class="shop-strip" role="group" aria-label="DutchBootFitter IJburglaan"><div class="strip-track" tabindex="0">{strip}</div><div class="strip-nav wrap"><button type="button" class="strip-btn prev" aria-label="Vorige foto"></button><button type="button" class="strip-btn next" aria-label="Volgende foto"></button></div></div>')
     # choices
     cards = []
@@ -563,7 +570,80 @@ def render_home(meta, body):
     for i in range(1, len(qa), 2):
         dets.append(f'<details{" open" if i == 1 else ""}><summary>{esc(qa[i].strip())}</summary><div class="answer">{md_to_html(qa[i + 1])}</div></details>')
     out.append(f'''<section class="section faq-sec"><div class="wrap faq-wrap"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2><div class="faq">{''.join(dets)}</div></div></section>''')
+    out += home_trust_blocks()
     return '\n'.join(out)
+
+
+# ---------------------------------------------------------------- home 06-08: team, shop, reviews
+# These blocks only repeat sentences that already stand elsewhere on the site, word for word. Every text
+# fragment carries data-src naming the page it comes from; verify.py checks each one against that page.
+# They use no h2/h3, so the heading outline of the home page stays exactly as it was.
+# New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
+# ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
+HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
+APPROVED_COPY = set(HERO_EYEBROW)
+
+
+def rq(text, src, tag='span', cls=''):
+    c = f' class="{cls}"' if cls else ''
+    return f'<{tag}{c} data-src="{src}">{esc(text)}</{tag}>'
+
+
+def rlink(text, href, src, cls=''):
+    c = f' class="{cls}"' if cls else ''
+    return f'<a{c} href="{href}" data-src="{src}">{esc(text)}</a>'
+
+
+HOME_TEAM = [
+    "Zij brachten het 'bootfitten' naar Nederland.",
+    'En reeds in 2008 werden de eerste klanten geholpen met het aanpassen van hun eigen skischoenen.',
+    'DutchBootFitter en Strolz Amsterdam wordt voortgezet door Bart, samen met Selma Cool, de nieuwe partner in het bedrijf.',
+    'Hoe mooi is het dat Marco-Paul een positieve voetafdruk achterlaat in de ski- en podologiewereld.',
+]
+HOME_SHOP = ('wall', 'praktijk', 'handwerk', 'bureau')
+HOME_REVIEWS = (1, 5, 7)  # quotes not addressed to Marco-Paul by name
+
+
+def reacties_quotes():
+    _, body = parse_copy('reacties-van-klanten-referenties')
+    txt = next(t for h, t in split_sections(strip_cta(body)) if h and h.startswith('## '))
+    paras = [p for p in re.split(r'\n\s*\n', txt) if p.strip() and p.strip() not in SLIDER_CONTROLS]
+    quotes, cur = [], []
+    for p in paras:
+        cur.append(p)
+        if p.strip().splitlines()[-1].strip() in SIGNATURE_END:
+            quotes.append(cur); cur = []
+    return quotes
+
+
+def home_trust_blocks():
+    o, r, c = 'over-ons', 'reacties-van-klanten-referenties', 'chrome'
+    team = ''.join(rq(t, o, 'p') for t in HOME_TEAM)
+    team_sec = f'''<section class="section team-sec" data-reuse><div class="wrap team-wrap">
+<div class="team-copy">{rq('Over ons', o, 'p', 'blk-title')}<div class="team-text">{team}</div>{rlink('Over Ons', local_href('https://www.bootfitter.nl/over-ons/'), c, 'btn')}</div>
+<figure class="team-photo media">{shop_img('team')}<figcaption>{rq('Bart (l.) & Marco-Paul (r.)', o)}</figcaption></figure>
+<figure class="team-craft media">{shop_img('handwerk-zw')}</figure>
+</div></section>'''
+    tiles = ''.join(f'<figure class="media">{shop_img(k)}</figure>' for k in HOME_SHOP)
+    maps = 'https://www.google.com/maps/search/?api=1&query=DutchBootFitter+IJburglaan+1089+Amsterdam'
+    shop_sec = f'''<section class="section shop-sec" data-reuse><div class="wrap shop-wrap">
+<div class="shop-head">{rq('DutchBootFitter. Een impressie', o, 'p', 'blk-title')}
+<address class="shop-address"><a href="{maps}" rel="noopener">{rq(CONTACT['street'], c)}<br>{rq(CONTACT['city'], c)}</a></address>
+<p class="shop-lines"><a href="{CONTACT['tel_href']}" data-src="{c}">{esc(CONTACT['phone'])}</a> {rlink(CONTACT['email'], 'mailto:' + CONTACT['email'], c)}</p></div>
+<div class="shop-grid">{tiles}</div>
+</div></section>'''
+    cards = []
+    for q in (reacties_quotes()[i] for i in HOME_REVIEWS):
+        lines = [l.strip() for p in q for l in p.strip().splitlines() if l.strip()]
+        body = ''.join(rq(l, r, 'span') + '<br>' for l in lines[:-1])
+        cards.append(f'<blockquote class="review"><p>{body[:-4]}</p><footer>{rq(lines[-1], r, "cite")}</footer></blockquote>')
+    rev_sec = f'''<section class="section reviews-sec" data-reuse><div class="wrap">
+<div class="reviews-head">{rq('Wat klanten zeggen over DutchBootFitter', r, 'p', 'blk-title')}
+<div class="reviews-score"><i class="stars" aria-hidden="true"></i>{rq(RATING['text'], c)}</div></div>
+<div class="reviews">{''.join(cards)}</div>
+{rlink('Wat klanten zeggen', local_href('https://www.bootfitter.nl/reacties-van-klanten-referenties/'), c, 'btn ghost-dark')}
+</div></section>'''
+    return [team_sec, shop_sec, rev_sec]
 
 
 # ---------------------------------------------------------------- pijn in voeten overview
@@ -749,6 +829,57 @@ def render_tarieven(meta, body):
 <div class="wrap content{rem_inner}'''
 
 
+# ---------------------------------------------------------------- over ons
+def over_ons_md(body):
+    """The Over Ons copy in reading order: who we are, In Memoriam and who carries on, what the titles mean,
+    the shop, then where to go next. Every block keeps its words; only the blocks move. verify.py checks against this."""
+    S = {h.strip(): t.strip() for h, t in split_sections(strip_cta(body)) if h}
+    h1 = next(h for h in S if h.startswith('# '))
+    titles = next(h for h in S if h.startswith('### Bootfitter'))
+    gallery, credit = S[h1].rsplit('\n\n', 1)  # the shop photos, then the photo credit line
+    # the live page shows the Street View link as an embedded panorama
+    street = re.sub(r'^\[(\S+)\]\(\1\)$', r'EMBED: \1', S['## DutchBootFitter. Een impressie'])
+    order = [(h1, ''), ('## Over ons', S['## Over ons']), ('## In Memoriam', S['## In Memoriam']),
+             ('## Wat is wat..?', S['## Wat is wat..?']), (titles, S[titles]),
+             ('## DutchBootFitter. Een impressie', gallery + '\n\n' + street + '\n\n' + credit),
+             ('### Wat wilt u doen?', S['### Wat wilt u doen?'])]
+    assert set(S) == {h for h, _ in order}, set(S) ^ {h for h, _ in order}
+    return '\n\n'.join(h + '\n\n' + t for h, t in order)
+
+
+def render_over_ons(meta, body):
+    secs = [(h.strip(), t) for h, t in split_sections(over_ons_md(body)) if h]
+    (h1, _), (story_h, story), (memo_h, memo), (what_h, _), (titles_h, titles), (impr_h, impr), (next_h, nxt) = secs
+    # Over ons: the text beside the photo of Bart and Marco-Paul
+    team = IMG_RE.search(story)
+    caption = re.search(r'(?m)^\*[^*].*\*$', story).group(0)
+    text = IMG_RE.sub('', story, count=1).replace(caption, '')
+    team_fig = f'<figure class="about-team media">{img_tag(team.group(1), team.group(2))}<figcaption>{inline(caption)}</figcaption></figure>'
+    # In Memoriam: the bold one-liners become subheadings, the four closing names a signature
+    memo_html = md_to_html(memo)
+    memo_html = re.sub(r'<p><strong>([^<]+)</strong></p>', r'<h3>\1</h3>', memo_html)
+    memo_html = re.sub(r'((?:<p>[^<]{1,40}</p>\s*){4})', r'<div class="memo-sign">\1</div>', memo_html, count=1)
+    links = re.findall(r'\[([^\]]+)\]\(([^)]+)\)', nxt)
+    next_lis = ''.join(f'<li><a href="{local_href(u)}">{esc(t)}</a></li>' for t, u in links)
+    return f'''{hero(inline(h1.lstrip('# ')))}
+<section class="about-story"><div class="wrap prose">
+  <h2>{inline(story_h[3:])}</h2>
+  {team_fig}
+  <div class="story-text">{md_to_html(text)}</div>
+</div></section>
+<section class="about-memoriam"><div class="wrap"><div class="memo-card prose"><h2>{inline(memo_h[3:])}</h2>{memo_html}</div></div></section>
+<section class="about-titles"><div class="wrap">
+  <div class="titles-head prose"><h2>{inline(what_h[3:])}</h2><h3>{inline(titles_h[4:])}</h3></div>
+  <div class="prose">{md_to_html(titles)}</div>
+</div></section>
+<section class="about-impression"><div class="wrap">
+  <div class="prose"><h2>{inline(impr_h[3:])}</h2></div>
+  <figure class="about-pano media">{shop_img('handwerk-zw')}</figure>
+  {md_to_html(impr)}
+</div></section>
+<section class="about-next"><div class="wrap"><h3>{inline(next_h[4:])}</h3><ul>{next_lis}</ul></div></section>'''
+
+
 # ---------------------------------------------------------------- main
 SPECIAL = {
     'home': render_home,
@@ -756,6 +887,7 @@ SPECIAL = {
     'reacties-van-klanten-referenties': render_reacties,
     'werkwijze-dutchbootfitter': render_werkwijze,
     'tarieven-bootfitting': render_tarieven,
+    'over-ons': render_over_ons,
 }
 
 

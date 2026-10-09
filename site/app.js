@@ -33,50 +33,6 @@
     logo.addEventListener('error', noLogo);
   }
 
-  // Topographic contour lines: a deterministic noise field traced with marching squares.
-  function hash(x, y, s) { var h = Math.sin(x * 127.1 + y * 311.7 + s * 74.7) * 43758.5453; return h - Math.floor(h); }
-  function smooth(t) { return t * t * (3 - 2 * t); }
-  function noise(x, y, s) {
-    var xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
-    var a = hash(xi, yi, s), b = hash(xi + 1, yi, s), c = hash(xi, yi + 1, s), d = hash(xi + 1, yi + 1, s);
-    var u = smooth(xf), v = smooth(yf);
-    return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
-  }
-  function field(x, y, s) { return noise(x, y, s) * .6 + noise(x * 2.1, y * 2.1, s + 3) * .3 + noise(x * 4.3, y * 4.3, s + 7) * .1; }
-  function draw(cv) {
-    var r = cv.getBoundingClientRect();
-    if (!r.width || !r.height) return;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
-    cv.width = r.width * dpr; cv.height = r.height * dpr;
-    var ctx = cv.getContext('2d');
-    ctx.scale(dpr, dpr);
-    ctx.strokeStyle = getComputedStyle(cv).color;
-    ctx.lineWidth = 1;
-    var seed = parseFloat(cv.dataset.seed || '1');
-    var step = 14, cols = Math.ceil(r.width / step) + 1, rows = Math.ceil(r.height / step) + 1, sc = 1 / 170;
-    var g = [];
-    for (var j = 0; j <= rows; j++) { g[j] = []; for (var i = 0; i <= cols; i++) g[j][i] = field(i * step * sc, j * step * sc, seed); }
-    ctx.beginPath();
-    for (var lv = 0.18; lv < 0.95; lv += 0.045) {
-      for (j = 0; j < rows; j++) for (i = 0; i < cols; i++) {
-        var a = g[j][i], b = g[j][i + 1], c = g[j + 1][i + 1], d = g[j + 1][i];
-        var x = i * step, y = j * step, pts = [];
-        function e(p, q, x1, y1, x2, y2) { if ((p < lv) !== (q < lv)) { var t = (lv - p) / (q - p); pts.push([x1 + (x2 - x1) * t, y1 + (y2 - y1) * t]); } }
-        e(a, b, x, y, x + step, y); e(b, c, x + step, y, x + step, y + step); e(d, c, x, y + step, x + step, y + step); e(a, d, x, y, x, y + step);
-        for (var k = 0; k + 1 < pts.length; k += 2) { ctx.moveTo(pts[k][0], pts[k][1]); ctx.lineTo(pts[k + 1][0], pts[k + 1][1]); }
-      }
-    }
-    ctx.stroke();
-  }
-  var canvases = document.querySelectorAll('canvas.contours');
-  function all() { canvases.forEach(draw); }
-  all();
-  var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(all, 150); });
-  if (window.matchMedia) {
-    var mq = window.matchMedia('(prefers-color-scheme: dark)');
-    if (mq.addEventListener) mq.addEventListener('change', all);
-  }
-  new MutationObserver(all).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 })();
 
 // Boot hotspots: a dot and its zone in the list light up together; the dot shows the zone's text in a small card.
@@ -117,17 +73,11 @@
 })();
 
 (function () {
-  // Home: the floating bar tightens once the page scrolls.
+  // The announcement line folds away once the page scrolls; on the home the bar also turns solid.
   var body = document.body;
-  if (body.classList.contains('home')) {
-    var tb = document.querySelector('.topbar');
-    var setTb = function () { if (tb) document.documentElement.style.setProperty('--tb', tb.offsetHeight + 'px'); };
-    setTb();
-    window.addEventListener('resize', setTb);
-    var onScroll = function () { body.classList.toggle('scrolled', window.scrollY > 40); };
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  }
+  var onScroll = function () { body.classList.toggle('scrolled', window.scrollY > 40); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
   // Gentle reveal of sections and cards as they enter the viewport.
   if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var els = document.querySelectorAll('.section .wrap > *, .choice, .card, .price, .quote, .isnot > div');

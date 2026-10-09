@@ -320,7 +320,7 @@
   },
   {
    "page": "over-ons.html",
-   "words": 602,
+   "words": 601,
    "status": "IDENTICAL",
    "diffs": []
   },
@@ -429,6 +429,12 @@
   {
    "page": "(blog sidebar)",
    "words": 379,
+   "status": "IDENTICAL",
+   "diffs": []
+  },
+  {
+   "page": "index.html (reused blocks)",
+   "words": 0,
    "status": "IDENTICAL",
    "diffs": []
   }

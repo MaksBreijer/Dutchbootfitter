@@ -5,7 +5,7 @@
    - Solstice Design: italics for emphasis, generous whitespace, quiet numbered labels.
    The signal orange is the exact orange of the DutchBootFitter logo; contour lines stay as the only ornament. */
 :root {
-  --snow: #f6f4f0;        /* warm paper white, the page ground */
+  --snow: #efeeec;        /* soft warm grey, the page ground (v6) */
   --paper: #ffffff;
   --ice: #ebe7df;
   --line: #ddd7cc;
@@ -896,3 +896,343 @@ body { line-height: 1.7; }
 .js-reveal .reveal.in .mark-cross .mark-svg path:nth-child(2) { animation-delay: 1.4s; }
 @keyframes mark-draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) { .js-reveal .reveal .mark-svg path { stroke-dashoffset: 0; animation: none; } }
+
+/* =====================================================================
+   v5 — the menu on the right with a straight orange Afspraak button; no texture on or behind photos;
+   a restructured Over Ons page.
+   ===================================================================== */
+/* Header: the bar as before, the menu pushed to the right edge; the Afspraak button is a plain straight orange box */
+.site-header .bar { justify-content: flex-start; }
+.site-header .primary { margin-left: auto; }
+.nav .nav-cta > a { clip-path: none; border-radius: 0; }
+@media (max-width: 1060px) {
+  .site-header .menu-toggle { margin-left: auto; clip-path: none; border-radius: 0; }
+}
+
+/* No texture: the contour pattern is gone, and a photo that fails to load leaves a plain tile */
+.media.missing { background: var(--ice); }
+
+/* ---------- Over Ons ---------- */
+.about-story, .about-memoriam, .about-titles, .about-impression, .about-next { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.about-memoriam, .about-impression, .about-next { padding-top: 0; }
+.about-story .wrap.prose { max-width: var(--wrap); display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr); column-gap: clamp(2rem, 6vw, 5rem); row-gap: 1.1rem; align-items: start; }
+.about-story h2 { grid-column: 1; margin-top: 0; }
+.about-team { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+.about-team img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; border-radius: var(--radius-l); background: var(--tint); }
+.about-team figcaption { margin-top: .8rem; color: var(--slate); font-size: .95rem; }
+.story-text { grid-column: 1; display: flex; flex-direction: column; gap: 1.1rem; }
+.story-text > p:first-child { font-size: clamp(1.15rem, 1.05rem + .4vw, 1.35rem); line-height: 1.55; }
+@media (max-width: 760px) {
+  .about-story .wrap.prose { grid-template-columns: 1fr; }
+  .about-team { grid-column: 1; grid-row: auto; max-width: 22rem; }
+}
+
+.memo-card { max-width: 48rem; background: var(--paper); border-radius: var(--radius-l); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: 0 0 0 1px var(--line); }
+.memo-card h3 { font-size: 1.2rem; font-stretch: 100%; margin-top: .6rem; }
+.memo-card h3:first-of-type { font-size: clamp(1.25rem, 1.1rem + .5vw, 1.5rem); }
+.memo-card img { border-radius: var(--radius); }
+/* signature: the two names on one line, the two companies on the next */
+.memo-sign { padding-top: 1.2rem; border-top: 1px solid var(--line); line-height: 1.7; }
+.memo-sign p { display: inline; margin: 0; }
+.memo-sign p:nth-child(-n+2) { font-weight: 700; }
+.memo-sign p:nth-child(n+3) { color: var(--slate); }
+.memo-sign p:nth-child(odd)::after { content: "\00a0\00a0·\00a0\00a0"; color: var(--orange); font-weight: 400; }
+.memo-sign p:nth-child(2)::after { content: "\A"; white-space: pre; }
+
+.about-titles { background: var(--tint); margin-bottom: clamp(3rem, 7vw, 5.5rem); }
+.about-titles .wrap { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); column-gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.about-titles .prose { max-width: none; margin: 0; }
+.titles-head { position: sticky; top: 7rem; }
+.titles-head h2 { margin-top: 0; }
+.titles-head h3 { font-size: 1.15rem; font-stretch: 100%; font-weight: 600; color: var(--slate); margin-top: 0; }
+@media (max-width: 860px) { .about-titles .wrap { grid-template-columns: 1fr; } .titles-head { position: static; } }
+
+.about-impression .prose { max-width: none; margin: 0 0 1.4rem; }
+.about-impression h2 { margin-top: 0; }
+.about-pano { margin: 0 0 .8rem; }
+.about-pano img { display: block; width: 100%; aspect-ratio: 2560 / 806; object-fit: cover; border-radius: var(--radius-l); }
+.about-impression .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: clamp(8rem, 14vw, 13rem); grid-auto-flow: dense; gap: .8rem; }
+.about-impression .gallery img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--radius); }
+.about-impression .gallery img:nth-child(1) { grid-column: 1 / span 2; grid-row: span 2; }
+.about-impression .gallery img:nth-child(6) { grid-column: 3 / span 2; grid-row: span 2; }
+.about-impression .embed { margin-top: .8rem; border-radius: var(--radius-l); }
+.about-impression .embed iframe { min-height: clamp(320px, 45vw, 480px); }
+.about-impression h5 { margin-top: 1rem; font-size: .9rem; font-weight: 400; color: var(--slate); }
+@media (max-width: 700px) {
+  .about-impression .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about-impression .gallery img:nth-child(1), .about-impression .gallery img:nth-child(6) { grid-column: 1 / -1; }
+}
+
+.about-next h3 { font-size: var(--step-2); margin-bottom: 1.2rem; }
+.about-next ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .8rem; }
+.about-next a { display: flex; justify-content: space-between; align-items: center; gap: 1rem; height: 100%; padding: 1.3rem 1.4rem; border-radius: var(--radius); background: var(--night); color: #fff; text-decoration: none; font-weight: 700; transition: background .2s ease; }
+.about-next a::after { content: "→"; color: var(--orange); transition: transform .2s ease, color .2s ease; }
+.about-next a:hover { background: var(--orange-btn); color: #fff; }
+.about-next a:hover::after { color: #fff; transform: translateX(3px); }
+
+
+/* =====================================================================
+   v6 — a straighter, crafted finish (reference: Oregon Outdoor Alliance). The start of the site and the order
+   of every section are unchanged. Small radii instead of pills, Open Sans for labels and numbers too, a heritage
+   label above the hero headline, three home blocks after the FAQ (team, shop, reviews) that only repeat sentences
+   already on the site, and the windmill sails moved from the closing CTA into the footer.
+   ===================================================================== */
+:root { --radius: 6px; --radius-s: 4px; --radius-l: 8px; }
+
+/* Straight shapes: no more pills or circles in controls */
+.btn, .nav a, .nav button.sub-toggle, .menu-toggle, .strip-btn, .socials a, .zones .solve, .card .meta a,
+.pager a, .pager span, .choice .more, .submenu a { border-radius: var(--radius-s); }
+.site-header .bar { border-radius: var(--radius); }
+@media (max-width: 1060px) {
+  .site-header .bar { border-radius: var(--radius); }
+  .nav-open .bar { border-radius: var(--radius) var(--radius) 0 0; }
+  .primary { border-radius: 0 0 var(--radius) var(--radius); }
+  .nav .nav-cta > a { border-radius: 0; }
+}
+.faq summary::after { border-radius: var(--radius-s); }
+.zones-fig .hotspots { border-radius: var(--radius-l); }
+.badges img { border-radius: var(--radius-s); }
+.section.alt.isnot-sec { border-radius: 0; }
+.site-footer > .foot-grid { border-radius: var(--radius-l) var(--radius-l) 0 0; }
+.site-footer > .foot-bottom { border-radius: 0 0 var(--radius-l) var(--radius-l); }
+
+/* Section labels: the number in mono with a short orange bar underneath */
+.home main > .section > .wrap::before { content: counter(sec, decimal-leading-zero); display: block; width: fit-content; padding: 0 0 .55rem; border-radius: 0; background: none; font-family: var(--f-mono); font-size: .8rem; font-weight: 500; letter-spacing: .12em; color: var(--orange-ink); border-bottom: 2px solid var(--orange); margin-bottom: 1.8rem; }
+.home main > .section.isnot-sec > .wrap::before { background: none; color: #ffb48f; }
+.home main > .complaints-sec > .wrap::before { margin-inline: auto; }
+
+/* Hero: one heritage line above the headline (the headline, lede and buttons are untouched) */
+.hero-eyebrow { display: inline-flex; flex-wrap: wrap; gap: .2rem .6rem; margin-bottom: 1.2rem; padding-bottom: .55rem; border-bottom: 2px solid var(--orange); font-family: var(--f-mono); font-size: clamp(.68rem, .62rem + .2vw, .8rem); font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: #fff; }
+.hero-eyebrow i { font-style: normal; color: var(--orange); }
+
+/* Shared title style for the reused blocks: looks like a section heading, but is not an h2 (the outline stays) */
+.blk-title { font-size: clamp(2.2rem, 1.4rem + 3vw, 3.8rem); font-weight: 800; line-height: 1.04; letter-spacing: -.025em; color: var(--ink); text-wrap: balance; hyphens: manual; }
+.btn.ghost-dark { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+.btn.ghost-dark:hover { background: var(--ink); color: var(--snow); }
+
+/* 06 — team: text left, the photo of Bart and Marco-Paul right, a black-and-white workshop shot as a heritage accent */
+.team-wrap { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+.home main > .team-sec > .wrap::before { grid-column: 1 / -1; margin-bottom: 0; }
+.team-copy { grid-column: 1 / span 6; display: flex; flex-direction: column; align-items: flex-start; gap: 1.6rem; }
+.team-text { display: flex; flex-direction: column; gap: 1rem; font-size: clamp(1.05rem, 1rem + .3vw, 1.25rem); line-height: 1.6; }
+.team-text p:first-child { font-size: 1.25em; font-weight: 700; line-height: 1.3; }
+.team-photo { grid-column: 8 / span 5; grid-row: 2 / span 2; margin: 0; overflow: visible; background: none; }
+.team-photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center top; border-radius: var(--radius-l); background: var(--ice); }
+.team-photo figcaption { margin-top: .7rem; font-family: var(--f-mono); font-size: .78rem; letter-spacing: .06em; color: var(--slate); }
+.team-craft { grid-column: 1 / span 5; margin: 0; border-radius: var(--radius-l); overflow: hidden; }
+.team-craft img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+@media (max-width: 860px) {
+  .team-copy, .team-photo, .team-craft { grid-column: 1 / -1; grid-row: auto; }
+  .team-photo { max-width: 26rem; }
+}
+
+/* 07 — the shop: address and contact left, a straight photo grid right */
+.shop-sec { background: var(--paper); }
+.shop-wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.home main > .shop-sec > .wrap::before { grid-column: 1 / -1; margin-bottom: 0; }
+.shop-head { position: sticky; top: 7rem; display: flex; flex-direction: column; gap: 1.6rem; }
+.shop-address { font-style: normal; font-size: clamp(1.3rem, 1.1rem + .7vw, 1.75rem); font-weight: 700; line-height: 1.25; padding-top: 1.4rem; border-top: 1px solid var(--line); }
+.shop-address a { color: var(--ink); text-decoration: none; }
+.shop-address a:hover { color: var(--orange-ink); }
+.shop-address a::after { content: " ↗"; color: var(--orange); font-weight: 400; }
+.shop-lines { display: flex; flex-direction: column; gap: .3rem; font-family: var(--f-mono); font-size: .92rem; }
+.shop-lines a { color: var(--ink); text-decoration-color: var(--orange); }
+.shop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: clamp(10rem, 18vw, 16rem); gap: .8rem; }
+.shop-grid .media { margin: 0; border-radius: var(--radius-l); overflow: hidden; background: var(--ice); }
+.shop-grid .media:first-child { grid-row: span 2; }
+.shop-grid img { width: 100%; height: 100%; object-fit: cover; transition: transform .9s cubic-bezier(.2,.7,.2,1); }
+.shop-grid .media:hover img { transform: scale(1.04); }
+@media (max-width: 860px) { .shop-wrap { grid-template-columns: 1fr; } .shop-head { position: static; } }
+
+/* 08 — reviews: three quotes on straight cards, the rating beside the title */
+.reviews-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.2rem 2rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.reviews-head .blk-title { max-width: 18ch; }
+.reviews-score { display: flex; flex-direction: column; gap: .5rem; font-family: var(--f-mono); font-size: .85rem; color: var(--slate); }
+.reviews-score .stars { display: block; width: 7.5rem; height: 1.2rem; background: linear-gradient(90deg, var(--orange) 90%, var(--line) 90%); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; }
+.reviews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 0 0 2rem; }
+.review { margin: 0; display: flex; flex-direction: column; justify-content: space-between; gap: 1.6rem; padding: clamp(1.4rem, 2.5vw, 2rem); background: var(--paper); border: 1px solid var(--line); border-top: 2px solid var(--orange); border-radius: var(--radius); }
+.review p { font-size: 1.08rem; line-height: 1.55; }
+.review footer { font-family: var(--f-mono); font-size: .82rem; letter-spacing: .04em; color: var(--slate); }
+.review cite { font-style: normal; }
+.review footer::before { content: "— "; color: var(--orange); }
+@media (max-width: 900px) { .reviews { grid-template-columns: 1fr; } }
+
+/* Footer: square icon buttons, and the four latticed windmill sails turning slowly in the bottom-right corner */
+.socials a { background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.site-footer > .foot-grid { position: relative; overflow: hidden; isolation: isolate; }
+.foot-grid > * { position: relative; }
+.site-footer .windmill { position: absolute; z-index: -1; right: clamp(-13rem, -9vw, -6rem); bottom: clamp(-16rem, -13vw, -8rem); width: clamp(22rem, 36vw, 32rem); height: auto; color: rgba(255,255,255,.05); pointer-events: none; }
+.site-footer .windmill .sails { transform-box: view-box; transform-origin: 50% 50%; animation: windmill-turn 90s linear infinite; }
+@media (max-width: 560px) {
+  .hero-eyebrow { flex-direction: column; gap: .25rem; }
+  .hero-eyebrow i { display: none; }
+  .shop-grid { grid-auto-rows: 9.5rem; }
+}
+.shop-grid .media:last-child { grid-column: 1 / -1; }
+.shop-head .blk-title { font-size: clamp(2rem, 1.3rem + 2.2vw, 3.2rem); overflow-wrap: anywhere; }
+.cta-photos { width: 0; flex: 0 0 0; }  /* only the background photo, no floating shopfront card */
+
+/* ---------- v6 header: one clean bar ----------
+   The dark top strip is gone; its four links (Tarieven, Wat klanten zeggen, Bootfitter BLOG, Links) sit as a quiet
+   small line above the main menu, inside the same bar. Same links, same order, less weight. */
+.site-header { background: var(--paper); border-bottom: 1px solid var(--line); }
+.site-header .bar { min-height: 88px; gap: 2.5rem; align-items: center; }
+.brand img { height: 48px; }
+.primary { display: flex; flex-direction: column-reverse; align-items: flex-end; gap: .35rem; }
+.utility { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.4rem; }
+.utility a { display: block; font-size: .78rem; letter-spacing: .02em; color: var(--slate); text-decoration: none; transition: color .2s ease; }
+.utility a:hover, .utility a[aria-current="page"] { color: var(--orange-ink); }
+.nav { gap: clamp(1.1rem, 2vw, 2.2rem); }
+.nav a, .nav button.sub-toggle { padding: .35rem 0; font-size: 1rem; font-weight: 500; letter-spacing: 0; box-shadow: inset 0 -2px 0 transparent; transition: color .2s ease, box-shadow .2s ease; }
+.nav > li > a:hover, .nav > li > .sub-toggle:hover, .nav > li > a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--orange); }
+.nav .nav-cta > a, .nav .nav-cta > a:hover { margin-left: .4rem; padding: .7rem 1.35rem; border-radius: var(--radius-s); box-shadow: none; font-weight: 600; }
+.sub-toggle::after { border-width: 1.5px; width: .34em; height: .34em; }
+.submenu { border-radius: var(--radius); }
+.nav .submenu a { border-radius: var(--radius-s); box-shadow: none; }
+
+/* Home: transparent over the video, solid white once you scroll */
+.home .site-header, .home.scrolled .site-header { top: env(safe-area-inset-top, 0px); }
+.home:not(.scrolled) .site-header:not(.nav-open) { background: linear-gradient(180deg, rgba(8,15,24,.45), rgba(8,15,24,0)); border-color: transparent; }
+@media (min-width: 1061px) {
+  .home:not(.scrolled) .utility a { color: rgba(255,255,255,.72); }
+  .home:not(.scrolled) .utility a:hover { color: #fff; }
+  .home:not(.scrolled) .nav > li > a:hover, .home:not(.scrolled) .nav > li > .sub-toggle:hover { color: #fff; box-shadow: inset 0 -2px 0 var(--orange); }
+}
+
+/* Small screens: one bar with logo and Menu; the four small links sit at the bottom of the open menu */
+@media (max-width: 1060px) {
+  .site-header .bar { min-height: 68px; }
+  .brand img { height: 42px; }
+  .primary, .nav-open .primary { flex-direction: column; align-items: stretch; gap: 0; }
+  .primary { display: none; }
+  .nav-open .primary { display: flex; }
+  .nav > li > a:hover, .nav > li > a[aria-current="page"] { box-shadow: none; color: var(--orange-ink); }
+  .utility { flex-wrap: wrap; gap: .4rem 1.4rem; padding: 1.2rem 0 .2rem; }
+  .utility a { font-size: .9rem; }
+  .menu-toggle, .home:not(.scrolled) .site-header:not(.nav-open) .menu-toggle { border-radius: var(--radius-s); clip-path: none; }
+}
+@media (max-width: 1060px) { .nav .nav-cta > a, .nav .nav-cta > a:hover { margin: 1rem 0 0; } }
+
+/* ---------- v6.1 header: quiet ----------
+   Only the logo, the menu and Afspraak. Light type, no fills, no shadow; the four small links
+   (Tarieven, Wat klanten zeggen, Bootfitter BLOG, Links) now sit in the footer's bottom row. */
+.site-header, .home.scrolled .site-header { background: var(--paper); border-bottom: 1px solid var(--line); box-shadow: none; }
+.site-header .bar { min-height: 72px; gap: 2rem; }
+.brand img { height: 40px; }
+.nav { gap: clamp(1.2rem, 2.2vw, 2.4rem); }
+.nav a, .nav button.sub-toggle { font-size: .92rem; font-weight: 400; color: var(--slate); padding: .3rem 0; box-shadow: none; text-shadow: none; }
+.nav > li > a:hover, .nav > li > .sub-toggle:hover, .nav > li > a[aria-current="page"] { color: var(--ink); box-shadow: inset 0 -1px 0 var(--orange); }
+.nav .nav-cta > a, .nav .nav-cta > a:hover, .nav .nav-cta > a[aria-current="page"] { margin-left: .2rem; padding: .3rem 0; background: none; color: var(--orange-ink); font-weight: 600; box-shadow: inset 0 -1px 0 var(--orange); border-radius: 0; }
+.nav .nav-cta > a:hover { color: var(--orange); }
+.sub-toggle::after { opacity: .6; }
+@media (min-width: 1061px) {
+  .nav > li:first-child { display: none; }  /* HOME: on desktop the logo already leads home; HOME stays in the phone menu */
+  .home:not(.scrolled) .site-header:not(.nav-open) { background: linear-gradient(180deg, rgba(8,15,24,.35), rgba(8,15,24,0)); border-color: transparent; }
+  .home:not(.scrolled) .nav > li > a, .home:not(.scrolled) .nav > li > .sub-toggle { color: rgba(255,255,255,.85); text-shadow: none; }
+  .home:not(.scrolled) .nav > li > a:hover, .home:not(.scrolled) .nav > li > .sub-toggle:hover { color: #fff; box-shadow: inset 0 -1px 0 var(--orange); }
+  .home:not(.scrolled) .nav .nav-cta > a { color: #fff; }
+}
+@media (max-width: 1060px) {
+  .site-header .bar { min-height: 60px; }
+  .brand img { height: 36px; }
+  .menu-toggle, .home:not(.scrolled) .site-header:not(.nav-open) .menu-toggle { background: none; color: var(--ink); box-shadow: none; padding: .5rem 0; font-weight: 500; }
+  .home:not(.scrolled) .site-header:not(.nav-open) .menu-toggle { color: #fff; }
+  .nav a, .nav button.sub-toggle { font-size: 1rem; color: var(--ink); padding: .8rem 0; }
+  .nav > li > a:hover, .nav > li > a[aria-current="page"] { box-shadow: none; color: var(--orange-ink); }
+  .nav .nav-cta > a, .nav .nav-cta > a:hover, .nav .nav-cta > a[aria-current="page"] { margin: 1rem 0 .5rem; padding: .85rem 1rem; text-align: center; background: var(--orange-btn); color: #fff; border-radius: var(--radius-s); box-shadow: none; }
+}
+
+/* the four former top links, small in the footer's bottom row */
+.foot-utility { display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; margin-right: auto; margin-left: 2rem; }
+.foot-utility a { color: var(--night-muted); font-size: .85rem; }
+.foot-utility a:hover { color: var(--orange); }
+@media (max-width: 700px) { .foot-utility { margin-left: 0; width: 100%; order: -1; } }
+.hero.photo h1 { font-size: clamp(2.2rem, 1.1rem + 4.2vw, 4.4rem); }  /* v6: the orange headline a little smaller */
+@media (max-width: 560px) { .hero.photo h1 { font-size: clamp(1.9rem, 1rem + 4.6vw, 2.4rem); } }
+
+/* ---------- v6 hero, after Oregon Outdoor Alliance ----------
+   A darker, calmer video; a light white headline with "pijnloos skiën®" in orange; the mono label with an orange bar;
+   the two hero buttons stay as buttons under the lede. */
+.hero.photo::before { background: linear-gradient(180deg, rgba(10,14,20,.55) 0%, rgba(10,14,20,.35) 35%, rgba(10,14,20,.55) 70%, rgba(10,14,20,.82) 100%); }
+.hero.photo .wrap { display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; max-width: none; padding-inline: clamp(16px, 5vw, 80px); }
+.hero.photo .hero-copy { max-width: none; }
+.hero-eyebrow { font-weight: 400; letter-spacing: .06em; font-size: clamp(.72rem, .64rem + .25vw, .9rem); color: rgba(255,255,255,.9); border-bottom-width: 3px; padding-bottom: .6rem; margin-bottom: clamp(1.4rem, 3vw, 2.2rem); }
+.hero.photo h1 { color: #fff; font-weight: 500; letter-spacing: -.035em; line-height: 1.02; text-shadow: none; max-width: 14ch; }
+.hero.photo h1 em { color: var(--orange); font-weight: 500; }
+.hero.photo .lede { margin-top: clamp(1.2rem, 2.5vw, 1.8rem); font-weight: 400; font-size: clamp(1rem, .95rem + .3vw, 1.2rem); color: rgba(255,255,255,.82); max-width: 32ch; }
+@media (max-width: 900px) {
+  .hero.photo .wrap { grid-template-columns: 1fr; }
+    }
+.hero-eyebrow { font-size: clamp(.7rem, .6rem + .2vw, .8rem); letter-spacing: .04em; }
+@media (min-width: 1100px) { .hero-eyebrow { flex-wrap: nowrap; white-space: nowrap; } }
+:root { --f-mono: "Open Sans", "Helvetica Neue", Arial, sans-serif; }  /* one typeface throughout, as on bootfitter.nl */
+.hero.photo .hero-foot .lede { margin-top: 0; }
+
+/* ---------- v7 header: bootfitter.nl meets Snuuzu ----------
+   From Snuuzu: a thin dark announcement line, a calm transparent bar on the video, the headline low on the left
+   with a white button and the review score. From the familiar site: logo left, menu right, the orange Afspraak button.
+   Kept quiet: no phone icon, no extra lines. */
+.announce { background: var(--night); text-align: center; max-height: 4.5rem; overflow: hidden; transition: max-height .3s ease; }
+.announce a { display: block; padding: .5rem var(--gutter); color: var(--on-night); font-size: .85rem; font-weight: 400; letter-spacing: .01em; text-decoration: none; }
+.announce a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.scrolled .announce { max-height: 0; }
+
+.site-header, .home.scrolled .site-header { top: env(safe-area-inset-top, 0px); }
+.site-header > .wrap { padding-inline: clamp(16px, 5vw, 80px); }
+.site-header .bar { display: flex; align-items: center; gap: clamp(1.5rem, 2.5vw, 2.5rem); min-height: 80px; position: static; border-radius: 0; }
+.site-header .brand { order: -1; }
+.site-header .primary { margin-left: auto; display: block; }
+.brand img { height: 46px; }
+.nav { gap: clamp(1.2rem, 2vw, 2.2rem); }
+.nav a, .nav button.sub-toggle { font-size: 1rem; font-weight: 400; color: var(--ink); }
+.bar-actions { display: flex; align-items: center; }
+.act-cta { display: inline-flex; align-items: center; height: 2.8rem; padding: 0 1.4rem; border-radius: 6px; background: var(--orange-btn); color: #fff; text-decoration: none; font-weight: 600; font-size: .98rem; white-space: nowrap; transition: background .2s ease; }
+.act-cta:hover, .act-cta[aria-current="page"] { background: var(--orange-ink); color: #fff; }
+
+/* home, over the video */
+.home:not(.scrolled) .site-header:not(.nav-open) { background: linear-gradient(180deg, rgba(8,15,24,.35), rgba(8,15,24,0)); border-color: transparent; box-shadow: none; }
+.home.scrolled .site-header { box-shadow: var(--shadow); }
+
+@media (min-width: 1100px) {
+  .nav > li.nav-cta { display: none; }  /* Afspraak is the button on the right */
+  .nav > li:first-child { display: list-item; }
+  .home:not(.scrolled) .nav > li > a, .home:not(.scrolled) .nav > li > .sub-toggle { color: #fff; }
+  .home:not(.scrolled) .nav > li > a:hover, .home:not(.scrolled) .nav > li > .sub-toggle:hover { color: #fff; box-shadow: inset 0 -1px 0 var(--orange); }
+}
+@media (max-width: 1099px) {
+  .site-header .bar { min-height: 64px; gap: 1rem; }
+  .brand img { height: 38px; }
+  .bar-actions { margin-left: auto; }
+  .site-header .menu-toggle { display: inline-flex; order: 2; margin: 0; background: none; color: var(--ink); box-shadow: none; padding: .5rem 0; font-weight: 500; border-radius: 0; clip-path: none; }
+  .home:not(.scrolled) .site-header:not(.nav-open) .menu-toggle { background: none; box-shadow: none; color: #fff; }
+  .site-header .primary { display: none; position: absolute; left: 0; right: 0; top: 100%; margin: 0; background: var(--paper); border: 0; border-top: 1px solid var(--line); border-radius: 0; box-shadow: var(--shadow); padding: .25rem clamp(16px, 5vw, 80px) 1.2rem; max-height: calc(100vh - 110px); overflow-y: auto; }
+  .site-header.nav-open .primary { display: block; }
+  .nav { flex-direction: column; align-items: stretch; gap: 0; }
+  .nav > li:first-child { display: block; }
+  .nav a, .nav button.sub-toggle, .home .nav > li > a, .home .nav > li > .sub-toggle { width: 100%; text-align: left; padding: .8rem 0; font-size: 1rem; color: var(--ink); border-bottom: 1px solid var(--line); box-shadow: none; }
+  .submenu { position: static; display: block; border: 0; box-shadow: none; padding: 0 0 0 1rem; min-width: 0; background: transparent; }
+  .nav > li.nav-cta { display: none; }
+  .home .site-header.nav-open { background: var(--paper); }
+}
+@media (max-width: 560px) {
+  .announce a { font-size: .76rem; padding-block: .45rem; }
+  .act-cta { height: 2.4rem; padding: 0 1rem; font-size: .9rem; }
+  .menu-toggle .lbl-open, .menu-toggle .lbl-close { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+}
+
+/* home hero: copy low on the left, white primary button, quiet secondary, review score underneath */
+.hero.photo::before { background: linear-gradient(180deg, rgba(10,14,20,.3) 0%, rgba(10,14,20,.1) 35%, rgba(10,14,20,.3) 65%, rgba(10,14,20,.65) 100%), linear-gradient(90deg, rgba(10,14,20,.4), rgba(10,14,20,0) 65%); }
+.hero.photo .wrap { padding-bottom: clamp(3rem, 7vw, 5.5rem); }
+.hero-eyebrow { border-bottom: 0; padding-bottom: 0; margin-bottom: 1rem; color: rgba(255,255,255,.75); }
+.hero.photo h1 { font-size: clamp(2.3rem, 1.2rem + 4vw, 4.6rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.04; max-width: 15ch; }
+.hero.photo h1 em { font-weight: 700; }
+.hero.photo .hero-foot { display: block; border: 0; padding: 0; margin-top: clamp(1rem, 2vw, 1.4rem); }
+.hero.photo .actions { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.6rem; margin-top: clamp(1.6rem, 3vw, 2.2rem); }
+.hero.photo .btn { border-radius: 6px; padding: 1.05rem 1.7rem; font-weight: 600; font-size: 1.02rem; }
+.hero.photo .btn:not(.ghost) { background: #fff; color: var(--ink); }
+.hero.photo .btn:not(.ghost):hover { background: var(--orange-btn); color: #fff; }
+.hero.photo .btn.ghost { padding: .4rem 0; background: none; box-shadow: none; backdrop-filter: none; border-radius: 0; color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,.5); text-underline-offset: 6px; }
+.hero.photo .btn.ghost:hover { background: none; color: #fff; text-decoration-color: var(--orange); }
+.hero-rating { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .9rem; margin-top: clamp(1.4rem, 2.5vw, 2rem); color: rgba(255,255,255,.88); font-size: .95rem; }
+.hero-rating .stars { display: block; width: 6.2rem; height: 1rem; background: linear-gradient(90deg, var(--orange) 90%, rgba(255,255,255,.35) 90%); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; }
+@media (max-width: 560px) { .hero.photo .actions .btn:not(.ghost) { width: 100%; justify-content: center; } .hero.photo .actions .btn.ghost { width: auto; } }

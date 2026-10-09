@@ -22,7 +22,7 @@ def md_words(t):
 
 def html_words(path, drop=()):
     soup = BeautifulSoup(open(path, encoding='utf-8').read(), 'html.parser')
-    for sel in drop:
+    for sel in ('[data-reuse]',) + tuple(drop):  # reused sentences are checked separately, against their own page
         for el in soup.select(sel):
             el.decompose()
     parts = [soup.select_one('main')] + soup.select('.cta-band') + soup.select('.post-cta')
@@ -59,6 +59,10 @@ for slug in sorted(s for s in G.KNOWN if not s.startswith('_')):
     if slug == 'tarieven-bootfitting':
         # the copier repeated each price name after its link; the live page shows it once
         src = re.sub(r'(?m)^- \[([^\]]+)\]\(([^)]+)\) \1 ', lambda m: f'- [{m.group(1)}]({m.group(2)}) ', src)
+    if slug == 'over-ons':
+        # the page shows the same blocks in a different reading order; compare against that order
+        head, _, body = src.partition('===MAIN===')
+        src = head + '===MAIN===\n' + G.over_ons_md(body)
     exp = md_words(src)
     if not re.search(r'Pijn in voeten of scheenbenen\?', ' '.join(exp)):
         exp += G.CTA_HEADING.split() + G.CTA_BUTTON.split()
@@ -84,6 +88,43 @@ side_exp = md_words(open(os.path.join(G.COPY, '_blog_sidebar.md'), encoding='utf
 soup = BeautifulSoup(open(os.path.join(G.OUT, 'blog-mortons-neuroom-pijn-in-skischoen.html'), encoding='utf-8').read(), 'html.parser')
 side_act = soup.select_one('.blog-side').get_text(' ').split()
 report.append({'page': '(blog sidebar)', 'words': len(side_exp), 'status': 'IDENTICAL' if side_exp == side_act else 'DIFF', 'diffs': [] if side_exp == side_act else [{'new': ' '.join(side_act)}]})
+# Blocks marked data-reuse may only repeat words that already stand, in the same order, on the page named by data-src
+# ('chrome' = the shared header/footer text). Any text outside a data-src fragment counts as new copy and fails.
+def chrome_words():
+    from chrome import TOPBAR, NAV, CONTACT, RATING, FOOTER_NAV
+    parts = [l for l, _ in TOPBAR] + [n[0] for n in NAV] + [l for l, _ in FOOTER_NAV[1]] + list(CONTACT.values()) + list(RATING.values())
+    return ' \n '.join(parts).split()
+def contains(hay, needle):
+    n = len(needle)
+    return n > 0 and any(hay[i:i + n] == needle for i in range(len(hay) - n + 1))
+src_words = {'chrome': chrome_words()}
+for f in sorted(os.listdir(G.OUT)):
+    if not f.endswith('.html'):
+        continue
+    soup = BeautifulSoup(open(os.path.join(G.OUT, f), encoding='utf-8').read(), 'html.parser')
+    blocks = soup.select('[data-reuse]')
+    if not blocks:
+        continue
+    diffs = []
+    for blk in blocks:
+        for frag in blk.select('[data-src]'):
+            src = frag['data-src']
+            if src == 'new':  # approved new copy, listed in generate.APPROVED_COPY
+                if frag.get_text() not in G.APPROVED_COPY:
+                    diffs.append({'op': 'new-copy-not-approved', 'new': frag.get_text()})
+                frag.decompose()
+                continue
+            if src not in src_words:
+                src_words[src] = md_words(open(os.path.join(G.COPY, src + '.md'), encoding='utf-8').read())
+            words = frag.get_text(' ').split()
+            if not contains(src_words[src], words):
+                diffs.append({'op': 'reuse-not-found', 'source': src, 'new': ' '.join(words)})
+            frag.decompose()
+        stray = visible_text(blk).split()
+        if [w for w in stray if w != '·']:
+            diffs.append({'op': 'new-copy', 'new': ' '.join(stray)})
+    bad += bool(diffs)
+    report.append({'page': f + ' (reused blocks)', 'words': 0, 'status': 'IDENTICAL' if not diffs else f'{len(diffs)} DIFFS', 'diffs': diffs})
 json.dump(report, open(os.path.join(BASE, 'verification.json'), 'w'), ensure_ascii=False, indent=1)
 for r in report:
     print(r['status'].ljust(10), r['words'], r['page'])
