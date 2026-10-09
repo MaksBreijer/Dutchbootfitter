@@ -526,7 +526,7 @@ def render_home(meta, body):
     btns = re.findall(r'\[([^\]]+)\]\(([^)]+)\)', get('Pijn in uw voeten'))
     actions = ''.join(f'<a class="btn{" ghost" if i else ""}" href="{local_href(u)}">{esc(t)}</a>' for i, (t, u) in enumerate(btns))
     actions = actions.replace('</a><a', '</a> <a')
-    h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos skiën®</em>')
+    h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos&nbsp;skiën®</em>')  # never split, also not with a cached stylesheet
     lede_html = esc(lede).replace('? ', '? <br>', 1)
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
     video = (f'<figure class="hero-video"><video autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"><source src="{HERO_VIDEO_PORTRAIT}" media="(orientation: portrait) and (max-width: 900px)" type="video/mp4"><source src="{HERO_VIDEO}" type="video/mp4"></video></figure>'
