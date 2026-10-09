@@ -159,12 +159,11 @@ def header_html(current_file):
         else:
             cls = ' class="nav-cta"' if label == 'Afspraak' else ''
             items.append(f'<li{cls}>{link(label, url)}</li>')
-    # v7: Snuuzu's thin announcement line over the familiar bar (logo left, menu right, orange Afspraak).
+    # v8: one quiet bar (logo left, menu right, orange Afspraak); no announcement line.
     afspraak = local_href(O + '/afspraak/')
     cur = ' aria-current="page"' if afspraak == current_file else ''
     return f'''<a class="skip" href="#main">{esc(SKIP)}</a>
 <header class="site-header">
-  <div class="announce"><a href="{afspraak}">{esc(CTA_HEADING)}</a></div>
   <div class="wrap"><div class="bar">
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary"><span class="bars" aria-hidden="true"></span><span class="lbl-open">{esc(MENU_OPEN)}</span><span class="lbl-close">{esc(MENU_CLOSE)}</span></button>
     <nav class="primary" id="primary" aria-label="Hoofdmenu"><ul class="nav">{''.join(items)}</ul></nav>
@@ -236,6 +235,8 @@ SHOP = {
     'slijpmachine': (W + 'slijpmachine.jpg', 'Slijpmachine'),
     'handwerk-zw': (W + 'handwerk-zw.jpg', 'DutchBootFitter aan het werk'),
     'pers-zw': (W + 'pers-zw.jpg', 'Bootfitting'),
+    # the fitting corner: chair and the blue Masterfit box (home, behind the definition card)
+    'masterfit': (W + 'masterfit.jpg', 'DutchBootFitter bootfitting'),
 }
 # The live site shows small Elementor thumbnails of these photos; serve the sharp versions instead.
 THUMB_TO_SHOP = {'DBF-%s' % k: W + 'DBF-%s.jpg' % k for k in ('01', '03', '04', '07', '08', '09', '10', '11', '12', '13')}
@@ -508,14 +509,14 @@ def render_home(meta, body):
     video = (f'<figure class="hero-video"><video src="{HERO_VIDEO}" poster="{HERO_VIDEO[:-4]}-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"></video></figure>'
              if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
     out = [f'''<section class="hero photo{' has-video' if video else ''}">{'' if video else bg}<div class="wrap">
-<div class="hero-copy"><p class="hero-eyebrow" data-reuse>{rq(HERO_EYEBROW[0], 'new')} <i aria-hidden="true">·</i> {rq(HERO_EYEBROW[1], 'new')}</p><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div><p class="hero-rating" data-reuse><i class="stars" aria-hidden="true"></i>{rq(RATING["text"], "chrome")}</p></div>
+<div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div><p class="hero-rating" data-reuse><i class="stars" aria-hidden="true"></i>{rq(RATING["text"], "chrome")}</p></div>
 {video}</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
     intro = md_to_html(get('Pijnloos skiën®'))
     deft = get('Definitie bootfitting:')
     out.append(f'''<section class="section" id="intro"><div class="wrap split">
 <div class="intro-copy"><h2>{esc(hd('Pijnloos skiën®'))}</h2>{intro}</div>
-<div class="intro-visual"><figure class="media intro-photo">{shop_img('wachtruimte')}</figure>
+<div class="intro-visual"><figure class="media intro-photo">{shop_img('masterfit')}</figure>
 <div class="definition"><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div></div>
 </div></section>''')
     # complaints + zones

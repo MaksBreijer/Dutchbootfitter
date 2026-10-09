@@ -59,6 +59,12 @@ Referentie: Oregon Outdoor Alliance. De start van de site (topbalk, menu, video-
 - **Van de huidige site:** logo links, menu rechts (met HOME), de oranje Afspraak-knop en "pijnloos skiën®" vet in oranje.
 - **Rustig gehouden:** geen telefoonicoon, geen streep onder het label, de tweede hero-knop is een onderstreepte link. Onder 1100 px: logo links, Afspraak en menuknop rechts.
 
+## Ontwerp (v8) — rustiger header
+
+- **Hero:** de H1, de tagline, twee knoppen (oranje hoofdknop, omlijnde tweede knop van gelijke grootte) en daaronder klein de sterren met de beoordeling. De regel boven de kop en het scroll-streepje zijn weg; zachtere overlay en meer witruimte.
+- **Aankondigingsregel** boven de balk is weg (hij herhaalde de Afspraak-knop).
+- **Mobiel (iPhone):** kop laag in beeld, knoppen onder elkaar over de volle breedte (52 px hoog, op één regel tot 375 px), ruimte voor de home-indicator via `safe-area-inset-bottom`.
+
 ## Opnieuw bouwen
 
 ```sh

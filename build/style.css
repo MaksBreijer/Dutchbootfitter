@@ -1172,11 +1172,6 @@ body { line-height: 1.7; }
    From Snuuzu: a thin dark announcement line, a calm transparent bar on the video, the headline low on the left
    with a white button and the review score. From the familiar site: logo left, menu right, the orange Afspraak button.
    Kept quiet: no phone icon, no extra lines. */
-.announce { background: var(--night); text-align: center; max-height: 4.5rem; overflow: hidden; transition: max-height .3s ease; }
-.announce a { display: block; padding: .5rem var(--gutter); color: var(--on-night); font-size: .85rem; font-weight: 400; letter-spacing: .01em; text-decoration: none; }
-.announce a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
-.scrolled .announce { max-height: 0; }
-
 .site-header, .home.scrolled .site-header { top: env(safe-area-inset-top, 0px); }
 .site-header > .wrap { padding-inline: clamp(16px, 5vw, 80px); }
 .site-header .bar { display: flex; align-items: center; gap: clamp(1.5rem, 2.5vw, 2.5rem); min-height: 80px; position: static; border-radius: 0; }
@@ -1215,7 +1210,6 @@ body { line-height: 1.7; }
   .home .site-header.nav-open { background: var(--paper); }
 }
 @media (max-width: 560px) {
-  .announce a { font-size: .76rem; padding-block: .45rem; }
   .act-cta { height: 2.4rem; padding: 0 1rem; font-size: .9rem; }
   .menu-toggle .lbl-open, .menu-toggle .lbl-close { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
 }
@@ -1223,7 +1217,6 @@ body { line-height: 1.7; }
 /* home hero: copy low on the left, white primary button, quiet secondary, review score underneath */
 .hero.photo::before { background: linear-gradient(180deg, rgba(10,14,20,.3) 0%, rgba(10,14,20,.1) 35%, rgba(10,14,20,.3) 65%, rgba(10,14,20,.65) 100%), linear-gradient(90deg, rgba(10,14,20,.4), rgba(10,14,20,0) 65%); }
 .hero.photo .wrap { padding-bottom: clamp(3rem, 7vw, 5.5rem); }
-.hero-eyebrow { border-bottom: 0; padding-bottom: 0; margin-bottom: 1rem; color: rgba(255,255,255,.75); }
 .hero.photo h1 { font-size: clamp(2.3rem, 1.2rem + 4vw, 4.6rem); font-weight: 700; letter-spacing: -.035em; line-height: 1.04; max-width: 15ch; }
 .hero.photo h1 em { font-weight: 700; }
 .hero.photo .hero-foot { display: block; border: 0; padding: 0; margin-top: clamp(1rem, 2vw, 1.4rem); }
@@ -1233,6 +1226,39 @@ body { line-height: 1.7; }
 .hero.photo .btn:not(.ghost):hover { background: var(--orange-btn); color: #fff; }
 .hero.photo .btn.ghost { padding: .4rem 0; background: none; box-shadow: none; backdrop-filter: none; border-radius: 0; color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,.5); text-underline-offset: 6px; }
 .hero.photo .btn.ghost:hover { background: none; color: #fff; text-decoration-color: var(--orange); }
+@media (max-width: 560px) { .hero.photo .actions .btn:not(.ghost) { width: 100%; justify-content: center; } .hero.photo .actions .btn.ghost { width: auto; } }
+
+/* ---------- v8 hero: calmer and roomier ----------
+   Only the H1, the tagline and two buttons. Softer overlay, more air, both buttons the same size;
+   on phones the copy sits low with full-width stacked buttons above the home indicator. */
+.hero.photo { min-height: 100svh; }
+.hero.photo::before { background: linear-gradient(180deg, rgba(10,14,20,.25) 0%, rgba(10,14,20,0) 30%, rgba(10,14,20,.15) 55%, rgba(10,14,20,.7) 100%); }
+.hero.photo .wrap { padding-top: 7rem; padding-bottom: calc(clamp(3.5rem, 10vh, 7rem) + env(safe-area-inset-bottom, 0px)); }
+.hero.photo .hero-copy { max-width: 38rem; }
+.hero.photo h1 { font-size: clamp(2.4rem, 1.5rem + 3.4vw, 4.25rem); font-weight: 700; line-height: 1.05; letter-spacing: -.03em; max-width: 14ch; text-shadow: 0 2px 30px rgba(0,0,0,.2); }
+.hero.photo .hero-foot { margin-top: clamp(1.1rem, 2vw, 1.5rem); }
+.hero.photo .lede { font-size: clamp(1.05rem, 1rem + .3vw, 1.25rem); font-weight: 400; line-height: 1.5; color: rgba(255,255,255,.85); max-width: 30ch; }
+.hero.photo .actions { gap: .75rem; margin-top: clamp(2rem, 4vw, 2.75rem); }
+.hero.photo .btn, .hero.photo .btn.ghost { min-height: 3.25rem; padding: 0 1.6rem; border-radius: 6px; justify-content: center; font-size: 1rem; font-weight: 600; text-decoration: none; backdrop-filter: none; }
+.hero.photo .btn:not(.ghost) { background: var(--orange-btn); color: #fff; }
+.hero.photo .btn:not(.ghost):hover { background: var(--orange-ink); color: #fff; }
+.hero.photo .btn.ghost { background: rgba(255,255,255,.08); color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,.55); }
+.hero.photo .btn.ghost:hover { background: #fff; color: var(--ink); box-shadow: none; }
+.scroll-cue { display: none; }
 .hero-rating { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .9rem; margin-top: clamp(1.4rem, 2.5vw, 2rem); color: rgba(255,255,255,.88); font-size: .95rem; }
 .hero-rating .stars { display: block; width: 6.2rem; height: 1rem; background: linear-gradient(90deg, var(--orange) 90%, rgba(255,255,255,.35) 90%); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 16'%3E%3Cg fill='%23000'%3E%3Cpath id='s' d='M8 0l2.4 5 5.6.6-4.2 3.8 1.2 5.6L8 12.2 3 15l1.2-5.6L0 5.6 5.6 5z'/%3E%3Cuse href='%23s' x='21'/%3E%3Cuse href='%23s' x='42'/%3E%3Cuse href='%23s' x='63'/%3E%3Cuse href='%23s' x='84'/%3E%3C/g%3E%3C/svg%3E") no-repeat center / contain; }
-@media (max-width: 560px) { .hero.photo .actions .btn:not(.ghost) { width: 100%; justify-content: center; } .hero.photo .actions .btn.ghost { width: auto; } }
+.hero.photo .hero-rating { margin-top: clamp(1.5rem, 3vw, 2rem); gap: .6rem; font-size: .9rem; color: rgba(255,255,255,.75); }
+.hero.photo .hero-rating .stars { width: 5.4rem; height: .9rem; }
+@media (max-width: 560px) {
+  .hero.photo .wrap { padding-inline: 20px; padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
+  .hero.photo::before { background: linear-gradient(180deg, rgba(10,14,20,.3) 0%, rgba(10,14,20,.05) 30%, rgba(10,14,20,.35) 55%, rgba(10,14,20,.8) 100%); }
+  .hero.photo h1 { font-size: clamp(2.1rem, 9.5vw, 2.6rem); max-width: 12ch; }
+  .hero.photo .lede br { display: none; }
+  .hero.photo .actions { flex-direction: column; align-items: stretch; gap: .6rem; margin-top: 1.75rem; }
+  .hero.photo .actions .btn, .hero.photo .actions .btn.ghost { width: 100%; min-height: 3.25rem; padding-inline: 1rem; font-size: .97rem; white-space: nowrap; }
+  .hero.photo .actions .btn::after { display: none; }
+  .hero.photo .hero-rating { justify-content: center; margin-top: 1.25rem; font-size: .85rem; }
+}
+.intro-photo img[src*="masterfit"] { object-position: 20% 70%; }
+/* phones: the card sits under the photo, so the client's feet in the Masterfit box stay visible */
+@media (max-width: 860px) { .intro-visual .definition { margin: .8rem 0 0; } .intro-photo img[src*="masterfit"] { object-position: 25% 60%; } }
