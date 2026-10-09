@@ -1262,3 +1262,6 @@ body { line-height: 1.7; }
 .intro-photo img[src*="masterfit"] { object-position: 20% 70%; }
 /* phones: the card sits under the photo, so the client's feet in the Masterfit box stay visible */
 @media (max-width: 860px) { .intro-visual .definition { margin: .8rem 0 0; } .intro-photo img[src*="masterfit"] { object-position: 25% 60%; } }
+/* the hero clip's still shows while it loads: landscape on desktop, the vertical clip's first frame on phones */
+.hero-video { background: var(--night) url("wp-content/uploads/winkel/strolz-aanmeten-poster.jpg") center 55% / cover; }
+@media (orientation: portrait) and (max-width: 900px) { .hero-video { background: var(--night) url("wp-content/uploads/winkel/strolz-aanmeten-staand-poster.jpg") center / cover; } .hero-video video { object-position: center 40%; } }

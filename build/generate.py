@@ -475,6 +475,8 @@ for _p in ['wp-content/uploads/hero-sneeuw.jpg']:
         HERO_BG = _p
 # Short clip of a Strolz boot being foamed to the foot in the shop; plays muted as the hero background.
 HERO_VIDEO = W + 'strolz-aanmeten.mp4'
+# Phones (portrait): the sharper vertical shot of the same fitting, ending with a client leaving with the bag.
+HERO_VIDEO_PORTRAIT = W + 'strolz-aanmeten-staand.mp4'
 
 
 # Hand-drawn marker strokes (an underline, a cross) that draw themselves in; decorative only.
@@ -506,7 +508,7 @@ def render_home(meta, body):
     h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos skiën®</em>')
     lede_html = esc(lede).replace('? ', '? <br>', 1)
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
-    video = (f'<figure class="hero-video"><video src="{HERO_VIDEO}" poster="{HERO_VIDEO[:-4]}-poster.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"></video></figure>'
+    video = (f'<figure class="hero-video"><video autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"><source src="{HERO_VIDEO_PORTRAIT}" media="(orientation: portrait) and (max-width: 900px)" type="video/mp4"><source src="{HERO_VIDEO}" type="video/mp4"></video></figure>'
              if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
     out = [f'''<section class="hero photo{' has-video' if video else ''}">{'' if video else bg}<div class="wrap">
 <div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div><p class="hero-rating" data-reuse><i class="stars" aria-hidden="true"></i>{rq(RATING["text"], "chrome")}</p></div>
