@@ -1432,3 +1432,7 @@ h2 .accent, h1 .accent { color: var(--orange-ink); }
 .planner [hidden] { display: none !important; }
 .pl-done-title { font-weight: 700; font-size: 1.2rem; }
 .prose blockquote.review-card { margin: 0; padding: 1.3rem 1.3rem 1.2rem; background: var(--grey); border: 0; border-radius: 12px; }
+
+/* "pijnloos skiën®" always stays on one line in the hero, also on small phones */
+.hero h1 em { white-space: nowrap; }
+@media (max-width: 600px) { .hero h1 { max-width: none; font-size: min(var(--step-4), 9.2vw); } }

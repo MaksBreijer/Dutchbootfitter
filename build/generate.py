@@ -305,7 +305,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=13">'''
+<link rel="stylesheet" href="style.css?v=14">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
