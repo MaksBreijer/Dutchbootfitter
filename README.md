@@ -65,6 +65,21 @@ Referentie: Oregon Outdoor Alliance. De start van de site (topbalk, menu, video-
 - **Aankondigingsregel** boven de balk is weg (hij herhaalde de Afspraak-knop).
 - **Mobiel (iPhone):** kop laag in beeld, knoppen onder elkaar over de volle breedte (52 px hoog, op één regel tot 375 px), ruimte voor de home-indicator via `safe-area-inset-bottom`.
 
+## Ontwerp (v9) — diensten eerder, premium
+
+- **Eerst waar we voor staan, dan de diensten:** na de hero komt "Pijnloos skiën®" (01) en direct daarna "Wat wilt u doen?" (02); de rest volgt in de volgorde van bootfitter.nl. `verify.py` vergelijkt de home met die volgorde (`home_md()` in `generate.py`).
+- **Intro (waar we voor staan):** de alinea met harde regeleinden is opgesplitst op die regeleinden: links de kop met de eerste zin als grotere lead, rechts de uitleg en de uitnodiging om een afspraak te maken. Zelfde woorden, zelfde volgorde.
+- **Premium dienstkaarten:** foto boven, tekst eronder op een rustig vlak, klein nummer (01–03) en één rustige link met pijl. De kleine productfoto's van de live site (één was maar 292 px) zijn vervangen door vierkante uitsneden van eigen foto's: `dienst-aanpassen.jpg` (oprekken), `dienst-op-maat.jpg` (DBF-13) en `dienst-strolz.jpg` (uit de Strolz-video); de alt-teksten zijn die van de live site (`SERVICE_PHOTOS`).
+- **Mobiel:** de drie kaarten staan in een rij die je kunt swipen (de volgende kaart piept in beeld), in plaats van onder elkaar.
+- **Compacter:** minder ruimte tussen secties en lagere kaarten en foto's, zodat er minder gescrold hoeft te worden.
+
+## Ontwerp (v10) — oranje als signaal
+
+- **Eén oranje sleutelwoord per kop** op de home ("**Pijnloos** skiën®", "Wat wilt u **doen?**", "… **betekenen?**", "… **FAQ**"), via `HEADING_ACCENTS` in `generate.py`: alleen opmaak (`<span class="accent">`), de woorden en de koppenstructuur blijven gelijk.
+- **Oranje merkmoment:** de afspraak-oproep onderaan elke pagina is een vlak in het logo-oranje (`--brand: #e8561a`) met witte tekst, "pijnloos®" donker en een donkere knop; de foto erachter is weg.
+- **Details:** geselecteerde tekst en links met een oranje onderstreping.
+- **Molen:** de wieken draaien nu om de as (de draaipunt lag eerder in een hoek van de tekening, waardoor ze uit beeld zwaaiden), tegen de klok in zoals een Hollandse molen, en zichtbaar (14–18 s per rondje). De as staat net buiten de rechterrand van de footer en van het oranje afspraakvlak (witte molen), zodat de wieken af en toe het vlak in zwaaien en door de rand worden afgesneden. Bij "verminder beweging" staan ze stil.
+
 ## Opnieuw bouwen
 
 ```sh

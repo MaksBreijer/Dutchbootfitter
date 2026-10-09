@@ -190,7 +190,7 @@ def footer_html():
     socials = ''.join(f'<a href="{u}" aria-label="{html.escape(l)}">{SOCIAL_ICONS[l]}</a>' for l, u in SOCIALS)
     c = CONTACT
     return f'''<footer class="site-footer">
-  <div class="wrap foot-grid">{windmill_svg()}
+  <div class="wrap foot-grid">
     <div class="foot-contact">
       <h4>{esc(c["heading"])}</h4>
       <address>{esc(c["street"])}<br>{esc(c["city"])}</address>
@@ -254,19 +254,19 @@ def cta_heading_html():
     return f'<span class="q">{esc(q)}?</span> {esc(rest).replace("pijnloos®", "<em>pijnloos®</em>")}'
 
 
-def windmill_svg():
+def windmill_svg(uid='sail'):
     # Four latticed windmill sails, drawn like the latticed skis in the DutchBootFitter logo.
     rungs = ''.join(f'M6 {y}H50' for y in range(-206, -50, 16))
-    sail = (f'<g id="sail"><path d="M-4 -230H4V-14H-4Z" fill="currentColor" stroke="none"/>'
+    sail = (f'<g id="{uid}"><path d="M-4 -230H4V-14H-4Z" fill="currentColor" stroke="none"/>'
             f'<path d="M6 -222H50V-46H6Z{rungs}M20.7 -222V-46M35.3 -222V-46"/></g>')
-    sails = ''.join(f'<use href="#sail" transform="rotate({a})"/>' for a in (90, 180, 270))
+    sails = ''.join(f'<use href="#{uid}" transform="rotate({a})"/>' for a in (90, 180, 270))
     return (f'<svg class="windmill" viewBox="-240 -240 480 480" aria-hidden="true" focusable="false">'
             f'<g class="sails" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">{sail}{sails}'
             f'<circle r="18" fill="currentColor" stroke="none"/></g></svg>')
 
 
 def cta_html():
-    return f'''<section class="cta-band"><div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div><figure class="cta-photos"><div class="media a">{shop_img('interieur')}</div></figure></div></section>'''
+    return f'''<section class="cta-band"><div class="wrap"><div class="cta-copy"><h2>{cta_heading_html()}</h2><a class="btn big" href="afspraak.html">{esc(CTA_BUTTON)}</a></div>{windmill_svg('sail-cta')}<figure class="cta-photos"><div class="media a">{shop_img('interieur')}</div></figure></div></section>'''
 
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">'
@@ -304,7 +304,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=10">'''
+<link rel="stylesheet" href="style.css?v=11">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -494,6 +494,23 @@ def mark(h, word, kind):
     return h[:i] + f'<span class="mark mark-{kind}">{word}{MARK_SVG[kind]}</span>' + h[i + len(word):]
 
 
+# The three services on the home: the live site shows small product shots (one only 292 px); these are
+# square crops of our own shop photos and the Strolz fitting clip, so the cards read as one set.
+SERVICE_PHOTOS = {
+    '/mijn-skischoenen-aanpassen/': W + 'dienst-aanpassen-foto.jpg',
+    '/op-maat-gemaakte-skischoenen/': W + 'dienst-op-maat-foto.jpg',
+    '/strolz-op-maat-gemaakte-skischoenen-aanmeten/': W + 'dienst-strolz-foto.jpg',
+}
+
+
+HEADING_ACCENTS = [
+    ('<h2>Pijnloos skiën®</h2>', 'Pijnloos'),
+    ('<h2>Wat wilt u doen?</h2>', 'doen?'),
+    ('<h2>Wat kan een bootfitter voor u betekenen?</h2>', 'betekenen?'),
+    ('Bootfitter FAQ</h2>', 'FAQ'),
+]
+
+
 def render_home(meta, body):
     body = strip_cta(body)
     secs = split_sections(body)
@@ -515,9 +532,14 @@ def render_home(meta, body):
 {video}</div><a class="scroll-cue" href="#intro" aria-hidden="true" tabindex="-1"></a></section>''']
     # intro + definition
     intro = md_to_html(get('Pijnloos skiën®'))
+    # one paragraph with hard line breaks on the live site; shown as a lead line (what we stand for) on the left
+    # under the heading, the rest on the right. Same words, same order.
+    lines = [l.strip() for l in re.sub(r'^\s*<p>|</p>\s*$', '', intro.strip()).split('<br>')]
+    intro_copy = (f'<div class="intro-copy"><div class="intro-lead"><h2>{esc(hd("Pijnloos skiën®"))}</h2><p class="lead">{lines[0]}</p></div>'
+                  f'<div class="intro-body">{"".join(f"<p>{l}</p>" for l in lines[1:])}</div></div>')
     deft = get('Definitie bootfitting:')
     out.append(f'''<section class="section" id="intro"><div class="wrap split">
-<div class="intro-copy"><h2>{esc(hd('Pijnloos skiën®'))}</h2>{intro}</div>
+{intro_copy}
 <div class="intro-visual"><figure class="media intro-photo">{shop_img('masterfit')}</figure>
 <div class="definition"><h3>{esc(hd('Definitie bootfitting:'))}</h3>{md_to_html(deft)}</div></div>
 </div></section>''')
@@ -556,13 +578,15 @@ def render_home(meta, body):
         paras = t.strip().split('  \n')
         desc = paras[0].strip()
         more_t, more_u = re.match(r'\[([^\]]+)\]\(([^)]+)\)', paras[1].strip()).groups()
-        cards.append(f'''<article class="choice"><a class="media" href="{local_href(href)}" tabindex="-1">{img_tag(im.group(1), im.group(2))}</a>
+        photo = next((v for k, v in SERVICE_PHOTOS.items() if href.endswith(k)), im.group(2))  # sharp shop photo, the live site's alt text
+        cards.append(f'''<article class="choice"><a class="media" href="{local_href(href)}" tabindex="-1">{img_tag(im.group(1), photo)}</a>
 <div class="body"><h3><a href="{local_href(href)}">{esc(title)}</a></h3><p>{esc(desc)}</p><a class="more" href="{local_href(more_u)}">{esc(more_t)}</a></div></article>''')
-    out.append(f'''<section class="section choices-sec"><div class="wrap"><div class="section-head"><h2>{esc(hd('Wat wilt u doen?'))}</h2></div><div class="choices">{''.join(cards)}</div></div></section>''')
+    # the services come straight after "what we stand for" (hero, intro, services); verify.py compares against home_md()
+    out.insert(2, f'''<section class="section choices-sec"><div class="wrap"><div class="section-head"><h2>{esc(hd('Wat wilt u doen?'))}</h2></div><div class="choices">{''.join(cards)}</div></div></section>''')
     # is / is not
     def ul(key):
         return ''.join(f'<li>{inline(i)}</li>' for i in re.findall(r'^- (.+)$', get(key), re.M))
-    out.append(f'''<section class="section alt isnot-sec"><div class="wrap isnot">
+    out.append(f'''<section class="section alt isnot-sec">{windmill_svg('sail-mid')}<div class="wrap isnot">
 <div class="is"><h3>{mark(esc(hd('Wat is DutchBootFitter ?')), 'DutchBootFitter', 'under')}</h3><ul>{ul('Wat is DutchBootFitter ?')}</ul></div>
 <div class="not"><h3>{mark(esc(hd('Wat is DutchBootFitter niet')), 'niet', 'cross')}</h3><ul>{ul('Wat is DutchBootFitter niet')}</ul></div>
 </div></section>''')
@@ -574,7 +598,11 @@ def render_home(meta, body):
         dets.append(f'<details{" open" if i == 1 else ""}><summary>{esc(qa[i].strip())}</summary><div class="answer">{md_to_html(qa[i + 1])}</div></details>')
     out.append(f'''<section class="section faq-sec"><div class="wrap faq-wrap"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2><div class="faq">{''.join(dets)}</div></div></section>''')
     out += home_trust_blocks()
-    return '\n'.join(out)
+    # one orange key word per heading (markup only, the words stay the same)
+    html_out = '\n'.join(out)
+    for h, word in HEADING_ACCENTS:
+        html_out = html_out.replace(h, h.replace(word, f'<span class="accent">{word}</span>', 1), 1)
+    return html_out
 
 
 # ---------------------------------------------------------------- home 06-08: team, shop, reviews
@@ -833,6 +861,16 @@ def render_tarieven(meta, body):
 
 
 # ---------------------------------------------------------------- over ons
+def home_md(body):
+    """The home copy in reading order: the services ("Wat wilt u doen?") move up to straight after the intro
+    (what we stand for). Every block keeps its words; only the block moves. verify.py checks against this."""
+    a = body.index('## Wat wilt u doen?')
+    b = body.index('### Wat is DutchBootFitter ?')
+    services, rest = body[a:b], body[:a] + body[b:]
+    i = rest.index('## Wat kan een bootfitter voor u betekenen?')
+    return rest[:i] + services + rest[i:]
+
+
 def over_ons_md(body):
     """The Over Ons copy in reading order: who we are, In Memoriam and who carries on, what the titles mean,
     the shop, then where to go next. Every block keeps its words; only the blocks move. verify.py checks against this."""

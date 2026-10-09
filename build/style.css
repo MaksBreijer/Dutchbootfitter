@@ -5,10 +5,11 @@
    - Solstice Design: italics for emphasis, generous whitespace, quiet numbered labels.
    The signal orange is the exact orange of the DutchBootFitter logo; contour lines stay as the only ornament. */
 :root {
-  --snow: #efeeec;        /* soft warm grey, the page ground (v6) */
+  --snow: #ffffff;        /* white page ground, as on bootfitter.nl */
   --paper: #ffffff;
-  --ice: #ebe7df;
-  --line: #ddd7cc;
+  --grey: #f4f4f4;        /* the light grey band colour of bootfitter.nl */
+  --ice: #ececec;
+  --line: #e3e3e3;
   --ink: #14202c;
   --slate: #56616c;
   --orange: #ff6c2f;      /* exact orange sampled from the DutchBootFitter logo */
@@ -43,7 +44,7 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --snow: #0d151d; --paper: #141e28; --ice: #1b2733; --line: #283745;
+    --snow: #0d151d; --paper: #141e28; --grey: #141e28; --ice: #1b2733; --line: #283745;
     --ink: #eef0f2; --slate: #a8b3bd; --orange: #ff7a3f; --orange-ink: #ff9a6b; --orange-btn: #ff7a3f;
     --on-orange: #1a0d04; --night: #070d13; --on-night: #f3efe8; --night-muted: #8f9ba6;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.3);
@@ -51,7 +52,7 @@
   }
 }
 :root[data-theme="dark"] {
-  --snow: #0d151d; --paper: #141e28; --ice: #1b2733; --line: #283745;
+  --snow: #0d151d; --paper: #141e28; --grey: #141e28; --ice: #1b2733; --line: #283745;
   --ink: #eef0f2; --slate: #a8b3bd; --orange: #ff7a3f; --orange-ink: #ff9a6b; --orange-btn: #ff7a3f;
   --on-orange: #1a0d04; --night: #070d13; --on-night: #f3efe8; --night-muted: #8f9ba6;
   --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 32px rgba(0,0,0,.3);
@@ -687,7 +688,7 @@ body { line-height: 1.7; }
 
 /* Closing CTA: four latticed windmill sails turn slowly behind the copy. */
 .cta-band .windmill { position: absolute; left: clamp(-12rem, -9vw, -5rem); bottom: clamp(-17rem, -15vw, -9rem); width: clamp(24rem, 40vw, 36rem); height: auto; color: var(--line); opacity: .9; pointer-events: none; }
-.cta-band .windmill .sails { transform-box: view-box; transform-origin: 50% 50%; animation: windmill-turn 60s linear infinite; }
+.cta-band .windmill .sails { transform-box: fill-box; transform-origin: 50% 50%; animation: windmill-turn 60s linear infinite; }
 @keyframes windmill-turn { to { transform: rotate(360deg); } }
 .nav .nav-cta { order: 1; }
 
@@ -1062,7 +1063,7 @@ body { line-height: 1.7; }
 .site-footer > .foot-grid { position: relative; overflow: hidden; isolation: isolate; }
 .foot-grid > * { position: relative; }
 .site-footer .windmill { position: absolute; z-index: -1; right: clamp(-13rem, -9vw, -6rem); bottom: clamp(-16rem, -13vw, -8rem); width: clamp(22rem, 36vw, 32rem); height: auto; color: rgba(255,255,255,.05); pointer-events: none; }
-.site-footer .windmill .sails { transform-box: view-box; transform-origin: 50% 50%; animation: windmill-turn 90s linear infinite; }
+.site-footer .windmill .sails { transform-box: fill-box; transform-origin: 50% 50%; animation: windmill-turn 90s linear infinite; }
 @media (max-width: 560px) {
   .hero-eyebrow { flex-direction: column; gap: .25rem; }
   .hero-eyebrow i { display: none; }
@@ -1265,3 +1266,117 @@ body { line-height: 1.7; }
 /* the hero clip's still shows while it loads: landscape on desktop, the vertical clip's first frame on phones */
 .hero-video { background: var(--night) url("wp-content/uploads/winkel/strolz-aanmeten-poster.jpg") center 55% / cover; }
 @media (orientation: portrait) and (max-width: 900px) { .hero-video { background: var(--night) url("wp-content/uploads/winkel/strolz-aanmeten-staand-poster.jpg") center / cover; } .hero-video video { object-position: center 40%; } }
+
+/* ---------- v9 compact: less scrolling, closer to the length of bootfitter.nl ----------
+   Same blocks in the same order; only the spacing, card and photo heights shrink. */
+main > .section, .home main > .section { padding-block: clamp(2.25rem, 4.5vw, 4rem); }
+.home main > .section > .wrap::before { margin-bottom: 1rem; }
+.section-head { margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
+.intro-visual { margin-top: clamp(1.75rem, 4vw, 3rem); }
+.intro-photo { aspect-ratio: 5 / 2; }
+.choice { min-height: clamp(24rem, 32vw, 29rem); }
+.strip-track figure, .strip-track figure.s-etalage, .strip-track figure.s-werkbank, .strip-track figure.s-opmaat { width: clamp(12rem, 19vw, 16rem); }
+.cta-band > .wrap { min-height: clamp(22rem, 34vw, 28rem); }
+@media (max-width: 900px) { .choice { min-height: 22rem; } }
+@media (max-width: 860px) { .intro-photo { aspect-ratio: 4 / 3; } }
+
+/* ---------- v9 services: first under the hero, premium cards ----------
+   Photo on top, copy below on a calm surface, a small index number, one quiet link per card. */
+.choices-sec .section-head { margin-bottom: clamp(1.5rem, 3vw, 2.25rem); }
+.choices-sec .choices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); counter-reset: svc; }
+.choices-sec .choice { counter-increment: svc; position: relative; display: flex; flex-direction: column; min-height: 0; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; isolation: isolate; transition: transform .35s cubic-bezier(.2,.7,.2,1), box-shadow .35s ease, border-color .35s ease; }
+.choices-sec .choice::before { display: none; }
+.choices-sec .choice:hover { transform: translateY(-4px); border-color: transparent; box-shadow: 0 24px 48px -24px rgba(10,18,26,.35), 0 2px 6px rgba(10,18,26,.05); }
+.choices-sec .choice .media { position: relative; inset: auto; height: auto; aspect-ratio: 4 / 3; z-index: 0; border-radius: 0; background: var(--ice); }
+.choices-sec .choice .media img { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.choices-sec .choice:hover .media img { transform: scale(1.04); }
+.choices-sec .choice .body { flex: 1; display: flex; flex-direction: column; gap: .65rem; margin: 0; padding: clamp(1.25rem, 2vw, 1.6rem) clamp(1.25rem, 2vw, 1.6rem) clamp(1.35rem, 2vw, 1.7rem); background: none; }
+.choices-sec .choice .body::before { content: counter(svc, decimal-leading-zero); font-family: var(--f-mono); font-size: .75rem; font-weight: 600; letter-spacing: .14em; color: var(--orange-ink); }
+.choices-sec .choice h3 { font-size: clamp(1.2rem, 1.05rem + .5vw, 1.45rem); font-weight: 700; font-stretch: 100%; text-transform: none; letter-spacing: -.015em; line-height: 1.2; }
+.choices-sec .choice h3 a, .choices-sec .choice h3 a:hover { color: var(--ink); text-decoration: none; }
+.choices-sec .choice p { color: var(--slate); font-size: .95rem; line-height: 1.6; }
+.choices-sec .choice .more { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 1rem; width: 100%; margin-top: auto; padding: 1rem 0 0; border-top: 1px solid var(--line); border-radius: 0; background: none; color: var(--ink); font-size: .95rem; font-weight: 600; line-height: 1.35; text-decoration: none; }
+.choices-sec .choice .more::after { content: "→"; color: var(--orange-ink); transition: transform .3s ease; }
+.choices-sec .choice .more:hover, .choices-sec .choice:hover .more { background: none; color: var(--orange-ink); }
+.choices-sec .choice:hover .more::after { transform: translateX(4px); }
+@media (max-width: 900px) {
+  /* phones and tablets: a swipeable row, one card in view and the next peeking in */
+  .choices-sec .choices { display: flex; gap: .75rem; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); margin-inline: calc(var(--gutter) * -1); padding: .25rem var(--gutter) 1rem; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .choices-sec .choices::-webkit-scrollbar { display: none; }
+  .choices-sec .choice { flex: 0 0 min(84%, 22rem); scroll-snap-align: start; }
+  .choices-sec .choice:hover { transform: none; box-shadow: none; }
+  .choices-sec .choice .media { aspect-ratio: 16 / 11; }
+  .choices-sec .choice p { font-size: .92rem; }
+}
+@media (prefers-reduced-motion: reduce) { .choices-sec .choice, .choices-sec .choice .media img { transition: none; } .choices-sec .choice:hover { transform: none; } }
+
+/* ---------- v9 intro: what we stand for ----------
+   Heading and the lead line on the left, the explanation and the invitation on the right, both ending on one line. */
+#intro .intro-copy { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); column-gap: clamp(2rem, 6vw, 6rem); row-gap: 1.5rem; align-items: end; font-size: inherit; }
+#intro .intro-copy > .intro-lead { grid-column: 1; grid-row: 1; }
+#intro .intro-copy > .intro-body { grid-column: 2; grid-row: 1; }
+#intro .intro-lead h2 { position: static; margin: 0 0 clamp(1rem, 2vw, 1.4rem); }
+#intro .intro-lead .lead { margin: 0; max-width: 30ch; font-size: clamp(1.3rem, 1.05rem + .9vw, 1.8rem); line-height: 1.38; font-weight: 400; letter-spacing: -.01em; color: var(--ink); }
+#intro .intro-lead .lead strong { font-weight: 700; color: var(--ink); }
+#intro .intro-body { display: flex; flex-direction: column; gap: .9rem; padding-bottom: .3rem; }
+#intro .intro-body p { margin: 0; max-width: 42ch; font-size: clamp(1rem, .96rem + .2vw, 1.1rem); line-height: 1.65; color: var(--slate); }
+#intro .intro-body p + p { padding-top: .9rem; border-top: 1px solid var(--line); color: var(--ink); }
+#intro .intro-body a { color: var(--orange-ink); font-weight: 600; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+#intro .intro-body a:hover { text-decoration-thickness: 2px; }
+@media (max-width: 860px) {
+  #intro .intro-copy { grid-template-columns: 1fr; row-gap: 1.25rem; }
+  #intro .intro-copy > .intro-body { grid-column: 1; grid-row: 2; }
+}
+
+/* ---------- v10 orange: the brand as a signal, not as wallpaper ----------
+   One orange key word per heading, orange details (selection, focus, links), and one full orange moment:
+   the appointment band at the bottom of every page. */
+:root { --brand: #e8561a; }
+h2 .accent, h1 .accent { color: var(--orange-ink); }
+::selection { background: var(--brand); color: #fff; }
+.prose a, .intro-body a, .faq a { text-decoration-color: color-mix(in srgb, var(--brand) 55%, transparent); text-underline-offset: 4px; }
+.prose a:hover, .faq a:hover { text-decoration-color: var(--brand); }
+
+/* the appointment band: solid brand orange, white type, a dark button */
+.cta-band > .wrap { background: var(--brand); color: #fff; min-height: 0; padding: clamp(2.5rem, 6vw, 5rem); align-items: center; }
+.cta-photos { display: none; }
+.cta-band h2 { color: #fff; max-width: 18ch; font-size: clamp(2rem, 1.2rem + 3vw, 3.6rem); }
+.cta-band h2 .q { color: rgba(255,255,255,.9); font-style: italic; font-weight: 400; }
+.cta-band h2 em { color: var(--night); font-style: normal; font-weight: 800; }
+.cta-band .btn { background: var(--night); color: #fff; min-height: 3.25rem; padding: 0 1.7rem; border-radius: 6px; }
+.cta-band .btn:hover { background: #fff; color: var(--night); }
+.cta-band .windmill { color: rgba(255,255,255,.22); }
+@media (max-width: 860px) { .cta-band .cta-copy { flex: none; gap: 1.5rem; } .cta-band .btn { width: 100%; justify-content: center; } }
+
+/* ---------- windmill: turns like a real Dutch mill ----------
+   Counter-clockwise about its axle, at a calm but visible pace; the whole mill sits inside the footer, and
+   a white one turns in the empty right side of the orange appointment band. Still for reduced motion. */
+@keyframes windmill-turn-ccw { to { transform: rotate(-360deg); } }
+.windmill .sails { transform-box: fill-box; transform-origin: 50% 50%; will-change: transform; }  /* the four sails are symmetric, so the centre of their box is the axle */
+.site-footer .windmill { right: clamp(1rem, 4vw, 4rem); bottom: clamp(1rem, 3vw, 2.5rem); width: clamp(14rem, 22vw, 20rem); color: rgba(255,255,255,.06); }
+.site-footer .windmill .sails { animation: windmill-turn-ccw 18s linear infinite; }
+.cta-band > .wrap { overflow: hidden; }
+.cta-band .windmill { position: absolute; z-index: 0; left: auto; top: 50%; right: clamp(-4rem, 4vw, 5rem); bottom: auto; width: clamp(16rem, 30vw, 26rem); transform: translateY(-50%); color: rgba(255,255,255,.2); pointer-events: none; }
+.cta-band .windmill .sails { animation: windmill-turn-ccw 14s linear infinite; }
+.cta-band .cta-copy { position: relative; z-index: 1; }
+@media (max-width: 860px) { .cta-band .windmill { top: auto; bottom: -5rem; right: -5rem; width: 15rem; transform: none; color: rgba(255,255,255,.16); } }
+@media (prefers-reduced-motion: reduce) { .windmill .sails { animation: none !important; } }
+/* the axle sits just past the right edge, so the sails sweep into the field now and then and are cut off by it */
+.cta-band .windmill { --mill: clamp(22rem, 36vw, 32rem); width: var(--mill); top: 50%; bottom: auto; right: calc(var(--mill) * -.5 - 1.5rem); transform: translateY(-50%); }
+.site-footer { overflow: hidden; }
+.site-footer .windmill { --mill: clamp(20rem, 32vw, 28rem); width: var(--mill); top: 45%; bottom: auto; right: calc(var(--mill) * -.5 - 1.5rem); transform: translateY(-50%); }
+@media (max-width: 860px) {
+  .cta-band .windmill { --mill: 18rem; top: auto; bottom: calc(var(--mill) * -.5 + 4rem); transform: none; }
+  .site-footer .windmill { --mill: 18rem; }
+}
+
+/* ---------- windmill in the dark "wat is / niet" band ---------- */
+.section.isnot-sec { position: relative; overflow: hidden; isolation: isolate; }
+.isnot-sec .windmill { --mill: clamp(22rem, 38vw, 34rem); position: absolute; z-index: -1; width: var(--mill); height: auto; top: 50%; left: calc(var(--mill) * -.5 - 1.5rem); transform: translateY(-50%); color: rgba(255,255,255,.12); pointer-events: none; }
+.isnot-sec .windmill .sails { animation: windmill-turn-ccw 22s linear infinite; }
+@media (max-width: 860px) { .isnot-sec .windmill { --mill: 18rem; top: auto; bottom: calc(var(--mill) * -.5 + 3rem); transform: none; color: rgba(255,255,255,.1); } }
+
+/* ---------- white page, bootfitter.nl grey bands ---------- */
+.section.alt:not(.isnot-sec), .shop-sec { background: var(--grey); }
+.choices-sec .choice .media { aspect-ratio: 4 / 5; }
+.choices-sec .choice .media img { object-position: center top; }

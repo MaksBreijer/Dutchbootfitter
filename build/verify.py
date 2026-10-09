@@ -59,6 +59,10 @@ for slug in sorted(s for s in G.KNOWN if not s.startswith('_')):
     if slug == 'tarieven-bootfitting':
         # the copier repeated each price name after its link; the live page shows it once
         src = re.sub(r'(?m)^- \[([^\]]+)\]\(([^)]+)\) \1 ', lambda m: f'- [{m.group(1)}]({m.group(2)}) ', src)
+    if slug == 'home':
+        # the services block sits straight after the intro; compare against that order
+        head, _, body = src.partition('===MAIN===')
+        src = head + '===MAIN===\n' + G.home_md(body)
     if slug == 'over-ons':
         # the page shows the same blocks in a different reading order; compare against that order
         head, _, body = src.partition('===MAIN===')
