@@ -112,3 +112,52 @@ if (matchMedia('(prefers-reduced-motion: reduce)').matches) document.querySelect
   window.addEventListener('resize', sync);
   sync();
 })();
+
+// Appointment planner: choose a bootfitter, a service, a day (next three weeks, no Sundays) and a time, then
+// your details. Not connected to a booking system yet: it shows a summary and prepares an e-mail to the shop.
+(function () {
+  var form = document.querySelector('form.planner');
+  if (!form) return;
+  var days = form.querySelector('.pl-days'), times = form.querySelectorAll('.pl-time');
+  var err = form.querySelector('.pl-error'), done = form.querySelector('.pl-done');
+  var DAY = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+  var MONTH = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+  var LONG = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
+  var MLONG = ['januari', 'februari', 'maart', 'april', 'mei', 'juni', 'juli', 'augustus', 'september', 'oktober', 'november', 'december'];
+  var picked = { day: null, time: null };
+  var d = new Date(); d.setHours(0, 0, 0, 0);
+  for (var i = 1; i <= 21; i++) {
+    var x = new Date(d); x.setDate(d.getDate() + i);
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'pl-day'; b.setAttribute('aria-pressed', 'false');
+    b.innerHTML = '<small>' + DAY[x.getDay()] + '</small><b>' + x.getDate() + '</b><small>' + MONTH[x.getMonth()] + '</small>';
+    b.dataset.label = LONG[x.getDay()] + ' ' + x.getDate() + ' ' + MLONG[x.getMonth()];
+    if (x.getDay() === 0) b.disabled = true;
+    days.appendChild(b);
+  }
+  function choose(group, btn, key) {
+    group.forEach(function (o) { o.setAttribute('aria-pressed', o === btn ? 'true' : 'false'); });
+    picked[key] = btn;
+  }
+  days.addEventListener('click', function (e) {
+    var b = e.target.closest('.pl-day'); if (b && !b.disabled) choose(days.querySelectorAll('.pl-day'), b, 'day');
+  });
+  times.forEach(function (t) { t.addEventListener('click', function () { choose(times, t, 'time'); }); });
+  function val(n) { var el = form.querySelector('[name="' + n + '"]:checked') || form.querySelector('[name="' + n + '"]:not([type=radio])'); return el ? el.value.trim() : ''; }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var ok = val('fitter') && val('dienst') && picked.day && picked.time && val('naam') && val('telefoon') && /\S+@\S+\.\S+/.test(val('email'));
+    err.hidden = !!ok;
+    if (!ok) return;
+    var rows = [['Bootfitter', val('fitter')], ['Afspraak', val('dienst')], ['Dag', picked.day.dataset.label], ['Tijd', picked.time.dataset.time],
+                ['Naam', val('naam')], ['Telefoon', val('telefoon')], ['E-mail', val('email')]];
+    if (val('opmerking')) rows.push(['Opmerking', val('opmerking')]);
+    var ul = done.querySelector('.pl-summary'); ul.innerHTML = '';
+    rows.forEach(function (r) { var li = document.createElement('li'); li.innerHTML = '<b></b> '; li.firstChild.textContent = r[0] + ':'; li.appendChild(document.createTextNode(r[1])); ul.appendChild(li); });
+    var body = rows.map(function (r) { return r[0] + ': ' + r[1]; }).join('\n');
+    done.querySelector('.pl-mail').href = 'mailto:' + form.dataset.mail + '?subject=' + encodeURIComponent('Afspraak aanvraag – ' + val('naam')) + '&body=' + encodeURIComponent(body);
+    Array.prototype.forEach.call(form.querySelectorAll('fieldset, .pl-submit'), function (f) { f.hidden = true; });
+    done.hidden = false;
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();

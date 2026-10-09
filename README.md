@@ -80,6 +80,15 @@ Referentie: Oregon Outdoor Alliance. De start van de site (topbalk, menu, video-
 - **Details:** geselecteerde tekst en links met een oranje onderstreping.
 - **Molen:** de wieken draaien nu om de as (de draaipunt lag eerder in een hoek van de tekening, waardoor ze uit beeld zwaaiden), tegen de klok in zoals een Hollandse molen, en zichtbaar (14–18 s per rondje). De as staat net buiten de rechterrand van de footer en van het oranje afspraakvlak (witte molen), zodat de wieken af en toe het vlak in zwaaien en door de rand worden afgesneden. Bij "verminder beweging" staan ze stil.
 
+## Ontwerp (v11) — wit, reviews terug, afspraakplanner
+
+- **Kleur:** witte pagina, lichtgrijze vlakken `#f4f4f4` en neutrale grijze lijnen zoals op bootfitter.nl; geen donkere modus meer.
+- **Dienstkaarten:** eigen foto's van het aanpassen, aanmeten en Strolz-schuimen (`dienst-*-foto.jpg`, 4:5).
+- **Geen nummers** (01, 02 …) meer bij secties, dienstkaarten en de klachtenlijst; de klachten hebben een oranje stip.
+- **Reviews terug zoals op bootfitter.nl:** de drie klantreacties (Eric, Jan-Willem, Nora) op de Ski-Mojo-pagina's staan weer als reviewkaarten met sterren (`review_cards()`), en de footer heeft weer de Google-review-QR van Trustindex naast "Schijf een review".
+- **Afspraakplanner** op de afspraakpagina, op de plek van de oude (lege) boekingswidget: kies Bart, Selma of Maks, waarvoor u komt, een dag (drie weken vooruit, geen zondag) en tijd, en uw gegevens. Nog nergens aan gekoppeld: na "Afspraak aanvragen" ziet u een overzicht en een knop die een e-mail met de aanvraag naar info@bootfitter.nl klaarzet. De teksten staan in `planner_html()` en worden via `APPROVED_COPY` door `verify.py` geaccepteerd; tijden (`PLANNER_TIMES`) en diensten zijn voorlopig.
+- **molen** alleen nog in de donkere "Wat is / niet"-band en het oranje afspraakvlak.
+
 ## Opnieuw bouwen
 
 ```sh

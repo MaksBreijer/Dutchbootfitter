@@ -203,6 +203,7 @@ def footer_html():
       <div class="rating">
         <div class="stars"><i aria-hidden="true"></i><span>{esc(RATING["name"])}</span></div>
         <span>{esc(RATING["text"])}</span>
+        <a class="ti-badge" href="{RATING["write_href"]}" target="_blank" rel="noopener"><img src="{O}/wp-content/uploads/2024/06/Trustindex-dutchbootfitter-150x150.jpg" alt="Google review schrijven" width="96" height="96" loading="lazy"></a>
         <a href="{RATING["write_href"]}">{esc(RATING["write"])}</a>
       </div>
     </div>
@@ -304,7 +305,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=12">'''
+<link rel="stylesheet" href="style.css?v=13">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -312,7 +313,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 {cta_html() if cta else ''}
 {post_cta_html(current_file)}
 {footer_html()}
-<script src="app.js?v=7"></script>'''
+<script src="app.js?v=9"></script>'''
     if not full_doc:
         return head + '\n' + inner + '\n'
     return f'''<!doctype html>
@@ -428,6 +429,9 @@ def render_generic(slug, meta, body, is_post=False):
         aside_parts.insert(0, f'<div class="side-block"><h2>{inline(hd.lstrip("# "))}</h2><ul>{lis}</ul></div>')
     body = ''.join((h + '\n' if h else '') + t for h, t in secs)
     prose = md_to_html(body)
+    if slug == 'afspraak':
+        prose = prose.replace('<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n<p></p>', '<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n' + planner_html(), 1)
+    prose = review_cards(prose)
     feat = ''
     if lead_imgs:
         feat = ''.join(f'<figure class="media feature">{img_tag(a, s, loading="eager")}</figure>' for a, s in lead_imgs[:1])
@@ -613,6 +617,62 @@ def render_home(meta, body):
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
 APPROVED_COPY = set(HERO_EYEBROW)
+
+
+def nw(text, tag='span', cls='', attrs=''):
+    """A piece of approved new copy (the appointment planner); verify.py accepts it because it is listed here."""
+    APPROVED_COPY.add(text)
+    c = f' class="{cls}"' if cls else ''
+    return f'<{tag}{c}{attrs} data-src="new">{esc(text)}</{tag}>'
+
+
+# Appointment planner (October 2026): pick a bootfitter, a service, a day and time, then your details.
+# Not connected to a booking system yet: app.js shows a summary and opens an e-mail to the shop with it.
+PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
+PLANNER_SERVICES = ('Eigen skischoenen laten aanpassen', 'Op maat gemaakte skischoenen', 'Ski-Mojo aanmeten', 'Advies of iets anders')
+PLANNER_TIMES = ('09:30', '11:00', '13:00', '14:30', '16:00')
+
+
+def planner_html():
+    def opts(name, values, avatar=False):
+        out = []
+        for i, v in enumerate(values):
+            av = f'<span class="pl-avatar" aria-hidden="true" data-initial="{v[0]}"></span>' if avatar else ''
+            sub = nw('Bootfitter', 'small') if avatar else ''
+            out.append(f'<div class="pl-option"><input type="radio" name="{name}" id="pl-{name}-{i}" value="{html.escape(v)}" required>'
+                       f'<label for="pl-{name}-{i}">{av}<span>{nw(v)}{"<br>" + sub if sub else ""}</span></label></div>')
+        return '<div class="pl-options">' + ''.join(out) + '</div>'
+    def step(n, text):
+        return f'<legend>{nw(text)}</legend>'
+    times = ''.join(nw(t, 'button', 'pl-time', f' type="button" aria-pressed="false" data-time="{t}"') for t in PLANNER_TIMES)
+    def field(label, name, typ='text', cls='', extra=''):
+        tag = (f'<textarea name="{name}" rows="3"{extra}></textarea>' if typ == 'textarea'
+               else f'<input type="{typ}" name="{name}"{extra}>')
+        return f'<label class="{cls}">{nw(label)}{tag}</label>'
+    return f'''<form class="planner" data-reuse novalidate data-mail="{CONTACT["email"]}">
+<fieldset>{step(1, 'Kies uw bootfitter')}{opts('fitter', PLANNER_FITTERS, avatar=True)}</fieldset>
+<fieldset>{step(2, 'Waarvoor komt u?')}{opts('dienst', PLANNER_SERVICES)}</fieldset>
+<fieldset>{step(3, 'Kies een dag en tijd')}<div class="pl-days" role="group" aria-label="Dag"></div><div class="pl-times" role="group" aria-label="Tijd">{times}</div></fieldset>
+<fieldset>{step(4, 'Uw gegevens')}<div class="pl-fields">{field('Naam', 'naam', extra=' autocomplete="name" required')}{field('Telefoonnummer', 'telefoon', 'tel', extra=' autocomplete="tel" required')}{field('E-mailadres', 'email', 'email', 'full', ' autocomplete="email" required')}{field('Opmerking (optioneel)', 'opmerking', 'textarea', 'full')}</div></fieldset>
+<div class="pl-submit"><button type="submit" class="btn big">{nw('Afspraak aanvragen')}</button>{nw('Vul alle stappen in.', 'p', 'pl-error', ' hidden')}</div>
+<div class="pl-done" hidden>{nw('✓', 'div', 'check', ' aria-hidden="true"')}{nw('Uw aanvraag staat klaar', 'p', 'pl-done-title')}<ul class="pl-summary"></ul>{nw('Verstuur aanvraag per e-mail', 'a', 'btn big pl-mail', ' href="#"')}</div>
+</form>'''
+
+
+planner_html()  # registers the planner's copy in APPROVED_COPY, so verify.py knows it without building
+
+
+# The Ski-Mojo pages list three customer quotes as stars, quote and name (an Elementor testimonial widget on
+# bootfitter.nl); show them as review cards again. Same words, only the markup changes.
+REVIEW_RE = re.compile(r'<p>((?:<em>★</em>){5}) (5/5)</p>\n<p>(&quot;|")(.+?)(&quot;|")</p>\n<p>([^<]{1,40})</p>\n?')
+
+
+def review_cards(h):
+    def card(m):
+        return (f'<blockquote class="review-card"><p class="rc-stars">{m.group(1)} <span>{m.group(2)}</span></p>'
+                f'<p class="rc-text">{m.group(3)}{m.group(4)}{m.group(5)}</p><p class="rc-name">{m.group(6)}</p></blockquote>')
+    out = REVIEW_RE.sub(card, h)
+    return re.sub(r'((?:<blockquote class="review-card">.*?</blockquote>)+)', r'<div class="review-cards">\1</div>\n', out)
 
 
 def rq(text, src, tag='span', cls=''):
