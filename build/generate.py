@@ -162,8 +162,11 @@ def header_html(current_file):
     # v8: one quiet bar (logo left, menu right, orange Afspraak); no announcement line.
     afspraak = local_href(O + '/afspraak/')
     cur = ' aria-current="page"' if afspraak == current_file else ''
+    # The four orange links above the menu, exactly as on bootfitter.nl.
+    topbar = ''.join(link(l, u) for l, u in TOPBAR)
     return f'''<a class="skip" href="#main">{esc(SKIP)}</a>
 <header class="site-header">
+  <div class="topbar"><nav class="wrap" aria-label="Topbar">{topbar}</nav></div>
   <div class="wrap"><div class="bar">
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary"><span class="bars" aria-hidden="true"></span><span class="lbl-open">{esc(MENU_OPEN)}</span><span class="lbl-close">{esc(MENU_CLOSE)}</span></button>
     <nav class="primary" id="primary" aria-label="Hoofdmenu"><ul class="nav">{''.join(items)}</ul></nav>
@@ -186,7 +189,6 @@ def footer_html():
     pain = ''.join(f'<li><a href="{local_href(u)}">{esc(l)}</a></li>' for l, u in FOOTER_PAIN[1])
     nav = ''.join(f'<li><a href="{local_href(u)}">{esc(l)}</a></li>' for l, u in FOOTER_NAV[1])
     badges = ''.join(f'<img src="{src}" alt="{html.escape(alt)}">' for alt, src in BADGES)
-    utility = ''.join(f'<a href="{local_href(u)}">{esc(l)}</a>' for l, u in TOPBAR)
     socials = ''.join(f'<a href="{u}" aria-label="{html.escape(l)}">{SOCIAL_ICONS[l]}</a>' for l, u in SOCIALS)
     c = CONTACT
     return f'''<footer class="site-footer">
@@ -208,7 +210,7 @@ def footer_html():
       </div>
     </div>
   </div>
-  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><nav class="foot-utility" aria-label="Topbar">{utility}</nav><div class="socials">{socials}</div></div></div>
+  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><div class="socials">{socials}</div></div></div>
 </footer>'''
 
 
@@ -305,7 +307,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=14">'''
+<link rel="stylesheet" href="style.css?v=15">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -563,7 +565,7 @@ def render_home(meta, body):
     out.append(f'''<section class="section alt complaints-sec"><div class="wrap">
 <div class="section-head"><h2>{esc(hd('Wat kan een bootfitter'))}</h2><h3 class="sub">{esc(hd('Herkent u'))}</h3></div>
 <div class="zones"><div class="zones-copy"><ul class="complaints">{li}</ul>
-<p class="solve">{esc(solve)}</p></div>
+<a class="solve" href="{local_href(O + '/afspraak/')}">{esc(solve)}</a></div>
 <figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
