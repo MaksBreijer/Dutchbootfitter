@@ -1460,22 +1460,13 @@ a.solve:hover { background: #000; color: var(--snow); }
 .page-hero h1 { font-size: clamp(1.9rem, 1.15rem + 2.6vw, 3.2rem); }
 .page-hero h1.long { font-size: clamp(1.6rem, 1.05rem + 1.9vw, 2.5rem); }
 
-/* ---------- Ski boot instead of the arrow ----------
-   The orange "→" on the service cards and the Over Ons links becomes a small ski boot (a mask, so it takes the text colour).
-   On hover it rolls from heel to toe and steps forward. */
-:root { --boot: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M6.8 1.2l7.4 1.2.6 6.6 5 3.5c1.5 1 2.2 2.3 2.2 3.9V19h.9v2.6h-1v1.2h-4.2v-1.2H7.2v1.2H3v-1.2H1.6V19h1.9zM6.5 5.1l7.8 1.2.1 1.4-8.1-1.2zM15.2 11.2l2.4 1.7-.7 1-2.4-1.7zM18 13.2l2.1 1.6-.7 1-2.1-1.6zM2.6 19.5h19.6v.8H2.6z'/%3E%3C/svg%3E"); }
+/* ---------- Chevron tile instead of the arrow ----------
+   The "→" on the service cards and the Over Ons links becomes a white › on a small rounded orange square.
+   On hover the square nudges forward. */
 .choices-sec .choice .more::after, .about-next a::after {
-  content: ""; flex: none; width: 1.4em; height: 1.4em; background: currentColor;
-  -webkit-mask: var(--boot) center / contain no-repeat; mask: var(--boot) center / contain no-repeat;
-  transform-origin: 88% 92%; transition: none;
+  content: ""; flex: none; width: 2rem; height: 2rem; border-radius: 8px;
+  background: var(--orange-btn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 7l5 5-5 5'/%3E%3C/svg%3E") center / 1.1rem no-repeat;
+  transition: transform .25s ease, background-color .25s ease;
 }
-.choices-sec .choice:hover .more::after, .about-next a:hover::after, .about-next a:focus-visible::after, .choices-sec .choice .more:focus-visible::after { transform: none; animation: boot-roll .75s cubic-bezier(.3,.7,.3,1) forwards; }
-@keyframes boot-roll {
-  0% { transform: none; }
-  40% { transform: rotate(16deg); }
-  75% { transform: translateX(6px) rotate(-3deg); }
-  100% { transform: translateX(5px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .choices-sec .choice:hover .more::after, .about-next a:hover::after { animation: none; transform: translateX(4px); }
-}
+.choices-sec .choice:hover .more::after, .about-next a:hover::after { transform: translateX(4px); }
+.about-next a:hover::after { background-color: var(--night); }
