@@ -485,6 +485,13 @@ HERO_VIDEO = W + 'strolz-aanmeten-breed.mp4'
 HERO_VIDEO_PORTRAIT = W + 'strolz-aanmeten-staand.mp4'
 
 
+def bust(path):
+    # A short hash of the file in the URL, so browsers fetch a re-cut video instead of the cached one.
+    import hashlib
+    with open(os.path.join(OUT, path), 'rb') as f:
+        return path + '?v=' + hashlib.md5(f.read()).hexdigest()[:8]
+
+
 # Hand-drawn marker strokes (an underline, a cross) that draw themselves in; decorative only.
 MARK_SVG = {
     'under': ('<svg class="mark-svg" viewBox="0 0 300 30" preserveAspectRatio="none" aria-hidden="true" focusable="false">'
@@ -531,7 +538,7 @@ def render_home(meta, body):
     h1_html = esc(h1).replace('pijnloos skiën®', '<em>pijnloos&nbsp;skiën®</em>')  # never split, also not with a cached stylesheet
     lede_html = esc(lede).replace('? ', '? <br>', 1)
     bg = f'<img class="hero-bg" src="{HERO_BG}" alt="" role="presentation" loading="eager" fetchpriority="high">' if HERO_BG else ''
-    video = (f'<figure class="hero-video"><video autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"><source src="{HERO_VIDEO_PORTRAIT}" media="(orientation: portrait) and (max-width: 900px)" type="video/mp4"><source src="{HERO_VIDEO}" type="video/mp4"></video></figure>'
+    video = (f'<figure class="hero-video"><video autoplay muted loop playsinline preload="metadata" aria-label="Strolz skischoenen op maat worden aangemeten bij DutchBootFitter"><source src="{bust(HERO_VIDEO_PORTRAIT)}" media="(orientation: portrait) and (max-width: 900px)" type="video/mp4"><source src="{bust(HERO_VIDEO)}" type="video/mp4"></video></figure>'
              if os.path.isfile(os.path.join(OUT, HERO_VIDEO)) else '')
     out = [f'''<section class="hero photo{' has-video' if video else ''}">{'' if video else bg}<div class="wrap">
 <div class="hero-copy"><h1>{h1_html}</h1><div class="hero-foot"><p class="lede">{lede_html}</p><div class="actions">{actions}</div></div><p class="hero-rating" data-reuse><i class="stars" aria-hidden="true"></i>{rq(RATING["text"], "chrome")}</p></div>
