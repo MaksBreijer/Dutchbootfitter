@@ -479,8 +479,8 @@ HERO_BG = None
 for _p in ['wp-content/uploads/hero-sneeuw.jpg']:
     if os.path.isfile(os.path.join(OUT, _p)):
         HERO_BG = _p
-# Short clip of a Strolz boot being foamed to the foot in the shop; plays muted as the hero background.
-HERO_VIDEO = W + 'strolz-aanmeten.mp4'
+# Desktop: a landscape cut (1920x1152) of the original 1080x1920 Strolz fitting clip, so the wide hero stays sharp.
+HERO_VIDEO = W + 'strolz-aanmeten-breed.mp4'
 # Phones (portrait): the sharper vertical shot of the same fitting, ending with a client leaving with the bag.
 HERO_VIDEO_PORTRAIT = W + 'strolz-aanmeten-staand.mp4'
 
