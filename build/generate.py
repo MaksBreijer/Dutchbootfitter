@@ -609,8 +609,13 @@ def render_home(meta, body):
 <figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
-    strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('slijpmachine', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'oprekken', 'slijpen'))
-    out.append(f'<div class="shop-strip" role="group" aria-label="DutchBootFitter IJburglaan"><div class="strip-track" tabindex="0">{strip}</div><div class="strip-nav wrap"><button type="button" class="strip-btn prev" aria-label="Vorige foto"></button><button type="button" class="strip-btn next" aria-label="Volgende foto"></button></div></div>')
+    # The team: Bart, Selma and Maks (photos in winkel/team-*.jpg; no photo yet shows the initial).
+    cards = []
+    for name, src, photo in STAFF:
+        pic = (f'<img src="{W}{photo}" alt="{html.escape(name)}" loading="lazy">' if photo
+               else f'<span class="staff-initial" aria-hidden="true" data-initial="{esc(name[0])}"></span>')
+        cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{rq(name, src)}</figcaption></figure>')
+    out.append(f'<section class="section staff-sec" data-reuse aria-label="DutchBootFitter"><div class="wrap"><div class="staff">{"".join(cards)}</div></div></section>')
     # choices
     cards = []
     choice_heads = [(h, t) for h, t in secs if h and h.startswith('### [')]
@@ -658,7 +663,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW)
+APPROVED_COPY = set(HERO_EYEBROW) | {'Maks'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -671,6 +676,8 @@ def nw(text, tag='span', cls='', attrs=''):
 # Appointment planner (October 2026): pick a bootfitter, a service, a day and time, then your details.
 # Not connected to a booking system yet: app.js shows a summary and opens an e-mail to the shop with it.
 PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
+# Team cards on the home page: name, where the name already stands on the site (verify.py), photo file.
+STAFF = (('Bart', 'over-ons', 'team-bart.jpg'), ('Selma Cool', 'over-ons', None), ('Maks', 'new', 'team-maks.jpg'))
 PLANNER_SERVICES = ('Eigen skischoenen laten aanpassen', 'Op maat gemaakte skischoenen', 'Ski-Mojo aanmeten', 'Advies of iets anders')
 PLANNER_TIMES = ('09:30', '11:00', '13:00', '14:30', '16:00')
 
