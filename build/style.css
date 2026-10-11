@@ -1498,6 +1498,9 @@ a.solve:hover { background: #000; color: var(--snow); }
 /* Ski-Mojo page menu: no heading, so no gap above the first link */
 nav.side-block li:first-child a { border-top: 0; }
 
+/* Spot of the Bookly booking form of bootfitter.nl (stays in place on the live WordPress site). */
+.bookly-slot { margin: 1.5rem 0 2rem; padding: 1.4rem; border: 1px dashed color-mix(in srgb, var(--orange) 55%, transparent); border-radius: var(--radius); background: color-mix(in srgb, var(--orange) 5%, var(--paper)); }
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */

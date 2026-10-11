@@ -461,7 +461,11 @@ def render_generic(slug, meta, body, is_post=False):
     body = ''.join((h + '\n' if h else '') + t for h, t in secs)
     prose = md_to_html(body)
     if slug == 'afspraak':
-        prose = prose.replace('<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n<p></p>', '<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n' + planner_html(), 1)
+        prose = prose.replace('<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n<p></p>', '<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n' + bookly_slot(slug), 1)
+    elif slug in BOOKLY_AFTER:
+        i = prose.index(BOOKLY_AFTER[slug])
+        j = prose.index('</p>', i) + 4
+        prose = prose[:j] + bookly_slot(slug) + prose[j:]
     prose = review_cards(prose)
     feat = ''
     if lead_imgs:
@@ -669,6 +673,29 @@ def nw(text, tag='span', cls='', attrs=''):
 PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
 PLANNER_SERVICES = ('Eigen skischoenen laten aanpassen', 'Op maat gemaakte skischoenen', 'Ski-Mojo aanmeten', 'Advies of iets anders')
 PLANNER_TIMES = ('09:30', '11:00', '13:00', '14:30', '16:00')
+
+
+# Booking: bootfitter.nl takes appointments with the Bookly plugin (WordPress) on these four pages. The new design is
+# frontend only, so Bookly must stay exactly where it is. This marks the spot; in the preview a button opens the live form.
+BOOKLY_PAGES = {
+    'afspraak': ORIGIN + '/afspraak/',
+    'bootfitting__op-maat-gemaakte-skischoenen': ORIGIN + '/bootfitting/op-maat-gemaakte-skischoenen/',
+    'bootfitting__ski-mojo-home__skimojo-aanmeten': ORIGIN + '/bootfitting/ski-mojo-home/skimojo-aanmeten/',
+    'strolz-op-maat-gemaakte-skischoenen-aanmeten': ORIGIN + '/strolz-op-maat-gemaakte-skischoenen-aanmeten/',
+}
+# On bootfitter.nl the Bookly form follows the paragraph that contains this text.
+BOOKLY_AFTER = {
+    'bootfitting__op-maat-gemaakte-skischoenen': 'Prijs: € 1195,-',
+    'bootfitting__ski-mojo-home__skimojo-aanmeten': 'De prijs van de Ski-Mojo is € 685,-',
+    'strolz-op-maat-gemaakte-skischoenen-aanmeten': 'Strolz.Amsterdam is onderdeel van DutchBootFitter.',
+}
+
+
+def bookly_slot(slug):
+    return (f'<div class="bookly-slot" data-reuse data-bookly="{slug}">'
+            '<!-- BOOKLY: hier staat op bootfitter.nl het Bookly-afspraakformulier. Bij het overzetten van het ontwerp '
+            'blijft deze Bookly-widget/shortcode precies zo staan; alleen de opmaak (CSS) mag veranderen. -->'
+            f'<a class="btn big" href="{BOOKLY_PAGES[slug]}" data-src="afspraak">Maak direct een afspraak</a></div>')
 
 
 def planner_html():

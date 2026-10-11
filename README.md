@@ -1,5 +1,7 @@
 # bootfitter-site
 
+> **Belangrijk voor de bouw (Gianni):** dit ontwerp is alleen frontend. Het afspraak maken loopt op bootfitter.nl via de WordPress-plugin **Bookly** op 4 pagina's (Afspraak, Op maat gemaakte skischoenen, Ski-Mojo aanmeten, Strolz aanmeten). Die Bookly-formulieren blijven precies staan waar ze staan; in de preview is die plek gemarkeerd met `class="bookly-slot"` (en een HTML-commentaar). Alleen de opmaak mag veranderen. Teksten, titels, meta-beschrijvingen, URL's en links zijn 1-op-1 gelijk aan de live site (zie `build/verify.py`), zodat de Google-posities behouden blijven.
+
 De nieuwe statische website voor bootfitter.nl (DutchBootFitter).
 
 - `site/` — de kant-en-klare site (71 pagina's, `style.css`, `app.js`). Open `site/index.html` in een browser; er is geen buildstap nodig om hem te bekijken.
