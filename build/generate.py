@@ -207,6 +207,7 @@ def footer_html():
         <span>{esc(RATING["text"])}</span>
         <a class="ti-badge" href="{RATING["write_href"]}" target="_blank" rel="noopener"><img src="{O}/wp-content/uploads/2024/06/Trustindex-dutchbootfitter-150x150.jpg" alt="Google review schrijven" width="96" height="96" loading="lazy"></a>
         <a href="{RATING["write_href"]}">{esc(RATING["write"])}</a>
+        <a class="ti-logo" href="https://www.trustindex.io/reviews/www.bootfitter.nl" target="_blank"><img src="{O}/wp-content/uploads/2021/12/Trustindex.jpg" alt="Trustindex" width="203" height="59" loading="lazy"></a>
       </div>
     </div>
   </div>

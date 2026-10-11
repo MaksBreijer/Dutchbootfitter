@@ -1385,6 +1385,8 @@ main :is(h1, h2):has(.accent) { color: #818387; }
 /* footer: Google review badge, as on bootfitter.nl */
 .rating .ti-badge { display: inline-block; margin-top: .4rem; }
 .rating .ti-badge img { width: 96px; height: 96px; border-radius: 8px; background: #fff; display: block; }
+.rating .ti-logo { display: inline-block; margin-top: .6rem; }
+.rating .ti-logo img { width: 140px; height: auto; border-radius: 6px; background: #fff; display: block; }
 
 /* ---------- appointment planner ---------- */
 .planner { margin: 1.5rem 0 2.5rem; padding: clamp(1.25rem, 3vw, 2rem); background: var(--paper); border: 1px solid var(--line); border-radius: 16px; box-shadow: 0 18px 40px -28px rgba(10,18,26,.35); }
