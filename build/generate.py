@@ -576,11 +576,11 @@ def render_home(meta, body):
     # hotspots on the boot photo (side view: heel left, toe right), positions in % of the image
     spots = ''.join(f'<button type="button" class="hs" data-zone="{zslug(n)}" style="--x:{HOTSPOTS[n][0]}%;--y:{HOTSPOTS[n][1]}%" aria-label="{html.escape(n)}" aria-describedby="zone-{zslug(n)}"><span></span></button>' for n, d in zones if n in HOTSPOTS)
     li = ''.join(f'<li>{inline(i)}</li>' for i in items)
-    out.append(f'''<section class="section alt complaints-sec"><div class="wrap">
+    out.append(f'''<section class="section alt complaints-sec">{windmill_svg('sail-boot')}<div class="wrap">
 <div class="section-head"><h2>{esc(hd('Wat kan een bootfitter'))}</h2><h3 class="sub">{esc(hd('Herkent u'))}</h3></div>
 <div class="zones"><div class="zones-copy"><ul class="complaints">{li}</ul>
 <a class="solve" href="{local_href(O + '/afspraak/')}">{esc(solve)}</a></div>
-<figure class="zones-fig"><div class="media hotspots">{windmill_svg('sail-boot')}{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
+<figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
     strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('slijpmachine', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'oprekken', 'slijpen'))
