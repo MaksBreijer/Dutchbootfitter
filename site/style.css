@@ -1470,3 +1470,11 @@ a.solve:hover { background: #000; color: var(--snow); }
 }
 .choices-sec .choice:hover .more::after, .about-next a:hover::after { transform: translateX(4px); }
 .about-next a:hover::after { background-color: var(--night); }
+
+/* ---------- Headings never split a word ----------
+   No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
+   longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
+h1, h2, h3, h4, .blk-title, .faq-title { overflow-wrap: normal; word-break: normal; hyphens: manual; }
+.faq-wrap { container-type: inline-size; }
+.faq-title { max-width: none; font-size: min(clamp(2rem, 1.3rem + 2.2vw, 3.2rem), 4.1cqi); }
+@media (max-width: 860px) { .faq-title { font-size: min(clamp(1.75rem, 8vw, 2.2rem), 11cqi); } }
