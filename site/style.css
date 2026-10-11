@@ -1460,16 +1460,24 @@ a.solve:hover { background: #000; color: var(--snow); }
 .page-hero h1 { font-size: clamp(1.9rem, 1.15rem + 2.6vw, 3.2rem); }
 .page-hero h1.long { font-size: clamp(1.6rem, 1.05rem + 1.9vw, 2.5rem); }
 
-/* ---------- Chevron tile instead of the arrow ----------
-   The "→" on the service cards and the Over Ons links becomes a white › on a small rounded orange square.
-   On hover the square nudges forward. */
+/* ---------- Ski boot instead of the arrow ----------
+   The "→" on the service cards and the Over Ons links becomes an orange ski boot (a mask, so it takes the text colour).
+   On hover it rolls from heel to toe and steps forward. */
 .choices-sec .choice .more::after, .about-next a::after {
-  content: ""; flex: none; width: 2rem; height: 2rem; border-radius: 8px;
-  background: var(--orange-btn) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 7l5 5-5 5'/%3E%3C/svg%3E") center / 1.1rem no-repeat;
-  transition: transform .25s ease, background-color .25s ease;
+  content: ""; flex: none; width: 1.6em; height: 1.6em; background: currentColor;
+  -webkit-mask: url("wp-content/uploads/skischoen-icoon.svg") center / contain no-repeat; mask: url("wp-content/uploads/skischoen-icoon.svg") center / contain no-repeat;
+  transform-origin: 90% 92%; transition: none;
 }
-.choices-sec .choice:hover .more::after, .about-next a:hover::after { transform: translateX(4px); }
-.about-next a:hover::after { background-color: var(--night); }
+.choices-sec .choice:hover .more::after, .about-next a:hover::after { transform: none; animation: boot-roll .75s cubic-bezier(.3,.7,.3,1) forwards; }
+@keyframes boot-roll {
+  0% { transform: none; }
+  40% { transform: rotate(16deg); }
+  75% { transform: translateX(6px) rotate(-3deg); }
+  100% { transform: translateX(5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .choices-sec .choice:hover .more::after, .about-next a:hover::after { animation: none; transform: translateX(4px); }
+}
 
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
