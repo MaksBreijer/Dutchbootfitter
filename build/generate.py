@@ -580,7 +580,7 @@ def render_home(meta, body):
 <div class="section-head"><h2>{esc(hd('Wat kan een bootfitter'))}</h2><h3 class="sub">{esc(hd('Herkent u'))}</h3></div>
 <div class="zones"><div class="zones-copy"><ul class="complaints">{li}</ul>
 <a class="solve" href="{local_href(O + '/afspraak/')}">{esc(solve)}</a></div>
-<figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
+<figure class="zones-fig"><div class="media hotspots">{windmill_svg('sail-boot')}{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
     strip = ''.join(f'<figure class="media s-{k}">{shop_img(k)}</figure>' for k in ('slijpmachine', 'keuken', 'werkbank', 'steunzolen', 'assessment', 'opmaat', 'oprekken', 'slijpen'))

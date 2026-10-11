@@ -1479,6 +1479,12 @@ a.solve:hover { background: #000; color: var(--snow); }
   .choices-sec .choice:hover .more::after, .about-next a:hover::after { animation: none; transform: translateX(4px); }
 }
 
+/* Windmill sails turning slowly behind the boot on the complaints block, in front of the pale circle. */
+.zones-fig .hotspots > .windmill { position: absolute; z-index: 0; left: 50%; top: 50%; width: 100%; height: auto; transform: translate(-50%, -50%); color: color-mix(in srgb, var(--orange) 26%, transparent); pointer-events: none; }
+.zones-fig .hotspots > .windmill .sails { animation: windmill-turn-ccw 18s linear infinite; }
+.zones-fig .hotspots > img { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .zones-fig .hotspots > .windmill .sails { animation: none; } }
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
