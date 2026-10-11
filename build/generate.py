@@ -298,6 +298,13 @@ def localize(doc):
     return re.sub(r'((?:src|href)=")(https?://(?:www\.)?bootfitter\.nl/wp-[^"]+)(")', rep, doc)
 
 
+def src_hash(name):
+    # Short hash of build/<name>, so a changed stylesheet or script is never served from a browser's cache.
+    import hashlib
+    with open(os.path.join(ROOT, name), 'rb') as f:
+        return hashlib.md5(f.read()).hexdigest()[:8]
+
+
 def page(title, meta_desc, body, current_file, cta=True, full_doc=True):
     return localize(_page(title, meta_desc, body, current_file, cta, full_doc))
 
@@ -307,7 +314,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 <meta name="description" content="{html.escape(meta_desc)}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
-<link rel="stylesheet" href="style.css?v=15">'''
+<link rel="stylesheet" href="style.css?v={src_hash('style.css')}">'''
     inner = f'''{header_html(current_file)}
 <main id="main">
 {body}
@@ -315,7 +322,7 @@ def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 {cta_html() if cta else ''}
 {post_cta_html(current_file)}
 {footer_html()}
-<script src="app.js?v=9"></script>'''
+<script src="app.js?v={src_hash('app.js')}"></script>'''
     if not full_doc:
         return head + '\n' + inner + '\n'
     return f'''<!doctype html>

@@ -1318,7 +1318,7 @@ main > .section, .home main > .section { padding-block: clamp(2.25rem, 4.5vw, 4r
 :root { --brand: #e8561a; }
 h2 .accent, h1 .accent { color: var(--orange-ink); }
 /* The rest of an accented heading in the grey of the DutchBootFitter logo ("Dutch"), so orange + grey echo the logo. */
-h2:has(.accent), h1:has(.accent) { color: #818387; }
+main :is(h1, h2):has(.accent) { color: #818387; }
 ::selection { background: var(--brand); color: #fff; }
 .prose a, .intro-body a, .faq a { text-decoration-color: color-mix(in srgb, var(--brand) 55%, transparent); text-underline-offset: 4px; }
 .prose a:hover, .faq a:hover { text-decoration-color: var(--brand); }
