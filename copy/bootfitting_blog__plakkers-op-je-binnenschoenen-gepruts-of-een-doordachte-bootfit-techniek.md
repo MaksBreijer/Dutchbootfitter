@@ -1,6 +1,6 @@
 TITLE: Plakkers op je binnenschoenen: gepruts of een doordachte bootfit-techniek? - DutchBootFitter -
 
-META: We komen ze vaak tegen: binnenschoenen volgeplakt met plakkers, ook wel 'pads' genoemd. Ze zijn er in allerlei kleuren, vormen, materialen en hardheden
+META: We komen ze vaak tegen: binnenschoenen volgeplakt met plakkers, ook wel ‘pads’ genoemd. Ze zijn er in allerlei kleuren, vormen, materialen en hardheden maar zelden zit er een doordacht idee achter.
 
 DATE: 2020-10-06T15:57:22+00:00
 

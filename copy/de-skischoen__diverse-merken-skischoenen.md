@@ -54,3 +54,11 @@ Tecnica was ooit de meest gedragen skischoen van skileraren in de Alpen. Wie ken
 De familie Strolz uit Lech maakt al meer dan 100 jaar skischoenen. En niet zomaar skischoenen! Deze schoenen worden volledig op maar gemaakt. Zowel de buitenschaal als de binnenschoen worden individueel met de hand vervaardigd. Als u het beste wilt qua pasvorm is Strolz uw merk. Uiteraard kunt u bij DutchBootFitter de perfect zittende legendarische [Strolz skischoenen kopen](https://www.strolz.amsterdam).
 
 Voor de liefhebbers: ons blogartikel over de [legendarische skischoen met achterinstap van Salomon](https://www.bootfitter.nl/bootfitting_blog/de-moord-op-een-skischoen/).
+
+### Over skischoenen
+
+- [De Skischoen](https://www.bootfitter.nl/de-skischoen/)
+- [Diverse soorten skischoenen](https://www.bootfitter.nl/de-skischoen/diverse-typen-skischoenen/)
+- [Kinderskischoenen](https://www.bootfitter.nl/de-skischoen/kinderskischoenen/)
+- [Diverse merken skischoenen](https://www.bootfitter.nl/de-skischoen/diverse-merken-skischoenen/)
+- [Historie van de skischoen](https://www.bootfitter.nl/de-skischoen/historie_van_de_skischoen/)

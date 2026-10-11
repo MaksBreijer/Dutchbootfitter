@@ -1,0 +1,4 @@
+- [Ski-Mojo home](https://www.bootfitter.nl/bootfitting/ski-mojo-home/)
+- [Werking Ski-Mojo](https://www.bootfitter.nl/bootfitting/ski-mojo-home/werking-ski-mojo/)
+- [Ondersteuning](https://www.bootfitter.nl/bootfitting/ski-mojo-home/ondersteuning/)
+- [Ski~Mojo aanmeten](https://www.bootfitter.nl/bootfitting/ski-mojo-home/skimojo-aanmeten/)

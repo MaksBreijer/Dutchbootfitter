@@ -1,5 +1,5 @@
 TITLE: Uw skivakantie verknalt door een stoorzender van 3mm - DutchBootFitter -
-META: Wat is een Mortons neuroom en wat kan uw bootfitter eraan doen? Een snijdende pijn, tintelende tenen of een elektrische stroomstoot. Dat zijn de symptomen
+META: Een mortons neuroom in je skischoen kan behoorlijk pijn doen en de skivakantie verknallen. Oorzaak en oplossing van een mortonse neuralgie.
 DATE: 2022-01-02
 
 ===MAIN===

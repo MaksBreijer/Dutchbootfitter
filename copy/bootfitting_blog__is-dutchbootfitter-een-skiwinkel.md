@@ -4,6 +4,8 @@ DATE: 2023-05-29T10:00:53+00:00
 
 ===MAIN===
 
+![DutchBootFitter etalage skiwinkel](https://www.bootfitter.nl/wp-content/uploads/2023/05/dutchbootfitter_etalage.jpg)
+
 # Is DutchBootFitter een skiwinkel?
 
 - Bart

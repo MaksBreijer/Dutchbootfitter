@@ -383,7 +383,23 @@ def img_tag(alt, src, cls='', loading='lazy'):
 
 IMG_RE = re.compile(r'!\[([^\]]*)\]\(([^)\s]+)(?:\s+"[^"]*")?\)')
 
+SKI_MOJO_MENU = re.findall(r'\[([^\]]+)\]\(([^)]+)\)', open(os.path.join(COPY, '_ski_mojo_menu.md'), encoding='utf-8').read())
+
 POST_SIDEBAR = None
+
+
+
+def home_blog():
+    # As on the live home page: beside the FAQ, the newest blog posts and a link to the blog (internal links for SEO).
+    # Text and links come from copy/_home_blog.md (copied from the live home page).
+    t = open(os.path.join(COPY, '_home_blog.md'), encoding='utf-8').read()
+    lines = t.strip().splitlines()
+    title, sub = lines[0].lstrip('# ').strip(), lines[2].lstrip('# ').strip()
+    items = re.findall(r'^### \[([^\]]+)\]\(([^)]+)\)', t, re.M)
+    mt, mu = re.search(r'^\[([^\]]+)\]\(([^)]+)\)\s*$', t, re.M).groups()
+    lis = ''.join(f'<li><a href="{local_href(u)}">{esc(ti)}</a></li>' for ti, u in items)
+    return (f'<aside class="home-blog" data-reuse><div data-src="_home_blog"><h3>{esc(title)}</h3><p>{esc(sub)}</p><ul>{lis}</ul>'
+            f'<a class="home-blog-more" href="{local_href(mu)}">{esc(mt)}</a></div></aside>')
 
 
 def blog_aside():
@@ -437,6 +453,11 @@ def render_generic(slug, meta, body, is_post=False):
         items = re.findall(r'\[([^\]]+)\]\(([^)]+)\)', tx)
         lis = ''.join(f'<li><a href="{local_href(u)}">{esc(t)}</a></li>' for t, u in items)
         aside_parts.insert(0, f'<div class="side-block"><h2>{inline(hd.lstrip("# "))}</h2><ul>{lis}</ul></div>')
+    if slug.startswith('bootfitting__ski-mojo-home'):
+        # The live Ski-Mojo pages carry a small menu of their four pages (no heading); kept for the internal links.
+        cur = ' aria-current="page"'
+        lis = ''.join(f'<li><a href="{local_href(u)}"{cur if local_href(u) == slug_to_file(slug) else ""}>{esc(t)}</a></li>' for t, u in SKI_MOJO_MENU)
+        aside_parts.insert(0, f'<nav class="side-block" aria-label="Ski-Mojo" data-reuse><ul data-src="_ski_mojo_menu">{lis}</ul></nav>')
     body = ''.join((h + '\n' if h else '') + t for h, t in secs)
     prose = md_to_html(body)
     if slug == 'afspraak':
@@ -617,7 +638,7 @@ def render_home(meta, body):
     dets = []
     for i in range(1, len(qa), 2):
         dets.append(f'<details{" open" if i == 1 else ""}><summary>{esc(qa[i].strip())}</summary><div class="answer">{md_to_html(qa[i + 1])}</div></details>')
-    out.append(f'''<section class="section faq-sec"><div class="wrap faq-wrap"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2><div class="faq">{''.join(dets)}</div></div></section>''')
+    out.append(f'''<section class="section faq-sec"><div class="wrap faq-wrap"><div class="faq-side"><h2 class="faq-title">{esc(hd('DutchBootFitter meest gestelde'))}</h2>{home_blog()}</div><div class="faq">{''.join(dets)}</div></div></section>''')
     out += home_trust_blocks()
     # one orange key word per heading (markup only, the words stay the same)
     html_out = '\n'.join(out)

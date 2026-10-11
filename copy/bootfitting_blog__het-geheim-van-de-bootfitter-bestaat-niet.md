@@ -1,5 +1,5 @@
 TITLE: Het geheim van de bootfitter bestaat niet.
-META: Het geheim van pijnloos skiën wel. Hoe zit dat?  Toen wij bootfitting zo'n 15 jaar geleden naar Nederland brachten, was het nog een vrij onbekend fenomeen.
+META: Het geheim van de bootfitter niet bestaat, Het geheim van pijnloos skiën wel. Het is de magie als u pijnloos van de berg af skiet
 DATE: 2023-10-05
 
 ===MAIN===

@@ -1,5 +1,5 @@
 TITLE: Hoe toerskiën soms in een nachtmerrie verandert - DutchBootFitter -
-META: Hoe voorkom je blaren en pijnlijke voeten? Goede maat vinden voor toerskischoenen
+META: Hoe toerskiën soms in een nachtmerrie verandert Hoe voorkom je blaren en pijnlijke voeten? Goede maat vinden voor toerskischoenen
 DATE: 2019-04-23T18:31:31+00:00
 
 ===MAIN===

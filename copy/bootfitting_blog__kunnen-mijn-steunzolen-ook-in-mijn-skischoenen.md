@@ -4,6 +4,8 @@ DATE: 2024-03-04
 
 ===MAIN===
 
+![Steunzool ontwerp door podoloog](https://www.bootfitter.nl/wp-content/uploads/2024/03/GPManager.jpg)
+
 # Kunnen mijn steunzolen ook in mijn skischoenen?
 
 - Bart

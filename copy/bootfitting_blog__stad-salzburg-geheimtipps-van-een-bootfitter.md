@@ -4,6 +4,8 @@ DATE: 2024-08-15
 
 ===MAIN===
 
+![Salzach Salzburg](https://www.bootfitter.nl/wp-content/uploads/2024/08/salzach.jpg)
+
 # Stad Salzburg. Geheimtipps van een bootfitter!
 
 - Bart

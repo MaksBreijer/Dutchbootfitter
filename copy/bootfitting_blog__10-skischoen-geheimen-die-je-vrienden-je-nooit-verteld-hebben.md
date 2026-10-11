@@ -4,6 +4,8 @@ DATE: 2023-11-05T13:00:53+00:00
 
 ===MAIN===
 
+![Kuiltjes in de skischoen](https://www.bootfitter.nl/wp-content/uploads/2023/11/Skischoen-dimples-vraagteken.jpg)
+
 # 10 skischoen geheimen die je vrienden je nooit verteld hebben!
 
 - Bart
