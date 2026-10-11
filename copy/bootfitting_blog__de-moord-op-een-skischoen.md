@@ -11,7 +11,7 @@ DATE: 2018-11-01
 - Bart
 - 							 1 november 2018
 
-### [Legendarische SX 91 Equipe](https://www.bootfitter.nl/wp-content/uploads/2018/10/Salomon-sx91e-boot.jpg)De opkomst, val en herrijzenis van een legendarische skischoen.
+### [![Legendarische SX 91 Equipe](https://www.bootfitter.nl/wp-content/uploads/2018/10/Salomon-sx91e-boot-256x300.jpg)](https://www.bootfitter.nl/wp-content/uploads/2018/10/Salomon-sx91e-boot.jpg)De opkomst, val en herrijzenis van een legendarische skischoen.
 
 Met enige regelmaat wordt er door klanten naar gevraagd. Meestal met enige weemoed in de stem: **de skischoen met achterinstap**! '*Waarom is ie verdwenen?*" *Hij was super comfortabel*.' en '*nooit meer zoiets geskied'*.
 

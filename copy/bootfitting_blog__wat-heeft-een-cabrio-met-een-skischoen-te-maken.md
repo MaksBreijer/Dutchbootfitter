@@ -45,7 +45,7 @@ Voor de gemiddelde toeristische skiër zoals u en ik is vooral de gemakkelijke i
 
 Ondanks de vele mogelijkheden, de flexibiliteit en de ski-eigenschappen, zijn er niet veel merken die succesvol een cabrio skischoen op de markt hebben gebracht. Sterker nog, in 2010 introduceerde nota bene Nordica een lijn cabrio skischoenen onder de naam Ace of Spades. Het werd een pijnlijke en vooral kostbare flop. Zo erg zelfs dat een merk als bijvoorbeeld Atomic nooit meer (zeg nooit nooit 😉) een cabrio skischoen op de markt wil brengen.
 
-### De omzwervingen van de Raichle FlexonK2 Tom Wallisch Pro
+### De omzwervingen van de Raichle Flexon![K2 Tom Wallisch Pro](https://www.bootfitter.nl/wp-content/uploads/2023/04/K2_Flex3_Wallisch_Pro-243x300.jpg)
 
 Na dat Raichle na een succesvolle periode failliet ging (de toenmalige directeur kwam door een auto ongeluk om het leven) kwam de Flexon in handen van het kwakkelende Kneissl en is toen nog een korte periode op de markt gebracht als de Kneissl Flexon. Toen ook dat geen stand hield kocht het amerikaanse K2 de mallen uit de failliete boedel en bracht deze Flexon op de markt als Full Tilt.
 

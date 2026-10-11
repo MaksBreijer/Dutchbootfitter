@@ -45,7 +45,7 @@ Brood haal je in Salzburg bij de abdijbakkerij van de Sint-Pieters abdij. Deze b
 Tijd voor een beetje cultuur maar dan van hoge kwaliteit. Het [Fotohof](https://fotohof.at/) in Salzburg is in Nederland minder bekend en dat is onterecht. Fotografen van wereldformaat exposeren hier. Absoluut de moeite waard voor wie van hedendaagse beeldende kunstfotografie houdt.  
 *Fotohof Inge-Morath-Platz 1-3*
 
-### Damn PlasticDamn Plastic Victoria und Steph
+### Damn Plastic![Damn Plastic Victoria und Steph](https://www.bootfitter.nl/wp-content/uploads/2024/08/Damn-Plastic-300x282.png)
 
 Even shoppen maar dan anders. Maar wel net zo leuk. [Damn Plastic](https://damnplastic.com/) is opgericht voor Victoria en Steph met als doel plastic waste te verminderen. Hun Slogan: Schon mal passiv nachhaltig gewesen? (Ben jij ooit passief duurzaam geweest?). En dat maakt hun winkel zo leuk. Toffe producten en tegelijk minder plastic in de natuur!  
 *Damn Plastic Europastrasse 1*
