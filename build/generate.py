@@ -521,6 +521,8 @@ def render_generic(slug, meta, body, is_post=False):
         aside = '<aside class="side">' + ''.join(aside_parts) + '</aside>'
     hero_html = hero(h1_html, crumbs, byline) if h1_html else ''
     layout = 'with-side' if aside else 'solo'
+    if slug == 'links':
+        layout = 'links-page'
     if slug == 'afspraak':
         # One whole: the page title opens the booking card instead of a separate photo header.
         prose, layout = afspraak_layout(prose, h1_html), 'afspraak-page'
