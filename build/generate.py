@@ -421,7 +421,7 @@ def hero(h1_html, crumbs_html='', extra=''):
 
 
 
-def afspraak_layout(prose):
+def afspraak_layout(prose, h1_html=''):
     """Afspraak, laid out around the booking form: booking and address side by side, then the customer quote,
     the three maps in a row and the two lists. Same content in the same order; only wrappers are added."""
     def cut(start, end=None):
@@ -444,7 +444,7 @@ def afspraak_layout(prose):
     ov, rest = rest[:o_end], rest[o_end:]
     n_at = rest.index('<h3>Wat is DutchBootFitter niet ?</h3>')
     is_, isnot = rest[:n_at], rest[n_at:]
-    return (f'{hidden}<div class="ap-book">{booking}</div>'
+    return (f'<div class="ap-book"><h1>{h1_html}</h1>{hidden}{booking}</div>'
             f'<blockquote class="ap-quote">{quote.strip()}</blockquote>'
             f'<div class="ap-address">{address}<div class="ap-map">{map1}</div></div>'
             f'<div class="ap-street">{street}</div><div class="ap-ov">{ov}</div>'
@@ -518,7 +518,9 @@ def render_generic(slug, meta, body, is_post=False):
     hero_html = hero(h1_html, crumbs, byline) if h1_html else ''
     layout = 'with-side' if aside else 'solo'
     if slug == 'afspraak':
-        prose, layout = afspraak_layout(prose), 'afspraak-page'
+        # One whole: the page title opens the booking card instead of a separate photo header.
+        prose, layout = afspraak_layout(prose, h1_html), 'afspraak-page'
+        hero_html = ''
     return f'''{hero_html}
 <div class="wrap content {layout}">
   <article class="prose">{feat}{prose}</article>
