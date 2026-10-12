@@ -4,6 +4,27 @@
 
 De nieuwe statische website voor bootfitter.nl (DutchBootFitter).
 
+## Overdracht aan Gianni (stand 12 oktober 2026)
+
+Alles hieronder is frontend (HTML/CSS/JS). Er is geen backend nodig.
+
+**Blijft precies zoals op de live site**
+- Bookly-afspraakformulieren op 4 pagina's (gemarkeerd met `.bookly-slot`).
+- Teksten, paginatitels, meta-beschrijvingen, H1's, URL's, interne links en alt-teksten: `build/verify.py` geeft 0 verschillen.
+- Blokken die live verborgen staan (Elementor "hidden" op alle apparaten) staan hier ook verborgen (`.live-hidden`): de twee "Let op:"-meldingen op Afspraak, het ANWB-vignetblok en de tekstlink "Schijf een review".
+- De zoekbalk in de footer gebruikt gewoon de WordPress-zoekfunctie (`?s=`).
+
+**Bewust anders dan live**
+- Home: blok "Het team" (Bart, Selma, Maks) met korte uitnodiging. Dit is nieuwe tekst, goedgekeurd door DutchBootFitter. De foto van Selma volgt nog.
+- Home: de bloglijst naast de FAQ (staat live ook op de home), Ski-Mojo-submenu en "Over skischoenen"-submenu: zelfde links als live.
+- Prijs Strolz volledige maatschoen: € 1195 (live staat op Tarieven en in de FAQ nog € 1180).
+- Links: de Elementor-opvultekst "Lorem ipsum" is weggelaten. Graag ook live verwijderen.
+- Meta-beschrijving van Ski-Mojo afspraak en Pijnlijke hiel zijn verbeterd (live fout of leeg).
+- Werkwijze: het flow-plaatje is een HTML-stroomschema (zelfde tekst, nu leesbaar voor Google).
+- Afspraak en Links: geen losse fotokop; de H1 staat in de pagina zelf.
+
+
+
 - `site/` — de kant-en-klare site (71 pagina's, `style.css`, `app.js`). Open `site/index.html` in een browser; er is geen buildstap nodig om hem te bekijken.
 - `copy/` — de letterlijke tekst van elke pagina van bootfitter.nl (Markdown), de bron waaruit de site gegenereerd wordt. Teksten blijven woord voor woord gelijk aan de huidige site.
 - `build/` — de generator en de controle.
