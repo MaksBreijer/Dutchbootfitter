@@ -1553,6 +1553,12 @@ nav.side-block li:first-child a { border-top: 0; }
   .afspraak-page .ap-facts { grid-template-columns: 1fr; }
 }
 
+/* Afspraak already shows the full address card, so the footer's Contact column is left out on that page only. */
+body:has(.afspraak-page) .foot-contact { display: none; }
+body:has(.afspraak-page) .foot-grid { grid-template-columns: 1.3fr 1fr 1.2fr; }
+@media (max-width: 900px) { body:has(.afspraak-page) .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { body:has(.afspraak-page) .foot-grid { grid-template-columns: 1fr; } }
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
