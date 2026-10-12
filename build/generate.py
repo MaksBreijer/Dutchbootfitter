@@ -614,7 +614,8 @@ def render_home(meta, body):
     for name, src, photo, role in STAFF:
         pic = (f'<img src="{W}{photo}" alt="{html.escape(name)}" loading="lazy">' if photo
                else f'<span class="staff-initial" aria-hidden="true" data-initial="{esc(name[0])}"></span>')
-        cap = rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
+        owner = rq("Eigenaar", "new", "span", "staff-owner") if name in STAFF_OWNERS else ""
+        cap = owner + rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
         cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{cap}</figcaption></figure>')
     title = rq(STAFF_TITLE, "new", "p", "blk-title staff-title")
     out.append(f'<section class="section staff-sec" data-reuse aria-label="{STAFF_TITLE}"><div class="wrap">{title}<div class="staff">{"".join(cards)}</div></div></section>')
@@ -665,7 +666,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW) | {'Maks', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'}
+APPROVED_COPY = set(HERO_EYEBROW) | {'Maks', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -685,6 +686,7 @@ STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', 'Registerpodoloog, s
          ('Selma Cool', 'over-ons', None, 'Certified Master Bootfitter'),
          ('Maks', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'))
 STAFF_TITLE = 'Het team'
+STAFF_OWNERS = ('Bart Haarselhorst', 'Selma Cool')  # the owners of DutchBootFitter
 PLANNER_SERVICES = ('Eigen skischoenen laten aanpassen', 'Op maat gemaakte skischoenen', 'Ski-Mojo aanmeten', 'Advies of iets anders')
 PLANNER_TIMES = ('09:30', '11:00', '13:00', '14:30', '16:00')
 
