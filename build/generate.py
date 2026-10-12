@@ -206,7 +206,7 @@ def footer_html():
         <div class="stars"><i aria-hidden="true"></i><span>{esc(RATING["name"])}</span></div>
         <span>{esc(RATING["text"])}</span>
         <a class="ti-badge" href="{RATING["write_href"]}" target="_blank" rel="noopener"><img src="{O}/wp-content/uploads/2024/06/Trustindex-dutchbootfitter-150x150.jpg" alt="Google review schrijven" width="96" height="96" loading="lazy"></a>
-        <a href="{RATING["write_href"]}">{esc(RATING["write"])}</a>
+        <a class="live-hidden" hidden href="{RATING["write_href"]}">{esc(RATING["write"])}</a>
         <a class="ti-logo" href="https://www.trustindex.io/reviews/www.bootfitter.nl" target="_blank"><img src="{O}/wp-content/uploads/2021/12/Trustindex.jpg" alt="Trustindex" width="203" height="59" loading="lazy"></a>
       </div>
     </div>
@@ -461,6 +461,9 @@ def render_generic(slug, meta, body, is_post=False):
     body = ''.join((h + '\n' if h else '') + t for h, t in secs)
     prose = md_to_html(body)
     if slug == 'afspraak':
+        # On bootfitter.nl both "Let op:" notices are switched off (Elementor: hidden on desktop, tablet and mobile).
+        i = prose.index('<h2>Let op:</h2>'); j = prose.index('<h2>DutchBootFitter werkt op afspraak</h2>')
+        prose = prose[:i] + '<div class="live-hidden" hidden>' + prose[i:j] + '</div>\n' + prose[j:]
         prose = prose.replace('<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n<p></p>', '<h3>Maak hieronder uw keuze voor uw afspraak:</h3>\n' + bookly_slot(slug), 1)
     elif slug in BOOKLY_AFTER:
         i = prose.index(BOOKLY_AFTER[slug])

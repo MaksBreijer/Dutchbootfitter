@@ -1526,6 +1526,9 @@ nav.side-block li:first-child a { border-top: 0; }
   .staff-card { flex: 0 0 46%; scroll-snap-align: start; }
 }
 
+/* Content that is in the page but switched off on bootfitter.nl (Elementor "hidden" on all devices): kept, not shown. */
+.live-hidden[hidden] { display: none !important; }
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
