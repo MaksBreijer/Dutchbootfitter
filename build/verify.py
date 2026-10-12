@@ -51,6 +51,7 @@ def visible_text(el):
 
 ALLOWED_DROPS = {  # layout-only removals, each explained in the report
     'reacties-van-klanten-referenties': ['Vorige', 'Volgende'],
+    'links': G.PLACEHOLDER_TEXT.split(),  # Elementor placeholder left on bootfitter.nl by mistake
 }
 G.KNOWN = G.known_slugs()
 report, bad, ws = [], 0, []

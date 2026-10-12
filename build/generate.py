@@ -277,9 +277,14 @@ def cta_html():
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap">'
 
 
+# Placeholder text that was left on bootfitter.nl by mistake (Elementor's default "Lorem ipsum"); not shown here.
+PLACEHOLDER_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut elit tellus, luctus nec ullamcorper mattis, pulvinar dapibus leo.'
+
+
 def post_cta_html(current_file):
     for slug, tail in POST_CTA.items():
-        if slug_to_file(slug) == current_file:
+        tail = tail.replace(PLACEHOLDER_TEXT, '').strip()
+        if slug_to_file(slug) == current_file and tail:
             return f'<section class="post-cta"><div class="wrap prose">{md_to_html(tail)}</div></section>'
     return ''
 
