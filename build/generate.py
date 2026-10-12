@@ -420,6 +420,37 @@ def hero(h1_html, crumbs_html='', extra=''):
     return f'''<section class="page-hero"><div class="wrap"><div class="ph-copy"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div><figure class="ph-photo media">{shop_img(key, loading='eager')}</figure></div></section>'''
 
 
+
+def afspraak_layout(prose):
+    """Afspraak, laid out around the booking form: booking and address side by side, then the customer quote,
+    the three maps in a row and the two lists. Same content in the same order; only wrappers are added."""
+    def cut(start, end=None):
+        i = prose.index(start)
+        j = prose.index(end, i + 1) if end else len(prose)
+        return prose[i:j]
+    hidden = cut('<div class="live-hidden"', '<h2>DutchBootFitter werkt op afspraak</h2>')
+    slot_end = prose.index('</div>', prose.index('class="bookly-slot"')) + 6
+    booking = prose[prose.index('<h2>DutchBootFitter werkt op afspraak</h2>'):slot_end]
+    rest = prose[slot_end:]
+    q_end = rest.index('<div class="embed">')
+    quote, rest = rest[:q_end], rest[q_end:]
+    m1_end = rest.index('<h3>Ons adres</h3>')
+    map1, rest = rest[:m1_end], rest[m1_end:]
+    a_end = rest.index('<div class="embed">')
+    address, rest = rest[:a_end], rest[a_end:]
+    s_end = rest.index('<p><strong>Met openbaar vervoer')
+    street, rest = rest[:s_end], rest[s_end:]
+    o_end = rest.index('<h3>Wat is DutchBootFitter ?</h3>')
+    ov, rest = rest[:o_end], rest[o_end:]
+    n_at = rest.index('<h3>Wat is DutchBootFitter niet ?</h3>')
+    is_, isnot = rest[:n_at], rest[n_at:]
+    return (f'{hidden}<div class="ap-book">{booking}</div>'
+            f'<blockquote class="ap-quote">{quote.strip()}</blockquote>'
+            f'<div class="ap-map">{map1}</div>'
+            f'<div class="ap-address">{address}</div>'
+            f'<div class="ap-street">{street}</div><div class="ap-ov">{ov}</div>'
+            f'<div class="ap-facts"><div>{is_}</div><div>{isnot}</div></div>')
+
 # ---------------------------------------------------------------- generic page
 def render_generic(slug, meta, body, is_post=False):
     body = strip_cta(body)
@@ -487,6 +518,8 @@ def render_generic(slug, meta, body, is_post=False):
         aside = '<aside class="side">' + ''.join(aside_parts) + '</aside>'
     hero_html = hero(h1_html, crumbs, byline) if h1_html else ''
     layout = 'with-side' if aside else 'solo'
+    if slug == 'afspraak':
+        prose, layout = afspraak_layout(prose), 'afspraak-page'
     return f'''{hero_html}
 <div class="wrap content {layout}">
   <article class="prose">{feat}{prose}</article>

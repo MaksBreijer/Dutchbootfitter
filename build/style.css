@@ -1529,6 +1529,30 @@ nav.side-block li:first-child a { border-top: 0; }
 /* Content that is in the page but switched off on bootfitter.nl (Elementor "hidden" on all devices): kept, not shown. */
 .live-hidden[hidden] { display: none !important; }
 
+/* Afspraak: built around the booking form. Booking (big card) beside a sticky address card; then the quote,
+   the three maps in a row and the "Wat is / niet" lists side by side. Same content and order as bootfitter.nl. */
+.content.afspraak-page .prose { max-width: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 1.75rem);
+  grid-template-areas: "book book addr" "quote quote addr" "map street ov" "facts facts facts"; align-items: start; }
+.afspraak-page .ap-book { grid-area: book; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius-l); padding: clamp(1.4rem, 3.5vw, 2.5rem); box-shadow: 0 24px 60px -40px rgba(15,29,44,.45); display: flex; flex-direction: column; gap: .9rem; }
+.afspraak-page .ap-book h2 { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); }
+.afspraak-page .ap-book h3 { margin-top: .4rem; font-size: 1.1rem; }
+.afspraak-page .ap-book .bookly-slot { margin: .2rem 0 0; min-height: 14rem; display: grid; place-items: center; }
+.afspraak-page .ap-address { grid-area: addr; position: sticky; top: 7rem; background: var(--tint); border-radius: var(--radius-l); padding: clamp(1.2rem, 2.5vw, 1.8rem); display: flex; flex-direction: column; gap: .55rem; font-size: .97rem; }
+.afspraak-page .ap-address h3 { font-size: 1.15rem; margin-bottom: .2rem; }
+.afspraak-page .ap-address p { margin: 0; }
+.afspraak-page .ap-address p:nth-last-child(-n+2) { color: var(--slate); font-size: .85rem; }
+.afspraak-page .ap-quote { grid-area: quote; margin: 0; padding: clamp(1.1rem, 2.5vw, 1.6rem) clamp(1.2rem, 3vw, 2rem); border-left: 3px solid var(--orange); background: var(--grey); border-radius: 0 var(--radius) var(--radius) 0; font-size: 1.05rem; line-height: 1.6; }
+.afspraak-page .ap-quote p { margin: 0; }
+.afspraak-page .ap-map { grid-area: map; } .afspraak-page .ap-street { grid-area: street; } .afspraak-page .ap-ov { grid-area: ov; display: flex; flex-direction: column; gap: .5rem; }
+.afspraak-page .ap-ov p { margin: 0; font-size: .95rem; }
+.afspraak-page .ap-map .embed iframe, .afspraak-page .ap-street .embed iframe, .afspraak-page .ap-ov .embed iframe { min-height: 260px; }
+.afspraak-page .ap-facts { grid-area: facts; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); margin-top: clamp(1rem, 3vw, 2rem); padding-top: clamp(1rem, 3vw, 2rem); border-top: 1px solid var(--line); }
+@media (max-width: 900px) {
+  .content.afspraak-page .prose { grid-template-columns: 1fr; grid-template-areas: "book" "addr" "quote" "map" "street" "ov" "facts"; }
+  .afspraak-page .ap-address { position: static; }
+  .afspraak-page .ap-facts { grid-template-columns: 1fr; }
+}
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
