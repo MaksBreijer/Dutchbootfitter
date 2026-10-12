@@ -527,7 +527,9 @@ def render_generic(slug, meta, body, is_post=False):
     hero_html = hero(h1_html, crumbs, byline) if h1_html else ''
     layout = 'with-side' if aside else 'solo'
     if slug == 'links':
-        layout = 'links-page'
+        # One whole: the title sits right above the link cards instead of a separate photo header.
+        layout, hero_html = 'links-page', ''
+        prose = f'<h1>{h1_html}</h1>' + prose
     if slug == 'afspraak':
         # One whole: the page title opens the booking card instead of a separate photo header.
         prose, layout = afspraak_layout(prose, h1_html), 'afspraak-page'
