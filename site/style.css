@@ -1513,7 +1513,7 @@ nav.side-block li:first-child a { border-top: 0; }
 .staff-initial { font-family: var(--f-display); font-weight: 700; font-size: clamp(2rem, 4vw, 3rem); color: color-mix(in srgb, var(--orange) 70%, var(--grey)); line-height: 1; }
 .staff-card figcaption { margin-top: .6rem; display: grid; gap: .1rem; }
 .staff-card figcaption strong { font-family: var(--f-display); font-weight: 700; font-size: 1rem; color: var(--ink); }
-.staff-owner { order: -1; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange-ink); }
+.staff-owner { order: -1; min-height: 1.4em; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange-ink); }
 .staff-role { color: var(--slate); font-size: .88rem; line-height: 1.4; }
 @media (max-width: 700px) {
   .staff { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) .5rem; scrollbar-width: none; }
