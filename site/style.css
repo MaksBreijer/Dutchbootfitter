@@ -1501,23 +1501,23 @@ nav.side-block li:first-child a { border-top: 0; }
 /* Spot of the Bookly booking form of bootfitter.nl (stays in place on the live WordPress site). */
 .bookly-slot { margin: 1.5rem 0 2rem; padding: 1.4rem; border: 1px dashed color-mix(in srgb, var(--orange) 55%, transparent); border-radius: var(--radius); background: color-mix(in srgb, var(--orange) 5%, var(--paper)); }
 
-/* Home: the team (Bart, Selma, Maks) as three portrait cards, in place of the shop photo strip. */
-.staff-sec { padding-block: clamp(2.5rem, 6vw, 4.5rem) 0; }
-.staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 2vw, 1.5rem); }
+/* Home: the team (Bart, Selma, Maks), kept quiet: a small heading and three compact portrait cards. */
+.staff-sec { padding-block: clamp(2rem, 5vw, 3.5rem) 0; }
+.staff-sec .staff-title { font-size: clamp(1.35rem, 1.15rem + .8vw, 1.8rem); margin-bottom: 1.1rem; }
+.staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 1.6vw, 1.25rem); max-width: 48rem; }
 .staff-card { margin: 0; }
-.staff-photo { aspect-ratio: 4 / 5; border-radius: var(--radius); overflow: hidden; background: var(--grey); display: grid; place-items: center; }
-.staff-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.staff-photo { aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; background: var(--grey); display: grid; place-items: center; }
+.staff-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
 .staff-card:hover .staff-photo img { transform: scale(1.03); }
 .staff-initial::before { content: attr(data-initial); }
-.staff-initial { font-family: var(--f-display); font-weight: 800; font-size: clamp(4rem, 10vw, 8rem); color: var(--orange-ink); line-height: 1; }
-.staff-title { margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
-.staff-card figcaption { margin-top: .8rem; display: grid; gap: .2rem; }
-.staff-card figcaption strong { font-family: var(--f-display); font-weight: 700; font-size: clamp(1.05rem, .95rem + .4vw, 1.3rem); color: var(--ink); }
-.staff-role { color: var(--slate); font-size: .95rem; line-height: 1.45; }
+.staff-initial { font-family: var(--f-display); font-weight: 700; font-size: clamp(2rem, 4vw, 3rem); color: color-mix(in srgb, var(--orange) 70%, var(--grey)); line-height: 1; }
+.staff-card figcaption { margin-top: .6rem; display: grid; gap: .1rem; }
+.staff-card figcaption strong { font-family: var(--f-display); font-weight: 700; font-size: 1rem; color: var(--ink); }
+.staff-role { color: var(--slate); font-size: .88rem; line-height: 1.4; }
 @media (max-width: 700px) {
   .staff { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) .5rem; scrollbar-width: none; }
   .staff::-webkit-scrollbar { display: none; }
-  .staff-card { flex: 0 0 72%; scroll-snap-align: start; }
+  .staff-card { flex: 0 0 46%; scroll-snap-align: start; }
 }
 
 /* ---------- Headings never split a word ----------
