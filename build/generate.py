@@ -712,7 +712,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW) | {'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'}
+APPROVED_COPY = set(HERO_EYEBROW) | {'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -730,7 +730,7 @@ PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
 # Selma's and Maks's as given by DutchBootFitter (12 October 2026).
 STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter'),
          ('Selma Cool', 'over-ons', None, 'Certified Master Bootfitter'),
-         ('Maks Cool Breijer', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'))
+         ('Maks Cool Breijer', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog'))
 STAFF_TITLE = 'Het team'
 STAFF_INTRO = 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.'
 STAFF_OWNERS = ('Bart Haarselhorst', 'Selma Cool')  # the owners of DutchBootFitter
