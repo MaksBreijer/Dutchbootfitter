@@ -446,8 +446,7 @@ def afspraak_layout(prose):
     is_, isnot = rest[:n_at], rest[n_at:]
     return (f'{hidden}<div class="ap-book">{booking}</div>'
             f'<blockquote class="ap-quote">{quote.strip()}</blockquote>'
-            f'<div class="ap-map">{map1}</div>'
-            f'<div class="ap-address">{address}</div>'
+            f'<div class="ap-address">{address}<div class="ap-map">{map1}</div></div>'
             f'<div class="ap-street">{street}</div><div class="ap-ov">{ov}</div>'
             f'<div class="ap-facts"><div>{is_}</div><div>{isnot}</div></div>')
 
