@@ -32,6 +32,8 @@ Ik wilde je nog even laten weten dat ik, dankzij de aanpassingen van mijn schoen
 Dankjewel voor je inspanningen.  
 **Anneke Wiesenekker**
 
+EMBED: https://maps.google.com/maps?q=DutchBootFitter%2C%20Amsterdam&t=m&z=10&output=embed&iwloc=near
+
 ### Ons adres
 
 **DutchBootFitter**
