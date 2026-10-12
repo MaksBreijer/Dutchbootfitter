@@ -12,7 +12,7 @@ DATE: none
 
 - [Thermoplastische skischoen](https://www.bootfitter.nl/bootfitting/op-maat-gemaakte-skischoenen/) Thermoplastische skischoen € 680 Thermoplastische maatschoen voorzien van steunzolen. De prijs is all-inclusive: het assessment, fitten, sportzolen en skitas.
 
-- [Strolz volledige maatschoen](https://www.bootfitter.nl/bootfitting/op-maat-gemaakte-skischoenen/) Strolz volledige maatschoen € 1180 Indien u kiest voor een Strolz schoen, kiest u voor de absolute top in pasvorm en kwaliteit. Beter dan een Strolz skischoen is er niet te krijgen. Inclusief op maat gemaakte steunzolen, assessment en het complete fitting-proces
+- [Strolz volledige maatschoen](https://www.bootfitter.nl/bootfitting/op-maat-gemaakte-skischoenen/) Strolz volledige maatschoen € 1195 Indien u kiest voor een Strolz schoen, kiest u voor de absolute top in pasvorm en kwaliteit. Beter dan een Strolz skischoen is er niet te krijgen. Inclusief op maat gemaakte steunzolen, assessment en het complete fitting-proces
 
 - [Podologisch consult, al dan niet ski-gerelateerd \*](https://www.bootfitter.nl/bootfitting/afspraak-met-de-podoloog/) Podologisch consult, al dan niet ski-gerelateerd \* € 45 Podologisch consult door onze registerpodoloog. een diagnose door middel van echografie is inbegrepen. Dit kan zowel een skigerelateerd- alsmede een voetklacht in het dagelijks leven zijn. Behandeling en consult worden vergoed vanuit de aanvullende verzekering.
 

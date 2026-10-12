@@ -123,7 +123,7 @@ Nee. We verkopen wel skischoenen, maar dat zijn altijd op maat gemaakte schoenen
 
 We hebben thermoplastisch aanpasbare schoenen die (afhankelijk van het model) ca. 680 euro kosten.
 
-Kies je voor de volledig op maat gemaakte schoenen van Strolz, hou dan rekening met 1180 euro. Voor de verschillen in deze twee opties [kijk je op deze pagina over maatschoen.](https://www.bootfitter.nl/bootfitting/op-maat-gemaakte-skischoenen/)
+Kies je voor de volledig op maat gemaakte schoenen van Strolz, hou dan rekening met 1195 euro. Voor de verschillen in deze twee opties [kijk je op deze pagina over maatschoen.](https://www.bootfitter.nl/bootfitting/op-maat-gemaakte-skischoenen/)
 
 > Wat kost een (podologisch) consult?
 
