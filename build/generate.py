@@ -619,7 +619,9 @@ def render_home(meta, body):
         cap = owner + rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
         cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{cap}</figcaption></figure>')
     title = rq(STAFF_TITLE, "new", "p", "blk-title staff-title")
-    out.append(f'<section class="section staff-sec" data-reuse aria-label="{STAFF_TITLE}"><div class="wrap">{title}<div class="staff">{"".join(cards)}</div></div></section>')
+    intro = rq(STAFF_INTRO, "new", "p", "staff-intro")
+    cta = f'<a class="btn" href="{local_href(O + "/afspraak/")}" data-src="afspraak">Maak direct een afspraak</a>'
+    out.append(f'<section class="section staff-sec" data-reuse aria-label="{STAFF_TITLE}"><div class="wrap staff-wrap"><div class="staff-copy">{title}{intro}{cta}</div><div class="staff">{"".join(cards)}</div></div></section>')
     # choices
     cards = []
     choice_heads = [(h, t) for h, t in secs if h and h.startswith('### [')]
@@ -667,7 +669,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW) | {'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'}
+APPROVED_COPY = set(HERO_EYEBROW) | {'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -687,6 +689,7 @@ STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', 'Registerpodoloog, s
          ('Selma Cool', 'over-ons', None, 'Certified Master Bootfitter'),
          ('Maks Cool Breijer', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, in opleiding tot registerpodoloog'))
 STAFF_TITLE = 'Het team'
+STAFF_INTRO = 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.'
 STAFF_OWNERS = ('Bart Haarselhorst', 'Selma Cool')  # the owners of DutchBootFitter
 PLANNER_SERVICES = ('Eigen skischoenen laten aanpassen', 'Op maat gemaakte skischoenen', 'Ski-Mojo aanmeten', 'Advies of iets anders')
 PLANNER_TIMES = ('09:30', '11:00', '13:00', '14:30', '16:00')

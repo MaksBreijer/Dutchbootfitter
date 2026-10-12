@@ -1501,10 +1501,15 @@ nav.side-block li:first-child a { border-top: 0; }
 /* Spot of the Bookly booking form of bootfitter.nl (stays in place on the live WordPress site). */
 .bookly-slot { margin: 1.5rem 0 2rem; padding: 1.4rem; border: 1px dashed color-mix(in srgb, var(--orange) 55%, transparent); border-radius: var(--radius); background: color-mix(in srgb, var(--orange) 5%, var(--paper)); }
 
-/* Home: the team (Bart, Selma, Maks), kept quiet: a small heading and three compact portrait cards. */
+/* Home: the team (Bart, Selma, Maks) on a warm tinted panel: a short invitation with a button, beside three portrait cards. */
 .staff-sec { padding-block: clamp(2rem, 5vw, 3.5rem) 0; }
-.staff-sec .staff-title { font-size: clamp(1.35rem, 1.15rem + .8vw, 1.8rem); margin-bottom: 1.1rem; }
-.staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 1.6vw, 1.25rem); max-width: 48rem; }
+.staff-wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: center;
+  background: var(--tint); border-radius: var(--radius-l); padding: clamp(1.5rem, 4vw, 3rem); }
+.staff-copy .staff-title { font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); margin-bottom: .7rem; }
+.staff-intro { color: var(--slate); font-size: 1rem; line-height: 1.6; margin: 0 0 1.3rem; max-width: 28ch; }
+.staff { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 1.6vw, 1.25rem); }
+.staff-photo { box-shadow: 0 10px 30px -18px rgba(15,29,44,.35); }
+@media (max-width: 860px) { .staff-wrap { grid-template-columns: 1fr; } .staff-intro { max-width: 40ch; } }
 .staff-card { margin: 0; }
 .staff-photo { aspect-ratio: 1; border-radius: var(--radius); overflow: hidden; background: var(--grey); display: grid; place-items: center; }
 .staff-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 25%; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
@@ -1516,7 +1521,7 @@ nav.side-block li:first-child a { border-top: 0; }
 .staff-owner { order: -1; min-height: 1.4em; font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange-ink); }
 .staff-role { color: var(--slate); font-size: .88rem; line-height: 1.4; }
 @media (max-width: 700px) {
-  .staff { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) .5rem; scrollbar-width: none; }
+  .staff { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 0 .5rem; scrollbar-width: none; }
   .staff::-webkit-scrollbar { display: none; }
   .staff-card { flex: 0 0 46%; scroll-snap-align: start; }
 }
