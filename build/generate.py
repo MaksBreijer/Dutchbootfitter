@@ -14,7 +14,7 @@ OUT = os.path.join(BASE, 'site')
 ORIGIN = 'https://www.bootfitter.nl'
 
 sys.path.insert(0, ROOT)
-from chrome import O, TOPBAR, NAV, FOOTER_PAIN, FOOTER_NAV, CONTACT, BADGES, RATING, COPYRIGHT, SOCIALS, SKIP, MENU_OPEN, MENU_CLOSE, CTA_HEADING, CTA_BUTTON
+from chrome import O, TOPBAR, NAV, FOOTER_PAIN, FOOTER_NAV, CONTACT, BADGES, RATING, COPYRIGHT, SOCIALS, SEARCH, SKIP, MENU_OPEN, MENU_CLOSE, CTA_HEADING, CTA_BUTTON
 
 CTA_RE = re.compile(r'^#{1,3} Pijn in voeten of scheenbenen\? Maak een afspraak om pijnloos® te skiën!\s*\n+\[Maak direct een afspraak\]\([^)]*\)\s*$', re.M)
 
@@ -182,6 +182,7 @@ SOCIAL_ICONS = {
     'Facebook-f': '<svg viewBox="0 0 320 512"><path d="M279 288l14-93h-89v-60c0-25 12-50 52-50h40V6S260 0 225 0c-73 0-121 44-121 125v70H23v93h81v224h100V288z"/></svg>',
     'Twitter': '<svg viewBox="0 0 512 512"><path d="M389 48h71L305 224l182 240H345L233 318 106 464H35l165-189L25 48h146l101 133zm-25 374h39L151 88h-42z"/></svg>',
     'Instagram': '<svg viewBox="0 0 448 512"><path d="M224 141c-64 0-115 51-115 115s51 115 115 115 115-51 115-115-51-115-115-115zm0 190c-41 0-75-34-75-75s34-75 75-75 75 34 75 75-34 75-75 75zm146-194c0 15-12 27-27 27s-27-12-27-27 12-27 27-27 27 12 27 27zm76 27c-2-36-10-68-36-94s-58-34-94-36c-37-2-148-2-185 0-36 2-68 10-94 36S3 133 1 169c-2 37-2 148 0 185 2 36 10 68 36 94s58 34 94 36c37 2 148 2 185 0 36-2 68-10 94-36s34-58 36-94c2-37 2-148 0-185zm-48 225c-8 20-23 35-43 43-30 12-101 9-134 9s-104 3-134-9c-20-8-35-23-43-43-12-30-9-101-9-134s-3-104 9-134c8-20 23-35 43-43 30-12 101-9 134-9s104-3 134 9c20 8 35 23 43 43 12 30 9 101 9 134s3 104-9 134z"/></svg>',
+    'Pinterest': '<svg viewBox="0 0 384 512"><path d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z"/></svg>',
 }
 
 
@@ -211,7 +212,7 @@ def footer_html():
       </div>
     </div>
   </div>
-  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><div class="socials">{socials}</div></div></div>
+  <div class="foot-bottom"><div class="wrap"><span>{esc(COPYRIGHT)}</span><form class="foot-search" role="search" method="get" action="{SEARCH["action"]}" aria-label="{esc(SEARCH["label"])}"><input type="search" name="s" placeholder="{esc(SEARCH["placeholder"])}" aria-label="{esc(SEARCH["label"])}"><button type="submit" aria-label="{esc(SEARCH["placeholder"])}"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg></button></form><div class="socials">{socials}</div></div></div>
 </footer>'''
 
 
@@ -444,11 +445,14 @@ def afspraak_layout(prose, h1_html=''):
     ov, rest = rest[:o_end], rest[o_end:]
     n_at = rest.index('<h3>Wat is DutchBootFitter niet ?</h3>')
     is_, isnot = rest[:n_at], rest[n_at:]
+    # the same hand-drawn marks as on the home page: underline under "DutchBootFitter", cross through "niet"
+    is_ = is_.replace('<h3>Wat is DutchBootFitter ?</h3>', '<h3>' + mark('Wat is DutchBootFitter ?', 'DutchBootFitter', 'under') + '</h3>', 1)
+    isnot = isnot.replace('<h3>Wat is DutchBootFitter niet ?</h3>', '<h3>' + mark('Wat is DutchBootFitter niet ?', 'niet', 'cross') + '</h3>', 1)
     return (f'<div class="ap-book"><h1>{h1_html}</h1>{hidden}{booking}</div>'
             f'<blockquote class="ap-quote">{quote.strip()}</blockquote>'
             f'<div class="ap-address">{address}<div class="ap-map">{map1}</div></div>'
             f'<div class="ap-street">{street}</div><div class="ap-ov">{ov}</div>'
-            f'<div class="ap-facts"><div>{is_}</div><div>{isnot}</div></div>')
+            f'<div class="ap-facts"><div class="is">{is_}</div><div class="not">{isnot}</div></div>')
 
 # ---------------------------------------------------------------- generic page
 def render_generic(slug, meta, body, is_post=False):

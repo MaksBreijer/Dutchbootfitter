@@ -198,6 +198,15 @@ img.img-missing { display: none; }
 .socials a { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); }
 .socials a:hover { background: var(--orange-btn); color: var(--on-orange); }
 .socials svg { width: 16px; height: 16px; fill: currentColor; }
+.foot-search { display: flex; align-items: center; flex: 0 1 18rem; min-width: 12rem; height: 36px; border-radius: var(--radius, 6px); background: rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.12); }
+.foot-search:focus-within { box-shadow: inset 0 0 0 1px var(--orange); }
+.foot-search input { flex: 1; min-width: 0; height: 100%; padding: 0 .8rem; border: 0; background: none; color: inherit; font: inherit; outline: none; }
+.foot-search input::placeholder { color: rgba(255,255,255,.5); }
+.foot-search input::-webkit-search-cancel-button { display: none; }
+.foot-search button { width: 36px; height: 36px; display: grid; place-items: center; border: 0; background: none; color: inherit; cursor: pointer; }
+.foot-search button:hover { color: var(--orange); }
+.foot-search svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+@media (max-width: 560px) { .foot-search { order: -1; flex-basis: 100%; } }
 @media (max-width: 900px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .foot-grid { grid-template-columns: 1fr; } }
 
@@ -1550,6 +1559,12 @@ nav.side-block li:first-child a { border-top: 0; }
 .afspraak-page .ap-map .embed iframe { min-height: 220px; }
 .afspraak-page .ap-street .embed iframe, .afspraak-page .ap-ov .embed iframe { min-height: 260px; }
 .afspraak-page .ap-facts { grid-area: facts; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 3vw, 2.5rem); margin-top: clamp(1rem, 3vw, 2rem); padding-top: clamp(1rem, 3vw, 2rem); border-top: 1px solid var(--line); }
+.afspraak-page .ap-facts h3 { font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); margin-bottom: 1rem; }
+.afspraak-page .ap-facts ul { list-style: none; padding: 0; margin: 0; }
+.afspraak-page .ap-facts li { position: relative; padding: .55rem 0 .55rem 1.8rem; border-top: 1px solid var(--line); }
+.afspraak-page .ap-facts li::before { position: absolute; left: .2rem; top: .5rem; font-weight: 700; font-family: var(--f-mono); }
+.afspraak-page .ap-facts .is li::before { content: "+"; color: var(--orange-ink); }
+.afspraak-page .ap-facts .not li::before { content: "–"; color: var(--slate); }
 @media (max-width: 900px) {
   .content.afspraak-page .prose { grid-template-columns: 1fr; grid-template-areas: "book" "addr" "quote" "street" "ov" "facts"; }
   .afspraak-page .ap-address { position: static; }

@@ -80,7 +80,7 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   // Gentle reveal of sections and cards as they enter the viewport.
   if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var els = document.querySelectorAll('.section .wrap > *, .choice, .card, .price, .quote, .isnot > div');
+  var els = document.querySelectorAll('.section .wrap > *, .choice, .card, .price, .quote, .isnot > div, .ap-facts > div');
   if (!els.length) return;
   document.documentElement.classList.add('js-reveal');
   var io = new IntersectionObserver(function (entries) {

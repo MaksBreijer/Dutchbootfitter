@@ -83,4 +83,7 @@ SOCIALS = [
     ('Facebook-f', 'https://www.facebook.com/dutchbootfitterAmsterdam'),
     ('Twitter', 'https://twitter.com/dutchbootfitter'),
     ('Instagram', 'https://www.instagram.com/dutchbootfitter/'),
+    ('Pinterest', 'https://nl.pinterest.com/DutchBootFitter/'),
 ]
+
+SEARCH = {'label': 'Zoek op deze site', 'placeholder': 'Zoeken', 'action': O + '/'}
