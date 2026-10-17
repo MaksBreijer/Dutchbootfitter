@@ -1,123 +1,197 @@
-# bootfitter-site
+# bootfitter.nl — nieuw ontwerp (overdracht aan Gianni)
 
-> **Belangrijk voor de bouw (Gianni):** dit ontwerp is alleen frontend. Het afspraak maken loopt op bootfitter.nl via de WordPress-plugin **Bookly** op 4 pagina's (Afspraak, Op maat gemaakte skischoenen, Ski-Mojo aanmeten, Strolz aanmeten). Die Bookly-formulieren blijven precies staan waar ze staan; in de preview is die plek gemarkeerd met `class="bookly-slot"` (en een HTML-commentaar). Alleen de opmaak mag veranderen. Teksten, titels, meta-beschrijvingen, URL's en links zijn 1-op-1 gelijk aan de live site (zie `build/verify.py`), zodat de Google-posities behouden blijven.
+Dit is het nieuwe ontwerp voor **bootfitter.nl** (DutchBootFitter), gebouwd als statische voorbeeldsite. Het is
+**alleen frontend**: HTML-structuur, CSS en een beetje JavaScript. Er verandert niets aan de inhoud, de URL's of de
+backend van WordPress.
 
-De nieuwe statische website voor bootfitter.nl (DutchBootFitter).
+> **De drie gouden regels**
+> 1. **Bookly niet aanraken.** Het afspraaksysteem (plugin Bookly) blijft precies zoals het is, op alle 4 pagina's.
+> 2. **Inhoud niet aanraken.** Teksten, paginatitels, meta-beschrijvingen, H1's, URL's, interne links en alt-teksten
+>    blijven in WordPress staan zoals ze nu zijn. Alleen de opmaak verandert. Zo blijven de Google-posities behouden.
+> 3. **Geen nieuwe plugins of backend-code.** Alles hieronder kan met het thema/Elementor en eigen CSS/JS.
+>
+> **Uitzondering:** drie kleine inhoudswijzigingen doe je wél in WordPress, op verzoek van DutchBootFitter (zie §6):
+> de Instagram-knop op Ski-Mojo, de Strolz-prijs naar € 1195 en het weghalen van "Lorem ipsum" op Links.
 
-## Overdracht aan Gianni (stand 12 oktober 2026)
+Stand: 17 oktober 2026.
 
-Alles hieronder is frontend (HTML/CSS/JS). Er is geen backend nodig.
+**Inhoud van deze zip:** `README.md` (dit bestand) · `site/` (de voorbeeldsite) · `uploaden/` (de nieuwe media, §5) ·
+`build/`, `copy/`, `seo/` (de bron en de controles) · `verification.json` en `alt-check.json` (de uitslag van de controles).
 
-**Blijft precies zoals op de live site**
-- Bookly-afspraakformulieren op 4 pagina's (gemarkeerd met `.bookly-slot`).
-- Teksten, paginatitels, meta-beschrijvingen, H1's, URL's, interne links en alt-teksten: `build/verify.py` geeft 0 verschillen.
-- Blokken die live verborgen staan (Elementor "hidden" op alle apparaten) staan hier ook verborgen (`.live-hidden`): de twee "Let op:"-meldingen op Afspraak, het ANWB-vignetblok en de tekstlink "Schijf een review".
-- De zoekbalk in de footer gebruikt gewoon de WordPress-zoekfunctie (`?s=`).
+---
 
-**Bewust anders dan live**
-- Home: blok "Het team" (Bart, Selma, Maks) met korte uitnodiging. Dit is nieuwe tekst, goedgekeurd door DutchBootFitter. De foto van Selma volgt nog.
-- Home: de bloglijst naast de FAQ (staat live ook op de home), Ski-Mojo-submenu en "Over skischoenen"-submenu: zelfde links als live.
-- Prijs Strolz volledige maatschoen: € 1195 (live staat op Tarieven en in de FAQ nog € 1180).
-- Links: de Elementor-opvultekst "Lorem ipsum" is weggelaten. Graag ook live verwijderen.
-- Meta-beschrijving van Ski-Mojo afspraak en Pijnlijke hiel zijn verbeterd (live fout of leeg).
-- Werkwijze: het flow-plaatje is een HTML-stroomschema (zelfde tekst, nu leesbaar voor Google).
-- Afspraak en Links: geen losse fotokop; de H1 staat in de pagina zelf.
+## 1. Wat staat waar
 
+| Map / bestand | Inhoud |
+|---|---|
+| `site/` | De kant-en-klare voorbeeldsite: 71 pagina's, `style.css`, `app.js`. Dit is wat je nabouwt. |
+| `site/style.css` | **Alle** opmaak. Dit bestand is het belangrijkste wat je overzet. |
+| `site/app.js` | Kleine scripts: mobiel menu, header bij scrollen, fade-in van secties, schoen-hotspots, fotostrip. |
+| `site/wp-content/uploads/winkel/` | **Nieuwe** afbeeldingen en video's (bestaan nog niet op de live site; uploaden naar de mediabibliotheek). |
+| `site/wp-content/uploads/20xx/...` | Afbeeldingen die al op bootfitter.nl staan (zelfde pad als live; niet opnieuw uploaden). |
+| `copy/` | De letterlijke tekst van elke live pagina (Markdown). De bron van de voorbeeldsite. |
+| `build/generate.py` | Bouwt `site/` uit `copy/`. Alle keuzes (welke foto waar, enz.) staan hier in tabellen. |
+| `build/verify.py` | Controleert elke pagina woord voor woord tegen `copy/` → `verification.json`. |
+| `build/check_alts.py` | Vergelijkt de alt-teksten van elke pagina met de live site → `alt-check.json`. |
+| `seo/` | SEO-documenten (o.a. de lijst met kapotte links die al gerepareerd zijn). |
 
+Bekijken: open `site/index.html`, of start een lokale server:
 
-- `site/` — de kant-en-klare site (71 pagina's, `style.css`, `app.js`). Open `site/index.html` in een browser; er is geen buildstap nodig om hem te bekijken.
-- `copy/` — de letterlijke tekst van elke pagina van bootfitter.nl (Markdown), de bron waaruit de site gegenereerd wordt. Teksten blijven woord voor woord gelijk aan de huidige site.
-- `build/` — de generator en de controle.
-- `seo/` — SEO-documenten.
+```sh
+cd site && python3 -m http.server 8765    # dan http://localhost:8765
+```
 
-## Ontwerp (v2)
+## 2. Stappenplan voor de bouw in WordPress
 
-Het ontwerp combineert drie referenties, met behoud van alle tekst, SEO-titels/-beschrijvingen en afbeeldingen:
+1. **Back-up** van de live site (bestanden + database) en werk eerst op een staging-kopie.
+2. **Lettertype:** Open Sans via Google Fonts (`family=Open+Sans:ital,wght@0,300..800;1,300..800`), zoals nu al.
+3. **CSS:** zet `site/style.css` in het (child-)thema of in Elementor → Site-instellingen → Eigen CSS. De kleuren
+   staan als variabelen bovenaan (`--orange: #ff6c2f` is het oranje uit het logo).
+4. **JS:** zet `site/app.js` in het thema (footer). Het blok "Appointment planner" onderaan wordt **niet** gebruikt
+   (Bookly blijft); dat mag je weglaten.
+5. **Media:** upload de bestanden uit `site/wp-content/uploads/winkel/` naar de mediabibliotheek (lijst in §5).
+6. **Per paginatype de structuur nabouwen** (header, paginakop, kaarten — zie §4). De **tekst zelf laat je in WordPress
+   staan**; je verandert alleen de secties/klassen eromheen.
+7. **Bookly-pagina's:** alleen de opmaak rond het formulier aanpassen (zie §3).
+8. **Controleren vóór livegang** met de checklist in §7.
 
-- **Fischer Sports** — paginabrede bergfoto in de hero, zwevende afgeronde navigatiebalk, grote smalle hoofdletterkoppen.
-- **Canary Care** — warme, rustige vlakken, ronde pill-knoppen, fotokaarten met de tekst op de foto.
-- **Solstice Design** — redactionele serif-cursief als accent, veel witruimte, kleine genummerde sectielabels.
+## 3. Bookly — niet aanraken
 
-Het oranje is exact het oranje uit het logo; hoogtelijnen blijven het enige ornament.
+Bookly staat op **4 pagina's**. In de voorbeeldsite is die plek gemarkeerd met `<div class="bookly-slot">` en een
+HTML-commentaar `<!-- BOOKLY: ... -->`. Daar staat in WordPress het echte Bookly-formulier/shortcode.
 
-- **Lettertype:** Open Sans, net als op de huidige bootfitter.nl (via de breedte-as ook in smalle koppen).
-- **Foto's van de winkel:** de interieurfoto's (DBF-01…13), de etalage en de werkplaats komen uit de mediabibliotheek van bootfitter.nl en staan in `site/wp-content/uploads/winkel/`. Ze staan op de home, in de kop van elke pagina, bij de afsluitende afspraak-oproep en als galerij op Over Ons.
-- **Links:** de fixes uit `seo/Kapotte-links-bootfitter.pdf` zijn doorgevoerd in `LINK_FIXES` / `LINK_REMOVE` in `build/generate.py` (alleen linkadressen, de tekst blijft gelijk).
+| Pagina | URL |
+|---|---|
+| Afspraak | `/afspraak/` |
+| Op maat gemaakte skischoenen | `/bootfitting/op-maat-gemaakte-skischoenen/` |
+| Ski-Mojo aanmeten | `/bootfitting/ski-mojo-home/skimojo-aanmeten/` |
+| Strolz aanmeten | `/strolz-op-maat-gemaakte-skischoenen-aanmeten/` |
 
-## Ontwerp (v4) — alles onder de header
+- De Bookly-widget/shortcode, de instellingen, de diensten, de medewerkers en de koppelingen blijven **exact** zoals ze zijn.
+- Alleen CSS eromheen mag. Test na elke wijziging een proefboeking op staging.
+- Een eigen afspraakplanner bouwen is **niet** de bedoeling.
 
-De header (topbalk, menubalk, de video-hero op de home en de paginakop op binnenpagina's) blijft exact zoals hij is. Daaronder:
+## 4. Het ontwerp in onderdelen
 
-- **Home 01, intro:** kop links, tekst rechts (Solstice), daaronder een brede foto van de wachtruimte met de definitie erop.
-- **Home 02, klachten:** gecentreerde intro (Canary), genummerde klachten met dunne lijnen, de schoen met hotspots op een warme cirkel.
-- **Winkelfoto's:** een rij hoge afgeronde kaarten die je kunt scrollen, met pijlknoppen (Canary).
-- **Home 03, keuzes:** fototegels waarbij de foto de hele kaart vult en de tekst op de foto staat (Fischer).
-- **Home 04, wel/niet:** een donker contrastvlak met twee redactionele kolommen.
-- **Home 05, FAQ:** kop links, zachte uitklapkaarten rechts.
-- **Afspraak-oproep:** een grote afgeronde fototegel van de etalage, met de keuken als zwevende kaart (Fischer).
-- **Binnenpagina's:** een grotere openingsalinea, oranje streepje boven tussenkoppen, kaartrasters als projectraster (Solstice), een getinte zijbalk, afgeronde prijs- en reactiekaarten.
+**Algemeen**
+- Witte pagina, lichtgrijze vlakken `#f4f4f4`, oranje `#ff6c2f` als signaalkleur (één oranje sleutelwoord per kop op de home).
+- Lettertype Open Sans, normale breedte, koppen vet.
 
-Geen tekst, titel, meta-beschrijving, URL, afbeelding of link is veranderd; `build/verify.py` meldt 0 verschillen op alle 71 pagina's.
+**Header** (alle pagina's)
+- Bovenaan een smalle balk met 4 oranje links (Tarieven, Wat klanten zeggen, Bootfitter BLOG, Links) — deze balk is belangrijk en blijft.
+- Daaronder logo links, menu rechts, en de oranje knop **Afspraak** als laatste.
+- Op de home ligt de balk doorzichtig op de video met wit logo en witte links, en wordt hij wit bij scrollen.
 
-## Ontwerp (v5)
+**Home**
+- **Video-hero** (`strolz-aanmeten-breed.mp4`, op een staande telefoon `strolz-aanmeten-staand.mp4`): start meteen op het
+  eerste beeld, zonder fade, en speelt doorlopend (`autoplay muted loop playsinline`). De poster (`*-poster.jpg`) is
+  hetzelfde eerste beeld, zodat er niets verspringt tijdens het laden.
+- "Pijnloos skiën®" met de definitie-kaart op een zwart-witfoto (leest en meetlint).
+- **"Wat wilt u doen?"**: drie kaarten met productfoto's op wit (skischoenentas, Fischer RC4 met andere schoenen,
+  Hannes Strolz) en een oranje **+**-tegel bij de link.
+- **Volgorde op de home** (live staat "Wat wilt u doen?" lager; hier direct na de intro):
+  hero → Pijnloos skiën® (intro + definitie) → Wat wilt u doen? → Wat kan een bootfitter voor u betekenen? (klachten met
+  hotspots) → Wat is / Wat is niet → FAQ met blog → **Over ons**, **de winkel** (adres + foto's) en **klantreacties**.
+  Die laatste drie blokken herhalen alleen zinnen die al op de site staan (Over Ons, footer, Wat klanten zeggen) en
+  gebruiken geen extra koppen (h2/h3), zodat de kopstructuur van de home gelijk blijft.
+- Het blok **"Het team"** staat uit (`SHOW_TEAM = False` in `generate.py`) tot er goede foto's zijn.
 
-- **Header:** de balk zoals hij was, met het menu rechts uitgelijnd; de Afspraak-knop is een recht oranje vlak en de menuknop is ook recht (geen schuine vorm meer).
-- **Geen textuur:** de hoogtelijnen achter de paginakoppen en op de definitiekaart zijn weg; een foto die niet laadt laat een effen vlak achter.
-- **Foto's:** de winkelfoto's (DBF-…) zijn opnieuw geëxporteerd uit de originelen van 5184 px (nu 2400 px breed). Nieuw uit de mediabibliotheek: `slijpmachine.jpg`, `handwerk-zw.jpg`, `pers-zw.jpg`. De etalagefoto bestaat alleen op 562 px en wordt daarom alleen nog klein gebruikt. Waar de pagina's een WordPress-miniatuur (`-300x200` enz.) tonen, gebruikt `localize()` het originele bestand als dat lokaal staat (maximaal 1600 px).
-- **Over Ons:** dezelfde tekst in een logische volgorde: wie we zijn (met de foto van Bart en Marco-Paul), In Memoriam en de voortzetting, wat de titels betekenen, een impressie van de winkel (fotoraster en Street View), en tot slot "Wat wilt u doen?". `verify.py` vergelijkt deze pagina woord voor woord met dezelfde volgorde (`over_ons_md()` in `generate.py`).
+**Paginakop van binnenpagina's** (`page-hero banner`)
+- De foto loopt over de volle breedte achter de titel, **zwart-wit via CSS** (`filter: grayscale(1)`), met een donker
+  verloop; titel en kruimelpad links onderin, wit.
+- Per sectie een vaste foto, zoals op de live site. Bouw ze in WordPress bij voorkeur als **sectie-achtergrond** in
+  Elementor (zoals nu live): dan heeft de foto geen alt-tekst, precies als nu.
 
-## Ontwerp (v6)
+| Pagina's | Kopfoto (`uploads/winkel/`) |
+|---|---|
+| Pijn in voeten-subpagina's, Mijn skischoenen aanpassen, Op maat gemaakte skischoenen | `banner-leest.jpg` |
+| Wat is bootfitting?, Werkwijze | `banner-oprekpers.jpg` |
+| De Skischoen + subpagina's | `banner-skischoenen.jpg` (Fischer RC4 + Hannes Strolz) |
+| Ski-Mojo + subpagina's | `banner-ski-mojo.jpg` |
+| Rentmaxx Z-value | `banner-rentmaxx.jpg` |
+| Alle andere pagina's en alle blogs | `banner-steunzool.jpg` |
 
-Referentie: Oregon Outdoor Alliance. De start van de site (topbalk, menu, video-hero, kop en knoppen) en de volgorde van alle bestaande secties blijven gelijk.
+  De volledige tabel staat in `BANNERS` / `BANNER_FOR` in `build/generate.py`.
 
-- **Strakker:** kleine afrondingen (6 px) in plaats van pillen en cirkels; sectienummers (01, 02 …) in Open Sans met een oranje streep eronder.
-- **Hero:** één regel boven de kop, `DE EERSTE CERTIFIED MASTER BOOTFITTERS · SINDS 2008 BRACHTEN ZIJ HET BOOTFITTEN NAAR NEDERLAND`. Dit is de enige nieuwe tekst op de site, goedgekeurd door DutchBootFitter en gebaseerd op Over Ons ("Zij brachten het 'bootfitten' naar Nederland"). Hij staat in `HERO_EYEBROW` / `APPROVED_COPY` in `generate.py`; `verify.py` accepteert alleen nieuwe tekst die daar staat.
-- **Home 06–08, na de FAQ:** de bootfitters (Over Ons), de winkel met adres en foto's, en drie klantreacties met de beoordeling. Deze blokken herhalen alleen zinnen die al op de site staan; ze gebruiken geen h2/h3, zodat de kopstructuur van de home gelijk blijft.
-- **Footer:** de wiekjes van de molen staan nu subtiel rechtsonder in de footer (niet meer in de afspraak-oproep); de social-knoppen zijn vierkant in plaats van rond.
-- **Controle:** blokken met `data-reuse` worden in `verify.py` apart gecontroleerd: elk stukje tekst (`data-src`) moet woord voor woord op de genoemde pagina staan (`chrome` = header/footer). Nieuwe tekst daarbuiten geeft een fout.
+**Overig**
+- Tarieven: prijskaarten met het kleine fotootje van de live site naast de vier prijzen die er live een hebben.
+- Werkwijze: de flow precies zoals live: het lege schema `wp-content/uploads/2021/09/flow.jpg` (alt "DutchBootFitter
+  werkwijze") met elke tekst als HTML op zijn eigen vak (posities in procenten, `render_werkwijze()`). Op mobiel scrolt
+  het schema opzij, zodat de tekst leesbaar blijft.
+- Over Ons: dezelfde tekst in een logischere volgorde: wie we zijn (foto Bart & Marco-Paul) → In Memoriam → wat de
+  titels betekenen → een impressie van de winkel → "Wat wilt u doen?".
+- Afsluitende oranje afspraakbalk onderaan elke pagina, met de molenwieken.
+- **Mobiel:** alles is getest op 375 px (iPhone): geen horizontaal scrollen, uitklapmenu, knoppen over de volle breedte,
+  dienstkaarten swipen, het Werkwijze-schema scrolt opzij.
+- Footer zoals live (contact, pijn in voeten, navigatie, keurmerken, Trustindex-beoordeling, social).
 
-## Ontwerp (v7) — header: bootfitter.nl × Snuuzu
+## 5. Nieuwe bestanden om te uploaden
 
-- **Van Snuuzu:** een dunne donkere aankondigingsregel ("Pijn in voeten of scheenbenen? Maak een afspraak om pijnloos® te skiën!", linkt naar Afspraak) die wegklapt bij scrollen; een rustige, doorzichtige balk op de video; kop linksonder met een witte knop en daaronder de sterren met "Beoordeling 4.5/5 gebaseerd op 484 reviews" (bestaande tekst, gecontroleerd als `data-reuse`).
-- **Van de huidige site:** logo links, menu rechts (met HOME), de oranje Afspraak-knop en "pijnloos skiën®" vet in oranje.
-- **Rustig gehouden:** geen telefoonicoon, geen streep onder het label, de tweede hero-knop is een onderstreepte link. Onder 1100 px: logo links, Afspraak en menuknop rechts.
+Alles wat je moet uploaden, staat in de map **`uploaden/`** in deze zip (28 bestanden). Alle andere afbeeldingen staan al
+op bootfitter.nl (zelfde pad), die hoef je niet opnieuw te uploaden.
 
-## Ontwerp (v8) — rustiger header
+- **Video hero:** `strolz-aanmeten-breed.mp4` (8,3 MB), `strolz-aanmeten-staand.mp4` (4,0 MB),
+  `strolz-aanmeten-breed-poster.jpg`, `strolz-aanmeten-staand-poster.jpg`.
+- **Kopfoto's:** `banner-leest.jpg`, `banner-oprekpers.jpg`, `banner-skischoenen.jpg`, `banner-ski-mojo.jpg`,
+  `banner-rentmaxx.jpg`, `banner-steunzool.jpg`.
+- **Dienstkaarten home:** `dienst-aanpassen-tas.jpg`, `dienst-op-maat-schoenen.jpg`, `dienst-strolz-schoen.webp`.
+- **Winkelfoto's** (home, Over Ons, afspraakbalk): `DBF-01.jpg`, `DBF-03.jpg`, `DBF-04.jpg`, `DBF-07.jpg` t/m `DBF-13.jpg`,
+  `bart-marco-paul.jpg`, `handwerk-steunzool.jpg`, `handwerk-zw.jpg`, `vloer-praktijk.jpg`.
+- **Icoon:** `pijnloosskien.svg` (het skischoentje bij de links onderaan Over Ons).
 
-- **Hero:** de H1, de tagline, twee knoppen (oranje hoofdknop, omlijnde tweede knop van gelijke grootte) en daaronder klein de sterren met de beoordeling. De regel boven de kop en het scroll-streepje zijn weg; zachtere overlay en meer witruimte.
-- **Aankondigingsregel** boven de balk is weg (hij herhaalde de Afspraak-knop).
-- **Mobiel (iPhone):** kop laag in beeld, knoppen onder elkaar over de volle breedte (52 px hoog, op één regel tot 375 px), ruimte voor de home-indicator via `safe-area-inset-bottom`.
+In de voorbeeldsite staan ze onder `wp-content/uploads/winkel/` (en `wp-content/uploads/pijnloosskien.svg`). Pas na het
+uploaden de paden in de CSS aan (zoek op `wp-content/uploads`).
 
-## Ontwerp (v9) — diensten eerder, premium
+## 6. SEO: wat gelijk blijft en wat bewust anders is
 
-- **Eerst waar we voor staan, dan de diensten:** na de hero komt "Pijnloos skiën®" (01) en direct daarna "Wat wilt u doen?" (02); de rest volgt in de volgorde van bootfitter.nl. `verify.py` vergelijkt de home met die volgorde (`home_md()` in `generate.py`).
-- **Intro (waar we voor staan):** de alinea met harde regeleinden is opgesplitst op die regeleinden: links de kop met de eerste zin als grotere lead, rechts de uitleg en de uitnodiging om een afspraak te maken. Zelfde woorden, zelfde volgorde.
-- **Premium dienstkaarten:** foto boven, tekst eronder op een rustig vlak, klein nummer (01–03) en één rustige link met pijl. De kleine productfoto's van de live site (één was maar 292 px) zijn vervangen door vierkante uitsneden van eigen foto's: `dienst-aanpassen.jpg` (oprekken), `dienst-op-maat.jpg` (DBF-13) en `dienst-strolz.jpg` (uit de Strolz-video); de alt-teksten zijn die van de live site (`SERVICE_PHOTOS`).
-- **Mobiel:** de drie kaarten staan in een rij die je kunt swipen (de volgende kaart piept in beeld), in plaats van onder elkaar.
-- **Compacter:** minder ruimte tussen secties en lagere kaarten en foto's, zodat er minder gescrold hoeft te worden.
+**Gecontroleerd gelijk aan de live site** (`build/verify.py`, `build/check_alts.py`, stand 17-10-2026):
+- **Tekst:** alle 71 pagina's woord voor woord gelijk (alleen 3 spaties na een punt op Pijn in voeten, "voet.Oplossing" → "voet. Oplossing").
+- **Paginatitels (`<title>`) en meta-beschrijvingen:** gelijk, ook de gekrulde apostrofs.
+- **H1:** gelijk op elke pagina. Pagina's zonder H1 op de live site (blogoverzicht, Historie van de skischoen) hebben
+  ook hier geen H1; hun titel is een H2 die er hetzelfde uitziet.
+- **URL's en interne links:** gelijk (alleen de kapotte links uit `seo/Kapotte-links-bootfitter.pdf` zijn gerepareerd).
+- **Alt-teksten:** gelijk aan de live site. Nieuwe, puur decoratieve foto's (kopfoto's, winkelfoto's) hebben een lege
+  alt (`alt=""`), zodat Google precies dezelfde alt-teksten ziet als nu.
 
-## Ontwerp (v10) — oranje als signaal
+**Bewust anders** (allemaal klein en zonder SEO-risico). De eerste drie zijn inhoud: die pas je in WordPress aan.
+- Ski-Mojo: een knop **"Uitlegvideo van Ski-Mojo"** naar de Instagram-reel
+  `https://www.instagram.com/reel/DTcoYxbDGMI/` (opent in een nieuw tabblad), vlak voor "De voordelen van Ski-Mojo:".
+- Prijs Strolz volledige maatschoen: **€ 1195** (live staat op Tarieven en in de FAQ nog € 1180).
+- Links-pagina: de Elementor-opvultekst "Lorem ipsum" is weggelaten. Graag ook live verwijderen.
+- Home: het ANWB-vignetblok staat live op alle apparaten verborgen; hier is het weggelaten.
+- Meta-beschrijving van *Ski-Mojo afspraak* (live staat daar per ongeluk de tekst van de Links-pagina) en *Pijnlijke hiel*
+  (live leeg) zijn in de voorbeeldsite ingevuld. Dit is optioneel: pas het alleen in Yoast aan als DutchBootFitter dat wil.
+- De Bookly-laadplaatjes ("Laden...") zie je hier niet; Bookly zet ze zelf weer neer.
 
-- **Eén oranje sleutelwoord per kop** op de home ("**Pijnloos** skiën®", "Wat wilt u **doen?**", "… **betekenen?**", "… **FAQ**"), via `HEADING_ACCENTS` in `generate.py`: alleen opmaak (`<span class="accent">`), de woorden en de koppenstructuur blijven gelijk.
-- **Oranje merkmoment:** de afspraak-oproep onderaan elke pagina is een vlak in het logo-oranje (`--brand: #e8561a`) met witte tekst, "pijnloos®" donker en een donkere knop; de foto erachter is weg.
-- **Details:** geselecteerde tekst en links met een oranje onderstreping.
-- **Molen:** de wieken draaien nu om de as (de draaipunt lag eerder in een hoek van de tekening, waardoor ze uit beeld zwaaiden), tegen de klok in zoals een Hollandse molen, en zichtbaar (14–18 s per rondje). De as staat net buiten de rechterrand van de footer en van het oranje afspraakvlak (witte molen), zodat de wieken af en toe het vlak in zwaaien en door de rand worden afgesneden. Bij "verminder beweging" staan ze stil.
+## 7. Checklist vóór livegang
 
-## Ontwerp (v11) — wit, reviews terug, afspraakplanner
+- [ ] Proefboeking op alle 4 Bookly-pagina's werkt (bevestigingsmail komt aan).
+- [ ] Geen URL of slug gewijzigd; geen nieuwe redirects nodig.
+- [ ] Yoast: titels en meta-beschrijvingen onveranderd (steekproef met "Bron bekijken" of een SEO-crawler).
+- [ ] Elke pagina heeft nog dezelfde H1 (of geen, waar dat nu ook zo is).
+- [ ] Alt-teksten in de mediabibliotheek niet aangepast.
+- [ ] `robots.txt`, sitemap (Yoast) en Google Search Console onveranderd; na livegang de sitemap opnieuw indienen.
+- [ ] Mobiel getest (iPhone en Android): menu, video, kaarten, kopfoto's.
+- [ ] Snelheid (PageSpeed Insights): video's met `preload="metadata"`, afbeeldingen `loading="lazy"` behalve de kopfoto.
+- [ ] Podonet-vergoedingswidget (Tarieven), Google Maps, YouTube en Trustindex laden nog.
 
-- **Kleur:** witte pagina, lichtgrijze vlakken `#f4f4f4` en neutrale grijze lijnen zoals op bootfitter.nl; geen donkere modus meer.
-- **Dienstkaarten:** eigen foto's van het aanpassen, aanmeten en Strolz-schuimen (`dienst-*-foto.jpg`, 4:5).
-- **Geen nummers** (01, 02 …) meer bij secties, dienstkaarten en de klachtenlijst; de klachten hebben een oranje stip.
-- **Reviews terug zoals op bootfitter.nl:** de drie klantreacties (Eric, Jan-Willem, Nora) op de Ski-Mojo-pagina's staan weer als reviewkaarten met sterren (`review_cards()`), en de footer heeft weer de Google-review-QR van Trustindex naast "Schijf een review".
-- **Afspraakplanner** op de afspraakpagina, op de plek van de oude (lege) boekingswidget: kies Bart, Selma of Maks, waarvoor u komt, een dag (drie weken vooruit, geen zondag) en tijd, en uw gegevens. Nog nergens aan gekoppeld: na "Afspraak aanvragen" ziet u een overzicht en een knop die een e-mail met de aanvraag naar info@bootfitter.nl klaarzet. De teksten staan in `planner_html()` en worden via `APPROVED_COPY` door `verify.py` geaccepteerd; tijden (`PLANNER_TIMES`) en diensten zijn voorlopig.
-- **molen** alleen nog in de donkere "Wat is / niet"-band en het oranje afspraakvlak.
-
-## Opnieuw bouwen
+## 8. De voorbeeldsite opnieuw bouwen
 
 ```sh
 pip install markdown beautifulsoup4
-python3 build/generate.py   # bouwt site/ opnieuw uit copy/
-python3 build/verify.py     # controleert elke pagina woord voor woord tegen copy/, schrijft verification.json
+python3 build/generate.py     # bouwt site/ opnieuw uit copy/
+python3 build/verify.py       # tekst woord voor woord → verification.json
+python3 build/check_alts.py   # alt-teksten tegen de live site → alt-check.json (haalt de live pagina's één keer op)
 ```
 
-Afbeeldingen, de afspraakwidget, Google Maps, de YouTube-video en de Podonet-widget laden nog van hun oorspronkelijke bronnen.
+Waar je dingen aanpast in `build/generate.py`:
+
+| Wat | Waar |
+|---|---|
+| Kopfoto per pagina | `BANNERS`, `BANNER_FOR` |
+| Foto's in de dienstkaarten | `SERVICE_PHOTOS`, `PRODUCT_PHOTOS` |
+| Fotootjes bij de prijzen | `PRICE_PHOTOS` |
+| Team-blok aan/uit | `SHOW_TEAM` |
+| Extra links (Ski-Mojo Instagram) | `EXTRA_LINKS` |
+| Gerepareerde links | `LINK_FIXES`, `LINK_REMOVE` |
+| Goedgekeurde nieuwe tekst | `APPROVED_COPY` (alleen tekst die hierin staat, mag nieuw zijn; `verify.py` controleert dat) |

@@ -240,18 +240,53 @@ SHOP = {
     'slijpmachine': (W + 'slijpmachine.jpg', 'Slijpmachine'),
     'handwerk-zw': (W + 'handwerk-zw.jpg', 'DutchBootFitter aan het werk'),
     'pers-zw': (W + 'pers-zw.jpg', 'Bootfitting'),
-    # the fitting corner: chair and the blue Masterfit box (home, behind the definition card)
-    'masterfit': (W + 'masterfit.jpg', 'DutchBootFitter bootfitting'),
+    # home, behind the definition card: the last, tape measure and tools, in black and white (the live site's banner photo)
+    'masterfit': (W + 'banner-leest.jpg', 'Leest, meetlint en gereedschap voor skischoenen op maat bij DutchBootFitter'),
 }
 # The live site shows small Elementor thumbnails of these photos; serve the sharp versions instead.
 THUMB_TO_SHOP = {'DBF-%s' % k: W + 'DBF-%s.jpg' % k for k in ('01', '03', '04', '07', '08', '09', '10', '11', '12', '13')}
-HERO_OVERRIDE = {'bootfitting': 'slijpmachine', 'bootfitting-mijn-skischoenen-aanpassen': 'oprekken', 'over-ons': 'wall', 'afspraak': 'wachtruimte', 'werkwijze-dutchbootfitter': 'assessment', 'tarieven-bootfitting': 'werkbank'}
-HERO_ROTATION = ['wachtruimte', 'werkbank', 'keuken', 'assessment', 'bureau', 'wall', 'steunzolen', 'opmaat', 'slijpen', 'klachten', 'praktijk', 'slijpmachine', 'oprekken']
+# Page header banners, shown full width in black and white behind the title. As on bootfitter.nl, each section
+# has its own picture: the workshop photos from the live banners, and the boots on white for the ski boot pages.
+BANNERS = {
+    'steunzool': (W + 'banner-steunzool.jpg', 'Steunzool op maat slijpen bij DutchBootFitter'),
+    'leest': (W + 'banner-leest.jpg', 'Leest en meetlint op de werkbank van DutchBootFitter'),
+    'oprekpers': (W + 'banner-oprekpers.jpg', 'Skischoen oprekken in de pers bij DutchBootFitter'),
+    'skischoenen': (W + 'banner-skischoenen.jpg', 'Fischer RC4 en Hannes Strolz skischoen'),
+    'strolz': (W + 'banner-strolz.jpg', 'Hannes Strolz skischoen op maat'),
+    'ski-mojo': (W + 'banner-ski-mojo.jpg', 'Ski-Mojo voor pijnloos skien'),
+    'rentmaxx': (W + 'banner-rentmaxx.jpg', 'Schets van een skibinding'),
+}
+# page slug (a slug matches itself and its sub pages) -> banner; every other page and all blog posts get 'steunzool'
+BANNER_FOR = [
+    ('bootfitting__mijn-skischoenen-aanpassen', 'leest'),
+    ('bootfitting__op-maat-gemaakte-skischoenen', 'leest'),
+    ('pijn-in-voeten__', 'leest'),
+    ('bootfitting__ski-mojo-home', 'ski-mojo'),
+    ('bootfitting', 'oprekpers'),
+    ('werkwijze-dutchbootfitter', 'oprekpers'),
+    ('de-skischoen', 'skischoenen'),
+    ('strolz-op-maat-gemaakte-skischoenen-aanmeten', 'strolz'),
+    ('rentmaxx-z-value', 'rentmaxx'),
+]
+
+
+def banner_img():
+    slug = CURRENT[0] or ''
+    key = next((k for prefix, k in BANNER_FOR
+                if slug == prefix or slug.startswith(prefix if prefix.endswith('__') else prefix + '__')), 'steunzool')
+    src, _ = BANNERS[key]
+    return img_tag('', src, '', 'eager')  # decorative, like the CSS background banners on bootfitter.nl
+
+
+# Alt texts: the shop photos are design additions that bootfitter.nl does not show, so they get an empty alt (decorative),
+# keeping the set of alt texts Google sees equal to the live site. Where the live site already shows the same photo,
+# its live alt text is used instead.
+SHOP_LIVE_ALT = {'masterfit': 'Strolz leest', 'team': 'Bart & MP'}
 
 
 def shop_img(key, cls='', loading='lazy'):
-    src, alt = SHOP[key]
-    return img_tag(alt, src, cls, loading)
+    src, _ = SHOP[key]
+    return img_tag(SHOP_LIVE_ALT.get(key, ''), src, cls, loading)
 
 
 def cta_heading_html():
@@ -318,7 +353,7 @@ def page(title, meta_desc, body, current_file, cta=True, full_doc=True):
 
 def _page(title, meta_desc, body, current_file, cta=True, full_doc=True):
     head = f'''<title>{esc(html.unescape(title))}</title>
-<meta name="description" content="{html.escape(meta_desc)}">
+<meta name="description" content="{html.escape(texturize(meta_desc))}">
 {FONTS}
 <link rel="icon" href="{ORIGIN}/wp-content/uploads/2021/06/cropped-logo_pijnloos_def_nieuw_oranje_KL-270x270.jpg">
 <link rel="stylesheet" href="style.css?v={src_hash('style.css')}">'''
@@ -356,6 +391,7 @@ def inline(s):
 
 POST_CTA = {}
 CURRENT = [None]
+HAS_H1 = [True]  # does the live page have an H1 (a '# ' heading in its copy)?
 
 
 def strip_cta(body):
@@ -381,6 +417,13 @@ def split_sections(body):
 def is_link_list(text):
     lines = [l for l in text.strip().splitlines() if l.strip()]
     return bool(lines) and all(re.match(r'^\s*[-*] \[[^\]]+\]\([^)]+\)\s*$', l) for l in lines)
+
+
+def texturize(t):
+    """Straight apostrophes and single quotes to curly ones, as WordPress prints the meta descriptions."""
+    t = re.sub(r"(?<=\w)'(?=\w)", "’", t)
+    t = re.sub(r"(^|[\s(])'", "\\1‘", t)
+    return t.replace("'", "’")
 
 
 def img_tag(alt, src, cls='', loading='lazy'):
@@ -422,8 +465,11 @@ def blog_aside():
 
 
 def hero(h1_html, crumbs_html='', extra=''):
-    key = HERO_OVERRIDE.get(CURRENT[0]) or HERO_ROTATION[sum(map(ord, CURRENT[0] or '')) % len(HERO_ROTATION)]
-    return f'''<section class="page-hero"><div class="wrap"><div class="ph-copy"><h1{' class="long"' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else ''}>{h1_html}</h1>{crumbs_html}{extra}</div><figure class="ph-photo media">{shop_img(key, loading='eager')}</figure></div></section>'''
+    # every page header: the shop photo full width behind the title, in black and white (as the live site's banners)
+    # pages that have no H1 on bootfitter.nl (blog overview, Historie) keep their title an H2, styled the same
+    tag = 'h1' if HAS_H1[0] else 'h2'
+    cls = ' '.join(c for c in ('page-title', 'long' if len(re.sub('<[^>]+>', '', h1_html)) > 70 else '') if c)
+    return f'''<section class="page-hero banner"><figure class="ph-bg">{banner_img()}</figure><div class="wrap"><div class="ph-copy"><{tag} class="{cls}">{h1_html}</{tag}>{crumbs_html}{extra}</div></div></section>'''
 
 
 
@@ -593,10 +639,12 @@ def mark(h, word, kind):
 # The three services on the home: the live site shows small product shots (one only 292 px); these are
 # square crops of our own shop photos and the Strolz fitting clip, so the cards read as one set.
 SERVICE_PHOTOS = {
-    '/mijn-skischoenen-aanpassen/': W + 'dienst-aanpassen-foto.jpg',
-    '/op-maat-gemaakte-skischoenen/': W + 'dienst-op-maat-foto.jpg',
-    '/strolz-op-maat-gemaakte-skischoenen-aanmeten/': W + 'dienst-strolz-foto.jpg',
+    '/mijn-skischoenen-aanpassen/': W + 'dienst-aanpassen-tas.jpg',
+    '/op-maat-gemaakte-skischoenen/': W + 'dienst-op-maat-schoenen.jpg',
+    '/strolz-op-maat-gemaakte-skischoenen-aanmeten/': W + 'dienst-strolz-schoen.webp',
 }
+# Product shots on white: shown whole on a white tile instead of cropped like the shop photos.
+PRODUCT_PHOTOS = {W + 'dienst-aanpassen-tas.jpg', W + 'dienst-op-maat-schoenen.jpg', W + 'dienst-strolz-schoen.webp'}
 
 
 HEADING_ACCENTS = [
@@ -659,19 +707,21 @@ def render_home(meta, body):
 <figure class="zones-fig"><div class="media hotspots">{img_tag(img.group(1), img.group(2))}{spots}<div class="hs-tip" aria-hidden="true" hidden></div></div>
 <div class="zone-list sr-only">{zl}</div><figcaption class="zone-credit">{esc(credit)}</figcaption></figure></div>
 </div></section>''')
-    # The team: Bart, Selma and Maks (photos in winkel/team-*.jpg; no photo yet shows the initial).
-    cards = []
-    for name, src, photo, role in STAFF:
-        pic = (f'<img src="{W}{photo}" alt="{html.escape(name)}" loading="lazy">' if photo
-               else f'<span class="staff-initial" aria-hidden="true" data-initial="{esc(name[0])}"></span>')
-        # an empty label row for non-owners keeps all names on one line
-        owner = rq("Eigenaar", "new", "span", "staff-owner") if name in STAFF_OWNERS else '<span class="staff-owner" aria-hidden="true"></span>'
-        cap = owner + rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
-        cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{cap}</figcaption></figure>')
-    title = rq(STAFF_TITLE, "new", "p", "blk-title staff-title")
-    intro = rq(STAFF_INTRO, "new", "p", "staff-intro")
-    cta = f'<a class="btn" href="{local_href(O + "/afspraak/")}" data-src="afspraak">Maak direct een afspraak</a>'
-    out.append(f'<section class="section staff-sec" data-reuse aria-label="{STAFF_TITLE}"><div class="wrap staff-wrap"><div class="staff-copy">{title}{intro}{cta}</div><div class="staff">{"".join(cards)}</div></div></section>')
+    # The team block is switched off until there are good photos of everyone (SHOW_TEAM).
+    if SHOW_TEAM:
+        # The team: Bart, Selma and Maks (photos in winkel/team-*.jpg; no photo yet shows the initial).
+        cards = []
+        for name, src, photo, role in STAFF:
+            pic = (f'<img src="{W}{photo}" alt="{html.escape(name)}" loading="lazy">' if photo
+                   else f'<span class="staff-initial" aria-hidden="true" data-initial="{esc(name[0])}"></span>')
+            # an empty label row for non-owners keeps all names on one line
+            owner = rq("Eigenaar", "new", "span", "staff-owner") if name in STAFF_OWNERS else '<span class="staff-owner" aria-hidden="true"></span>'
+            cap = owner + rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
+            cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{cap}</figcaption></figure>')
+        title = rq(STAFF_TITLE, "new", "p", "blk-title staff-title")
+        intro = rq(STAFF_INTRO, "new", "p", "staff-intro")
+        cta = f'<a class="btn" href="{local_href(O + "/afspraak/")}" data-src="afspraak">Maak direct een afspraak</a>'
+        out.append(f'<section class="section staff-sec" data-reuse aria-label="{STAFF_TITLE}"><div class="wrap staff-wrap"><div class="staff-copy">{title}{intro}{cta}</div><div class="staff">{"".join(cards)}</div></div></section>')
     # choices
     cards = []
     choice_heads = [(h, t) for h, t in secs if h and h.startswith('### [')]
@@ -686,7 +736,8 @@ def render_home(meta, body):
         desc = paras[0].strip()
         more_t, more_u = re.match(r'\[([^\]]+)\]\(([^)]+)\)', paras[1].strip()).groups()
         photo = next((v for k, v in SERVICE_PHOTOS.items() if href.endswith(k)), im.group(2))  # sharp shop photo, the live site's alt text
-        cards.append(f'''<article class="choice"><a class="media" href="{local_href(href)}" tabindex="-1">{img_tag(im.group(1), photo)}</a>
+        media_cls = 'media product' if photo in PRODUCT_PHOTOS else 'media'
+        cards.append(f'''<article class="choice"><a class="{media_cls}" href="{local_href(href)}" tabindex="-1">{img_tag(im.group(1), photo)}</a>
 <div class="body"><h3><a href="{local_href(href)}">{esc(title)}</a></h3><p>{esc(desc)}</p><a class="more" href="{local_href(more_u)}">{esc(more_t)}</a></div></article>''')
     # the services come straight after "what we stand for" (hero, intro, services); verify.py compares against home_md()
     out.insert(2, f'''<section class="section choices-sec"><div class="wrap"><div class="section-head"><h2>{esc(hd('Wat wilt u doen?'))}</h2></div><div class="choices">{''.join(cards)}</div></div></section>''')
@@ -738,6 +789,7 @@ PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
 STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter'),
          ('Selma Cool', 'over-ons', None, 'Certified Master Bootfitter'),
          ('Maks Cool Breijer', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog'))
+SHOW_TEAM = False  # home: the team block (Bart, Selma, Maks); on again once there are good photos
 STAFF_TITLE = 'Het team'
 STAFF_INTRO = 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.'
 STAFF_OWNERS = ('Bart Haarselhorst', 'Selma Cool')  # the owners of DutchBootFitter
@@ -808,6 +860,24 @@ def review_cards(h):
                 f'<p class="rc-text">{m.group(3)}{m.group(4)}{m.group(5)}</p><p class="rc-name">{m.group(6)}</p></blockquote>')
     out = REVIEW_RE.sub(card, h)
     return re.sub(r'((?:<blockquote class="review-card">.*?</blockquote>)+)', r'<div class="review-cards">\1</div>\n', out)
+
+
+# Links that are not on bootfitter.nl, asked for by DutchBootFitter: (page slug, text the link goes before, label, url).
+EXTRA_LINKS = [
+    ('bootfitting__ski-mojo-home', '<h3>De voordelen van Ski-Mojo:</h3>',
+     'Uitlegvideo van Ski-Mojo', 'https://www.instagram.com/reel/DTcoYxbDGMI/'),
+]
+APPROVED_COPY.update(label for _, _, label, _ in EXTRA_LINKS)  # so verify.py knows them without building
+
+
+def add_extra_links(slug, main):
+    for page_slug, before, label, url in EXTRA_LINKS:
+        if page_slug == slug:
+            link = (f'<p class="extra-link" data-reuse><a class="btn ghost" href="{url}" target="_blank" rel="noopener" '
+                    f'data-src="new">{esc(label)}</a></p>\n')
+            assert before in main, (slug, before)
+            main = main.replace(before, link + before, 1)
+    return main
 
 
 def rq(text, src, tag='span', cls=''):
@@ -1003,35 +1073,37 @@ def render_werkwijze(meta, body):
     # Node order on the page: Afspraak, Gesprek, Assessment, Pathologie?, JA, NEE, Podologische behandeling,
     # Podologisch rapport, Maatskischoenen of eigen, Aanpassen eigen, Aanmeten maat, Skiën, Skiën, Afhalen
     assert len(N) == 14, len(N)
-    flow = f'''<figure class="flow" aria-label="{html.escape(img.group(1))}">
-  <div class="flow-step start">{N[0]}</div>
-  <div class="flow-step">{N[1]}</div>
-  <div class="flow-step">{N[2]}</div>
-  <div class="flow-step decision">{N[3]}</div>
-  <div class="flow-branches">
-    <span class="flow-tag yes">{N[4]}</span><span class="flow-tag no">{N[5]}</span>
-    <div class="flow-branch">
-      <div class="flow-step">{N[6]}</div>
-      <div class="flow-step">{N[7]}</div>
-    </div>
-    <div class="flow-branch">
-      <div class="flow-step decision">{N[8]}</div>
-      <div class="flow-split">
-        <div class="flow-step a1">{N[9]}</div>
-        <div class="flow-step b1">{N[10]}</div>
-        <div class="flow-step end ski b2">{N[11]}</div>
-        <div class="flow-step end ski a3">{N[12]}</div>
-        <div class="flow-step end a2">{N[13]}</div>
-      </div>
-    </div>
-  </div>
-</figure>'''
+    # As on bootfitter.nl: the (empty) flow chart image with each text set on its own shape, as real HTML text.
+    # Boxes in pixels of flow.jpg (892 x 838), in the order the texts stand in the copy.
+    W_, H_ = 892, 838
+    boxes = [(357, 19, 476, 65), (328, 106, 505, 184), (328, 225, 505, 299), (358, 368, 477, 432),  # afspraak .. pathologie
+             (280, 372, 314, 394), (424, 461, 466, 483),                                              # JA, NEE
+             (94, 355, 272, 445), (95, 501, 273, 576),                                                # podologie links
+             (350, 512, 484, 582), (603, 512, 781, 589), (327, 647, 505, 725),                        # keuze, aanpassen, aanmeten
+             (357, 766, 476, 812), (634, 721, 753, 767), (634, 633, 753, 679)]                        # skien, skien, afhalen
+    def node(i):
+        x0, y0, x1, y1 = boxes[i]
+        kind = ' label' if i in (4, 5) else ' decision' if i in (3, 8) else ''
+        style = (f'left:{x0 / W_ * 100:.2f}%;top:{y0 / H_ * 100:.2f}%;'
+                 f'width:{(x1 - x0) / W_ * 100:.2f}%;height:{(y1 - y0) / H_ * 100:.2f}%')
+        return f'<div class="fl-node{kind}" style="{style}">{N[i]}</div>'
+    flow = (f'<div class="flow-scroll"><figure class="flow-chart">'
+            f'<img src="wp-content/uploads/2021/09/flow.jpg" alt="{html.escape(img.group(1))}" width="892" height="838" loading="lazy">'
+            + ''.join(node(i) for i in range(14)) + '</figure></div>')
     # keep everything else generic
     page_html = render_generic('werkwijze-dutchbootfitter', meta, before + '\nFLOWPLACEHOLDER\n\n' + rest)
     return page_html.replace('<p>FLOWPLACEHOLDER</p>', f'<h2>{esc(flow_h[3:])}</h2>{flow}')
 
 
 # ---------------------------------------------------------------- tarieven (price list)
+# The small photos next to four prices on bootfitter.nl (live alt texts; the full-size originals, not the 150px crops).
+PRICE_PHOTOS = {
+    'Eigen skischoenen aanpassen': ('wp-content/uploads/2021/05/eigen_schoenen_aanpassen-1.jpg', 'Eigen skischoenen aanpassen'),
+    'Thermoplastische skischoen': ('wp-content/uploads/2021/10/rc4.jpg', 'Thermoplastische skischoen'),
+    'Strolz volledige maatschoen': ('wp-content/uploads/2021/10/evo100.jpg', 'Strolz volledige maatschoen'),
+    'Op maat gemaakte podologische skizooltjes*': ('wp-content/uploads/2021/07/vloer_praktijk_uitsnede-scaled.jpg',
+                                                   'Op maat gemaakte podologische skizooltjes<sup>*</sup>'),
+}
 def render_tarieven(meta, body):
     body = strip_cta(body)
     secs = split_sections(body)
@@ -1046,7 +1118,9 @@ def render_tarieven(meta, body):
         name = name.replace('\\*', '*')
         pm = re.match(r'^((?:tussen )?€ \d+(?: en € \d+)?)\s+(.*)$', rest)
         price, desc = pm.groups()
-        rows.append(f'''<article class="price"><div class="price-head"><h3><a href="{local_href(href)}">{esc(name)}</a></h3><p class="amount">{esc(price)}</p></div><p>{esc(desc)}</p></article>''')
+        thumb = PRICE_PHOTOS.get(name)
+        pic = img_tag(thumb[1], thumb[0], 'price-img') if thumb else ''
+        rows.append(f'''<article class="price{' has-img' if thumb else ''}">{pic}<div class="price-head"><h3><a href="{local_href(href)}">{esc(name)}</a></h3><p class="amount">{esc(price)}</p></div><p>{esc(desc)}</p></article>''')
     remaining = ''.join((h + '\n' if h else '') + t for h, t in secs if h not in (None, '# ' + h1, h2))
     rem_page = render_generic('tarieven-bootfitting', meta, '# X\n' + remaining)
     rem_inner = rem_page.split('<div class="wrap content', 1)[1]
@@ -1137,12 +1211,16 @@ def build(artifact_index=False):
     for slug in pages:
         CURRENT[0] = slug
         meta, body = parse_copy(slug)
+        HAS_H1[0] = bool(re.search(r'(?m)^# ', body.split('===MAIN===')[-1]))
         if slug in SPECIAL:
             main = SPECIAL[slug](meta, body)
         elif slug.startswith('category__'):
             main = render_category(meta, body)
         else:
             main = render_generic(slug, meta, body, is_post=slug.startswith('bootfitting_blog__'))
+        main = add_extra_links(slug, main)
+        # the copy keeps alt texts as the live HTML has them (e.g. "&lt;br/&gt;"); the & got escaped once more, undo that
+        main = re.sub(r'alt="([^"]*)"', lambda m: 'alt="' + re.sub(r'&amp;(lt|gt|amp|quot);', r'&\1;', m.group(1)) + '"', main)
         fn = slug_to_file(slug)
         title = meta.get('TITLE') or slug
         doc = page(title, meta.get('META', ''), main, fn)
