@@ -1,7 +1,2 @@
-__pycache__/
-*.pyc
 .DS_Store
-artifact-index.html
 .claude/
-build/.live-cache/
-DutchBootFitter-ontwerp-voor-Gianni.zip
