@@ -544,8 +544,8 @@ body{overflow-x:clip}
 .nav-book{position:relative;top:2px}
 .logos{display:flex;align-items:center;flex-wrap:wrap;gap:24px;margin-top:26px}
 .foot .logos img{filter:none;margin:0;height:auto;border-radius:2px}
-.foot .rp-logo{width:210px}
-.foot .mf-logo{width:176px}
+.foot .rp-logo{width:150px}
+.foot .mf-logo{width:126px}
 /* geen lijn onder nav op de foto */
 .home header:not(.scrolled),.home header:not(.scrolled) .nav{border:0!important;box-shadow:none!important}
 .home header:not(.scrolled)::after,.home header:not(.scrolled) .nav::after{content:none!important}
