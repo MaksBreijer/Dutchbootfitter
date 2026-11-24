@@ -770,7 +770,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW) | {'Register (sport) Podoloog', 'Registerpodoloog in opleiding', 'Oud-wedstrijdskiër', 'Register (sport) Podoloog en Certified Master Bootfitter', 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog', 'Certified Master Bootfitter, Registerpodoloog in opleiding en oud-wedstrijdskiër'}
+APPROVED_COPY = set(HERO_EYEBROW) | {'Voetkundig expert', 'Register (sport) Podoloog', 'Registerpodoloog in opleiding', 'Oud-wedstrijdskiër', 'Register (sport) Podoloog en Certified Master Bootfitter', 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog', 'Certified Master Bootfitter, Registerpodoloog in opleiding en oud-wedstrijdskiër'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -787,7 +787,7 @@ PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
 # Specialties: Bart's from Over Ons ("Register-podoloog, -sportpodoloog en ... 'Certified Master Bootfitters'"),
 # Names, owners and titles as given by DutchBootFitter (24 November 2026); new portraits on white.
 STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', ('Register (sport) Podoloog', 'Certified Master Bootfitter')),
-         ('Selma Cool', 'over-ons', 'team-selma.jpg', ('Certified Master Bootfitter',)),
+         ('Selma Cool', 'over-ons', 'team-selma.jpg', ('Certified Master Bootfitter', 'Voetkundig expert')),
          ('Maks Cool Breijer', 'new', 'team-maks.jpg', ('Certified Master Bootfitter', 'Registerpodoloog in opleiding', 'Oud-wedstrijdskiër')))
 SHOW_TEAM = True  # home: the team block (Bart, Selma, Maks)
 STAFF_TITLE = 'Het team'
