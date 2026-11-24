@@ -1328,6 +1328,8 @@ main > .section, .home main > .section { padding-block: clamp(2.25rem, 4.5vw, 4r
 h2 .accent, h1 .accent { color: var(--orange-ink); }
 /* The rest of an accented heading in the grey of the DutchBootFitter logo ("Dutch"), so orange + grey echo the logo. */
 main :is(h1, h2):has(.accent) { color: #818387; }
+/* Exception: the home intro heading "Pijnloos skiën®" is orange throughout. */
+main .intro-lead h2:has(.accent) { color: var(--orange-ink); }
 ::selection { background: var(--brand); color: #fff; }
 .prose a, .intro-body a, .faq a { text-decoration-color: color-mix(in srgb, var(--brand) 55%, transparent); text-underline-offset: 4px; }
 .prose a:hover, .faq a:hover { text-decoration-color: var(--brand); }
