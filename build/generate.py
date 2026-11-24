@@ -716,7 +716,7 @@ def render_home(meta, body):
                    else f'<span class="staff-initial" aria-hidden="true" data-initial="{esc(name[0])}"></span>')
             # an empty label row for non-owners keeps all names on one line
             owner = rq("Eigenaar", "new", "span", "staff-owner") if name in STAFF_OWNERS else '<span class="staff-owner" aria-hidden="true"></span>'
-            cap = owner + rq(name, src, "strong") + (rq(role, "new", "span", "staff-role") if role else "")
+            cap = owner + rq(name, src, "strong") + "".join(rq(r, "new", "span", "staff-role") for r in role)
             cards.append(f'<figure class="staff-card"><div class="staff-photo">{pic}</div><figcaption>{cap}</figcaption></figure>')
         title = rq(STAFF_TITLE, "new", "p", "blk-title staff-title")
         intro = rq(STAFF_INTRO, "new", "p", "staff-intro")
@@ -770,7 +770,7 @@ def render_home(meta, body):
 # New copy, approved by DutchBootFitter (October 2026); based on the Over Ons text "Zij brachten het 'bootfitten' naar Nederland
 # ... En reeds in 2008 werden de eerste klanten geholpen". verify.py accepts data-src="new" only for strings listed here.
 HERO_EYEBROW = ('De eerste Certified Master Bootfitters', 'Sinds 2008 brachten zij het bootfitten naar Nederland')
-APPROVED_COPY = set(HERO_EYEBROW) | {'Register (sport) Podoloog en Certified Master Bootfitter', 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog', 'Certified Master Bootfitter, Registerpodoloog in opleiding en oud-wedstrijdskiër'}
+APPROVED_COPY = set(HERO_EYEBROW) | {'Register (sport) Podoloog', 'Registerpodoloog in opleiding', 'Oud-wedstrijdskiër', 'Register (sport) Podoloog en Certified Master Bootfitter', 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.', 'Maks Cool Breijer', 'Eigenaar', 'Het team', 'Registerpodoloog, sportpodoloog en Certified Master Bootfitter', 'Certified Master Bootfitter', 'Certified Master Bootfitter, in opleiding tot Registerpodoloog', 'Certified Master Bootfitter, Registerpodoloog in opleiding en oud-wedstrijdskiër'}
 
 
 def nw(text, tag='span', cls='', attrs=''):
@@ -786,9 +786,9 @@ PLANNER_FITTERS = ('Bart', 'Selma', 'Maks')
 # Team cards on the home page: name, where the name already stands on the site (verify.py), photo file.
 # Specialties: Bart's from Over Ons ("Register-podoloog, -sportpodoloog en ... 'Certified Master Bootfitters'"),
 # Names, owners and titles as given by DutchBootFitter (24 November 2026); new portraits on white.
-STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', 'Register (sport) Podoloog en Certified Master Bootfitter'),
-         ('Selma Cool', 'over-ons', 'team-selma.jpg', 'Certified Master Bootfitter'),
-         ('Maks Cool Breijer', 'new', 'team-maks.jpg', 'Certified Master Bootfitter, Registerpodoloog in opleiding en oud-wedstrijdskiër'))
+STAFF = (('Bart Haarselhorst', 'over-ons', 'team-bart.jpg', ('Register (sport) Podoloog', 'Certified Master Bootfitter')),
+         ('Selma Cool', 'over-ons', 'team-selma.jpg', ('Certified Master Bootfitter',)),
+         ('Maks Cool Breijer', 'new', 'team-maks.jpg', ('Certified Master Bootfitter', 'Registerpodoloog in opleiding', 'Oud-wedstrijdskiër')))
 SHOW_TEAM = True  # home: the team block (Bart, Selma, Maks)
 STAFF_TITLE = 'Het team'
 STAFF_INTRO = 'Bij DutchBootFitter helpen wij u persoonlijk, met de tijd en aandacht die uw voeten verdienen. Kom gerust langs.'
