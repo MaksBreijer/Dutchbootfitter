@@ -1598,6 +1598,9 @@ body:has(.afspraak-page) .foot-grid { grid-template-columns: 1.3fr 1fr 1.2fr; }
 @media (max-width: 900px) { .content.links-page .prose { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .content.links-page .prose { grid-template-columns: 1fr; } }
 
+/* The header's dark gradient on the video must not repeat into its 1px (transparent) bottom border: that showed as a thin dark line under the menu. */
+.site-header { background-origin: border-box; background-repeat: no-repeat; }
+
 /* ---------- Headings never split a word ----------
    No mid-word breaks or automatic hyphens in headings; instead the FAQ title scales with its column so its
    longest word ("DutchBootFitter", about 8.6em wide) always fits on one line. */
