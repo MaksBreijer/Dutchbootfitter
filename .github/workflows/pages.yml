@@ -1,9 +1,11 @@
-# Publishes the Strolz site (repo root) as a preview on GitHub Pages. The preview asks search
-# engines not to index it.
+# Publishes both previews on GitHub Pages, both marked noindex so they are never mistaken for the live sites:
+#   /             -> DutchBootFitter (branch main, folder site/)
+#   /strolz/      -> Strolz Amsterdam (branch strolz, repo root)
+# The same file lives on both branches, so a push to either one republishes both.
 name: Preview op GitHub Pages
 on:
   push:
-    branches: [strolz]
+    branches: [main, strolz]
   workflow_dispatch:
 permissions:
   contents: read
@@ -20,11 +22,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Build preview folder with noindex
+        with: { ref: main, path: dbf }
+      - uses: actions/checkout@v4
+        with: { ref: strolz, path: strolz }
+      - name: Build both previews with noindex
         run: |
-          mkdir _site
-          cp *.html _site/
-          cp -R assets _site/
+          mkdir -p _site/strolz
+          cp -R dbf/site/. _site/
+          cp strolz/*.html _site/strolz/
+          cp -R strolz/assets _site/strolz/
           touch _site/.nojekyll
           find _site -name '*.html' -exec sed -i 's#<meta charset="utf-8">#<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">#I' {} +
       - uses: actions/configure-pages@v5
