@@ -13,7 +13,11 @@ backend van WordPress.
 > **Uitzondering:** drie kleine inhoudswijzigingen doe je wél in WordPress, op verzoek van DutchBootFitter (zie §6):
 > de Instagram-knop op Ski-Mojo, de Strolz-prijs naar € 1195 en het weghalen van "Lorem ipsum" op Links.
 
-Stand: 17 oktober 2026.
+Stand: 24 november 2026.
+
+**Online bekijken:** https://maksbreijer.github.io/Dutchbootfitter/ (voorbeeld, staat op `noindex` zodat Google hem
+niet als echte site ziet). Dit bestand en de voorbeeldsite worden bijgewerkt zolang DutchBootFitter nog kleine
+aanpassingen doet; kijk bij twijfel naar de datum hierboven.
 
 **Inhoud van deze zip:** `README.md` (dit bestand) · `site/` (de voorbeeldsite) · `uploaden/` (de nieuwe media, §5) ·
 `build/`, `copy/`, `seo/` (de bron en de controles) · `verification.json` en `alt-check.json` (de uitslag van de controles).
