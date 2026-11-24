@@ -4,14 +4,22 @@ Dit is het nieuwe ontwerp voor **bootfitter.nl** (DutchBootFitter), gebouwd als 
 **alleen frontend**: HTML-structuur, CSS en een beetje JavaScript. Er verandert niets aan de inhoud, de URL's of de
 backend van WordPress.
 
+> **Het allerbelangrijkste: de Google-posities van bootfitter.nl blijven behouden.** Die zijn heel sterk en zijn het
+> waardevolste wat de site heeft. Daarom verandert alleen het uiterlijk; tekst, links en SEO blijven 1-op-1 gelijk
+> (zie §6 en §7).
+>
+> **Hosting:** de WordPress-site draait (voor zover wij weten) bij **Versio**. Maak daar eerst een back-up en werk op een
+> staging-kopie; zet pas live als de checklist in §8 helemaal groen is.
+>
 > **De drie gouden regels**
 > 1. **Bookly niet aanraken.** Het afspraaksysteem (plugin Bookly) blijft precies zoals het is, op alle 4 pagina's.
 > 2. **Inhoud niet aanraken.** Teksten, paginatitels, meta-beschrijvingen, H1's, URL's, interne links en alt-teksten
 >    blijven in WordPress staan zoals ze nu zijn. Alleen de opmaak verandert. Zo blijven de Google-posities behouden.
 > 3. **Geen nieuwe plugins of backend-code.** Alles hieronder kan met het thema/Elementor en eigen CSS/JS.
 >
-> **Uitzondering:** drie kleine inhoudswijzigingen doe je wél in WordPress, op verzoek van DutchBootFitter (zie §6):
-> de Instagram-knop op Ski-Mojo, de Strolz-prijs naar € 1195 en het weghalen van "Lorem ipsum" op Links.
+> **Uitzondering:** vier kleine inhoudswijzigingen doe je wél in WordPress, op verzoek van DutchBootFitter (zie §6):
+> het blok "Het team" op de home, de Instagram-knop op Ski-Mojo, de Strolz-prijs naar € 1195 en het weghalen van
+> "Lorem ipsum" op Links. Ze voegen iets toe of herstellen iets; er verdwijnt niets waar Google op rekent.
 
 Stand: 24 november 2026.
 
@@ -57,7 +65,7 @@ cd site && python3 -m http.server 8765    # dan http://localhost:8765
 6. **Per paginatype de structuur nabouwen** (header, paginakop, kaarten — zie §4). De **tekst zelf laat je in WordPress
    staan**; je verandert alleen de secties/klassen eromheen.
 7. **Bookly-pagina's:** alleen de opmaak rond het formulier aanpassen (zie §3).
-8. **Controleren vóór livegang** met de checklist in §7.
+8. **Controleren vóór livegang** met de checklist in §8 (en lees eerst §7: wat je níet mag doen).
 
 ## 3. Bookly — niet aanraken
 
@@ -98,7 +106,20 @@ HTML-commentaar `<!-- BOOKLY: ... -->`. Daar staat in WordPress het echte Bookly
   hotspots) → Wat is / Wat is niet → FAQ met blog → **Over ons**, **de winkel** (adres + foto's) en **klantreacties**.
   Die laatste drie blokken herhalen alleen zinnen die al op de site staan (Over Ons, footer, Wat klanten zeggen) en
   gebruiken geen extra koppen (h2/h3), zodat de kopstructuur van de home gelijk blijft.
-- Het blok **"Het team"** staat uit (`SHOW_TEAM = False` in `generate.py`) tot er goede foto's zijn.
+- **"Pijnloos skiën®"** (de kop van de intro) is helemaal oranje; de andere koppen op de home hebben één oranje woord en
+  de rest in het grijs van het logo (`#818387`).
+- **"Het team"** (na de klachten met de schoen): een zacht oranje vlak met links een korte uitnodiging en de knop
+  "Maak direct een afspraak", rechts drie portretten op wit, in deze volgorde:
+
+  | Naam | Label | Titels (elk op een eigen regel) | Foto |
+  |---|---|---|---|
+  | Bart Haarselhorst | Eigenaar | Register (sport) Podoloog · Certified Master Bootfitter | `team-bart.jpg` |
+  | Selma Cool | Eigenaar | Certified Master Bootfitter · Voetkundig expert | `team-selma.jpg` |
+  | Maks Cool Breijer | — | Certified Master Bootfitter · Registerpodoloog in opleiding · Oud-wedstrijdskiër | `team-maks.jpg` |
+
+  Dit blok is **nieuwe tekst**, goedgekeurd door DutchBootFitter. Het voegt alleen iets toe en haalt niets weg, dus het
+  is geen risico voor de ranking. Gebruik er geen H1/H2 voor (in de voorbeeldsite is "Het team" een `<p>` met de
+  opmaak van een kop), zodat de kopstructuur van de home gelijk blijft.
 
 **Paginakop van binnenpagina's** (`page-hero banner`)
 - De foto loopt over de volle breedte achter de titel, **zwart-wit via CSS** (`filter: grayscale(1)`), met een donker
@@ -131,7 +152,7 @@ HTML-commentaar `<!-- BOOKLY: ... -->`. Daar staat in WordPress het echte Bookly
 
 ## 5. Nieuwe bestanden om te uploaden
 
-Alles wat je moet uploaden, staat in de map **`uploaden/`** in deze zip (28 bestanden). Alle andere afbeeldingen staan al
+Alles wat je moet uploaden, staat in de map **`uploaden/`** in deze zip (31 bestanden). Alle andere afbeeldingen staan al
 op bootfitter.nl (zelfde pad), die hoef je niet opnieuw te uploaden.
 
 - **Video hero:** `strolz-aanmeten-breed.mp4` (8,3 MB), `strolz-aanmeten-staand.mp4` (4,0 MB),
@@ -141,6 +162,7 @@ op bootfitter.nl (zelfde pad), die hoef je niet opnieuw te uploaden.
 - **Dienstkaarten home:** `dienst-aanpassen-tas.jpg`, `dienst-op-maat-schoenen.jpg`, `dienst-strolz-schoen.webp`.
 - **Winkelfoto's** (home, Over Ons, afspraakbalk): `DBF-01.jpg`, `DBF-03.jpg`, `DBF-04.jpg`, `DBF-07.jpg` t/m `DBF-13.jpg`,
   `bart-marco-paul.jpg`, `handwerk-steunzool.jpg`, `handwerk-zw.jpg`, `vloer-praktijk.jpg`.
+- **Team (home):** `team-bart.jpg`, `team-selma.jpg`, `team-maks.jpg` (800×800, op wit). Alt-tekst = de naam.
 - **Icoon:** `pijnloosskien.svg` (het skischoentje bij de links onderaan Over Ons).
 
 In de voorbeeldsite staan ze onder `wp-content/uploads/winkel/` (en `wp-content/uploads/pijnloosskien.svg`). Pas na het
@@ -148,7 +170,8 @@ uploaden de paden in de CSS aan (zoek op `wp-content/uploads`).
 
 ## 6. SEO: wat gelijk blijft en wat bewust anders is
 
-**Gecontroleerd gelijk aan de live site** (`build/verify.py`, `build/check_alts.py`, stand 17-10-2026):
+**Gecontroleerd gelijk aan de live site** (`build/verify.py`, `build/check_alts.py`, en een vergelijking van alle 72
+live pagina's op titel, meta-beschrijving, H1, interne links en alt-teksten, opnieuw opgehaald op 24-11-2026):
 - **Tekst:** alle 71 pagina's woord voor woord gelijk (alleen 3 spaties na een punt op Pijn in voeten, "voet.Oplossing" → "voet. Oplossing").
 - **Paginatitels (`<title>`) en meta-beschrijvingen:** gelijk, ook de gekrulde apostrofs.
 - **H1:** gelijk op elke pagina. Pagina's zonder H1 op de live site (blogoverzicht, Historie van de skischoen) hebben
@@ -157,7 +180,8 @@ uploaden de paden in de CSS aan (zoek op `wp-content/uploads`).
 - **Alt-teksten:** gelijk aan de live site. Nieuwe, puur decoratieve foto's (kopfoto's, winkelfoto's) hebben een lege
   alt (`alt=""`), zodat Google precies dezelfde alt-teksten ziet als nu.
 
-**Bewust anders** (allemaal klein en zonder SEO-risico). De eerste drie zijn inhoud: die pas je in WordPress aan.
+**Bewust anders** (allemaal klein en zonder SEO-risico). De eerste vier zijn inhoud: die pas je in WordPress aan.
+- Home: het blok **"Het team"** (zie §4) is nieuw.
 - Ski-Mojo: een knop **"Uitlegvideo van Ski-Mojo"** naar de Instagram-reel
   `https://www.instagram.com/reel/DTcoYxbDGMI/` (opent in een nieuw tabblad), vlak voor "De voordelen van Ski-Mojo:".
 - Prijs Strolz volledige maatschoen: **€ 1195** (live staat op Tarieven en in de FAQ nog € 1180).
@@ -167,19 +191,48 @@ uploaden de paden in de CSS aan (zoek op `wp-content/uploads`).
   (live leeg) zijn in de voorbeeldsite ingevuld. Dit is optioneel: pas het alleen in Yoast aan als DutchBootFitter dat wil.
 - De Bookly-laadplaatjes ("Laden...") zie je hier niet; Bookly zet ze zelf weer neer.
 
-## 7. Checklist vóór livegang
+## 7. SEO: wat je níet mag doen
 
+Dit is het belangrijkste hoofdstuk. Eén van deze dingen kan al posities kosten.
+
+| Niet doen | Waarom |
+|---|---|
+| Een URL, slug of permalink-instelling wijzigen | Google kent de pagina onder dat adres; een nieuw adres begint opnieuw. |
+| Pagina's verwijderen, samenvoegen of een nieuwe "parent" geven | Verandert de URL en de interne links. |
+| Paginatitels of meta-beschrijvingen in Yoast aanpassen | Dat zijn de teksten in de zoekresultaten. (Uitzondering: de twee optionele in §6.) |
+| Teksten herschrijven, inkorten of in een slider/tab "verstoppen" | De tekst is waar de pagina op gevonden wordt. Alleen de opmaak eromheen verandert. |
+| Een H1 toevoegen, weghalen of van niveau veranderen (H1→H2) | De kopstructuur blijft zoals live. Nieuwe blokken krijgen geen H1/H2. |
+| Interne links weghalen of laten wijzen naar een ander adres | Ook menu, footer, bloglijst naast de FAQ en de submenu's van Ski-Mojo en De Skischoen. |
+| Bestandsnamen of alt-teksten van bestaande afbeeldingen wijzigen | Ze tellen mee voor Google Afbeeldingen. |
+| Het `noindex`-label van de preview overnemen | De preview op GitHub Pages krijgt `noindex` mee bij het publiceren (niet in de bestanden in `site/`). Op de live site mag nergens `noindex` staan. |
+| "Zoekmachines ontmoedigen" (Instellingen → Lezen) aan laten staan na livegang | Staat op staging vaak aan; op live moet het uit. |
+| `robots.txt`, de Yoast-sitemap, canonical-instellingen of schema aanpassen | Blijft zoals het nu is. |
+| Een nieuwe pagebuilder, nieuw thema met andere URL-structuur of een cache/minify-plugin die HTML herschrijft toevoegen zonder test | Kan URL's, koppen of snelheid veranderen. |
+| De site trager maken | Snelheid (Core Web Vitals) telt mee. De video's zijn klein gehouden; afbeeldingen `loading="lazy"`. |
+
+**Vóór en na livegang vergelijken (aanrader):** crawl de live site vóór de overstap met bijvoorbeeld Screaming Frog
+(gratis tot 500 URL's) en exporteer URL, title, meta description, H1, statuscode en interne links. Crawl na de overstap
+opnieuw en vergelijk: alles moet gelijk zijn, geen 404's, geen nieuwe redirects.
+
+**Na livegang:** sitemap opnieuw indienen in Google Search Console en de eerste 4 weken wekelijks kijken bij
+*Pagina's* (indexering) en *Prestaties* (klikken/posities). Een kleine schommeling de eerste dagen is normaal.
+
+## 8. Checklist vóór livegang
+
+- [ ] Back-up van de live site bij Versio (bestanden + database) gemaakt; gewerkt op staging.
 - [ ] Proefboeking op alle 4 Bookly-pagina's werkt (bevestigingsmail komt aan).
 - [ ] Geen URL of slug gewijzigd; geen nieuwe redirects nodig.
 - [ ] Yoast: titels en meta-beschrijvingen onveranderd (steekproef met "Bron bekijken" of een SEO-crawler).
 - [ ] Elke pagina heeft nog dezelfde H1 (of geen, waar dat nu ook zo is).
 - [ ] Alt-teksten in de mediabibliotheek niet aangepast.
 - [ ] `robots.txt`, sitemap (Yoast) en Google Search Console onveranderd; na livegang de sitemap opnieuw indienen.
+- [ ] Nergens `noindex`; "Zoekmachines ontmoedigen" staat uit.
+- [ ] Crawl vóór en na vergeleken (zie §7): zelfde URL's, titels, beschrijvingen, H1's en interne links; geen 404's.
 - [ ] Mobiel getest (iPhone en Android): menu, video, kaarten, kopfoto's.
 - [ ] Snelheid (PageSpeed Insights): video's met `preload="metadata"`, afbeeldingen `loading="lazy"` behalve de kopfoto.
 - [ ] Podonet-vergoedingswidget (Tarieven), Google Maps, YouTube en Trustindex laden nog.
 
-## 8. De voorbeeldsite opnieuw bouwen
+## 9. De voorbeeldsite opnieuw bouwen
 
 ```sh
 pip install markdown beautifulsoup4
@@ -195,7 +248,7 @@ Waar je dingen aanpast in `build/generate.py`:
 | Kopfoto per pagina | `BANNERS`, `BANNER_FOR` |
 | Foto's in de dienstkaarten | `SERVICE_PHOTOS`, `PRODUCT_PHOTOS` |
 | Fotootjes bij de prijzen | `PRICE_PHOTOS` |
-| Team-blok aan/uit | `SHOW_TEAM` |
+| Team-blok aan/uit, namen, titels, foto's, eigenaren | `SHOW_TEAM`, `STAFF`, `STAFF_OWNERS` |
 | Extra links (Ski-Mojo Instagram) | `EXTRA_LINKS` |
 | Gerepareerde links | `LINK_FIXES`, `LINK_REMOVE` |
 | Goedgekeurde nieuwe tekst | `APPROVED_COPY` (alleen tekst die hierin staat, mag nieuw zijn; `verify.py` controleert dat) |
