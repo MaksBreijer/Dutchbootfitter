@@ -1671,3 +1671,6 @@ h1, h2, h3, h4, .blk-title, .faq-title { overflow-wrap: normal; word-break: norm
 /* the texts break only where the live chart breaks them (<br>) */
 .prose .flow-chart .fl-node { font-size: 1.62cqw; line-height: 1.2; font-weight: 600; color: var(--ink); white-space: nowrap; }
 .prose .flow-chart .fl-node.label { font-weight: 700; }
+
+/* Definitieblok: donkergrijs i.p.v. nachtblauw */
+.definition, .intro-visual .definition { background: color-mix(in srgb, #2b2b2b 92%, transparent); }
